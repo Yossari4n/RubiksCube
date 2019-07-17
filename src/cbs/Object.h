@@ -14,6 +14,7 @@
 #include <glm/gtx/quaternion.hpp>
 #pragma warning(pop)
 
+#include <assert.h>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -46,7 +47,7 @@ public:
         // Return pointer of T type
         return comp;
     }
-    
+
     template <class T>
     T* CreateComponent(T* other) {
         // Create new IComponent by invoking copy constructor
@@ -63,10 +64,22 @@ public:
         // Return pointer of T type
         return comp;
     }
-    
+
     template <class T>
     void RemoveComponent() {
-        // Find component to remove by linear search with casting
+        m_Components.erase(std::find_if(m_Components.begin(),
+                                        m_Components.end(),
+                                        [](IComponent* comp) {
+                                            if (dynamic_cast<T*>(comp) != nullptr) {
+                                                comp->Destroy();
+                                                return true;
+                                            }
+                                            return false;
+                                        }));
+    }
+
+    template <class T>
+    void RemoveComponents() {
         m_Components.erase(std::remove_if(m_Components.begin(),
                                           m_Components.end(),
                                           [](IComponent* comp) {
@@ -79,19 +92,62 @@ public:
                            m_Components.end());
     }
     
+    void RemoveComponent(std::uint8_t id) {
+        assert(id > 1);
+        m_Components.erase(std::find_if(m_Components.begin(),
+                                        m_Components.end(),
+                                        [=](IComponent* comp) {
+                                            if (comp->ID() == id) {
+                                                comp->Destroy();
+                                                return true;
+                                            }
+                                            return false;
+                                        }));
+    }
+
     template <class T>
     T* GetComponent() {
         T* comp = nullptr;
-        
-        // Find component by linear search with casting
+
         auto it = m_Components.begin();
         while (it != m_Components.end() && comp == nullptr ) {
             comp = dynamic_cast<T*>(*it);
             
             it++;
         }
-        
+ 
         return comp;
+    }
+
+    template <class T>
+    std::vector<T*> GetComponents() {
+        std::vector<T*> comps;
+        T* comp = nullptr;
+
+        auto it = m_Components.begin();
+        while (it != m_Components.end()) {
+            comp = dynamic_cast<T*>(*it);
+
+            if (comp != nullptr) {
+                comps.push_back(comp);
+            }
+        }
+
+        return comps;
+    }
+
+    template <class T>
+    T* GetComponent(std::uint8_t id) {
+        auto it = std::find_if(m_Components.begin(),
+                               m_Components.end(),
+                               [=](IComponent* comp) {
+                                   if (comp->ID() == id) {
+                                       comp->Destroy();
+                                       return true;
+                                   }
+                                   return false;
+                               });
+        return dynamic_cast<T*>(*it);
     }
     
     const std::string& Name() const { return m_Name; }

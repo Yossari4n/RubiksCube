@@ -26,6 +26,10 @@ public:
     Object& Object() const {
         return *m_Object;
     }
+
+    std::uint8_t ID() const {
+        return m_ID;
+    }
     
 protected:
     virtual void Initialize() {};
