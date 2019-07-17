@@ -31,9 +31,13 @@ public:
         // Create new IComponent
         auto comp = new T(params...);
         comp->m_Object = this;
+        comp->m_ID = m_NextCompID;
         
         // Register IComponent in a pool
         m_Components.push_back(comp);
+
+        // 
+        m_NextCompID = m_NextCompID + 1;
 
         // Return pointer of T type
         return comp;
@@ -44,10 +48,14 @@ public:
         // Create new IComponent by invoking copy constructor
         auto comp = new T(*other);
         comp->m_Object = this;
+        comp->m_ID = m_NextCompID;
         
         // Register IComponent in a pool
         m_Components.push_back(comp);
-        
+
+        // 
+        m_NextCompID = m_NextCompID + 1;
+
         // Return pointer of T type
         return comp;
     }
@@ -62,7 +70,6 @@ public:
                                                   comp->Destroy();
                                                   return true;
                                               }
-                                              
                                               return false;
                                           }),
                            m_Components.end());
@@ -95,6 +102,7 @@ private:
     ObjectManager& m_Owner;
     class Transform m_Transform;
     
+    std::uint8_t m_NextCompID;
     std::vector<IComponent*> m_Components;
 };
 

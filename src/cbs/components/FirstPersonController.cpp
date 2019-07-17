@@ -16,23 +16,7 @@ void FirstPersonController::Initialize() {
     m_Transform = &Object().Transform();
 }
 
-void FirstPersonController::OnActivate() {
-    glm::vec3 curr_front = Object().Transform().Front();
-    glm::vec3 projected_front(curr_front.x, 0.0f, curr_front.z); // Front vector projected onto XY plane
-    
-    m_VerticalRotation = glm::angle(glm::normalize(curr_front), glm::normalize(projected_front));
-    
-    // Becouse glm::angle always returns positive value angle needs to be negated manually
-    if (curr_front.y < 0.0f) {
-        m_VerticalRotation = -m_VerticalRotation;
-    }
-}
-
-void FirstPersonController::Update() {
-    if (!m_Active) {
-        return;
-    }
-    
+void FirstPersonController::Update() {    
     // Mouse
     float rot_ver = glm::radians(g_Input.MouseOffset().y * m_MouseSensitivity);
     float rot_hor = glm::radians(-g_Input.MouseOffset().x * m_MouseSensitivity);

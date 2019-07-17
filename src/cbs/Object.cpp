@@ -2,15 +2,19 @@
 
 Object::Object(ObjectManager& owner, std::string name)
     : m_Name(name)
-    , m_Owner(owner){
+    , m_Owner(owner)
+    , m_NextCompID(1) {
+
 }
 
 Object::Object(const Object& other, std::string name)
     : m_Name(name.empty() ? other.Name() + "_copy" : name)
-    , m_Owner(other.m_Owner) {
+    , m_Owner(other.m_Owner)
+    , m_NextCompID(other.m_NextCompID) {
     for (auto it = other.m_Components.begin(); it != other.m_Components.end(); ++it) {
         m_Components.push_back((*it)->Clone());
         m_Components[m_Components.size() - 1]->m_Object = this;
+        m_Components[m_Components.size() - 1]->m_ID = (*it)->m_ID;
         m_Components[m_Components.size() - 1]->Initialize();
     }
 }

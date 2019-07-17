@@ -19,18 +19,7 @@ void ThirdPersonController::Radius(float radius) {
     m_Radius = radius;
 }
 
-void ThirdPersonController::OnActivate() {
-    m_XRotation = 0.0f;
-    m_YRotation = 0.0f;
-    m_Front = glm::vec3(1.0f, 0.0f, 0.0f);
-    m_RotationAxis = glm::vec3(1.0f, 0.0f, 0.0f);
-}
-
 void ThirdPersonController::Update() {
-    if (!m_Active) {
-        return;
-    }
-    
     // Accumulate mouse movement as rotations
     m_XRotation += -glm::radians(g_Input.MouseOffset().y * m_MouseSensitivity);
     m_YRotation += glm::radians(g_Input.MouseOffset().x * m_MouseSensitivity);

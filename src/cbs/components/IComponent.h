@@ -8,16 +8,17 @@
 class Object;
 
 class IComponent {
+    // TODO doc about friendship and constructors
     friend class Object;
 
 public:
     IComponent()
         : m_Object(nullptr)
-        , m_Active(true) {
+        , m_ID(0) {
+
     }
     
-    virtual ~IComponent() {
-    }
+    virtual ~IComponent() {}
     
     virtual IComponent* Clone() const {
         std::cerr << "Attempted to create copy of Compononent not implementing Clone() function\n";
@@ -28,39 +29,14 @@ public:
         return *m_Object;
     }
     
-    bool Active() const {
-        return m_Active;
-    }
-    
-    void Activate() {
-        if (m_Active) {
-            return;
-        }
-
-        m_Active = true;
-        OnActivate();
-    }
-    
-    void Deactivate() {
-        if (!m_Active) {
-            return;
-        }
-
-        m_Active = false;
-        OnDeactivate();
-    }
-
 protected:
     virtual void Initialize() {};
-    virtual void OnActivate() {};
     virtual void Update() {};
-    virtual void OnDeactivate() {};
     virtual void Destroy() {};
-    
-    bool m_Active;
 
 private:
     class Object* m_Object;
+    std::uint8_t m_ID;
 };
 
 #include "../Object.h"

@@ -17,7 +17,6 @@ class ThirdPersonController : public IComponent {
 public:
     ThirdPersonController(class Object* target = nullptr, float radius = 0.0f, float mouse_sensitivity = 0.1f);
     
-    void OnActivate() override;
     void Update() override;
     
     void Target(class Object* target) { m_Target = &target->Transform(); }

@@ -18,9 +18,8 @@
 class FirstPersonController : public IComponent {
 public:
     FirstPersonController(float movement_speed_fast = 50.0f, float movement_speed_slow = 1.0f, float mouse_sensitivity = 0.1f);
-    
+
     void Initialize() override;
-    void OnActivate() override;
     void Update() override;
     
 private:
