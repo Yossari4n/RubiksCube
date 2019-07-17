@@ -13,7 +13,7 @@ FirstPersonController::FirstPersonController(float movement_speed_fast, float mo
 
 void FirstPersonController::Initialize() {
     m_LastMousePos = g_Input.MousePosition();
-    m_Transform = &Object().Transform();
+    m_Transform = &Object().Root();
 }
 
 void FirstPersonController::Update() {    

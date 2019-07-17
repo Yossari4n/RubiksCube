@@ -27,7 +27,7 @@ Camera::Camera(float left, float right, float bottom, float top, float near, flo
 
 void Camera::Initialize() {
     Object().Scene().RegisterCamera(this);
-    m_Transform = &Object().Transform();
+    m_Transform = &Object().Root();
 }
 
 glm::mat4 Camera::ViewMatrix() const {

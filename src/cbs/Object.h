@@ -1,8 +1,10 @@
 #ifndef Object_h
 #define Object_h
 
-#include "Transform.h"
+// TODO fix "use of undefined class Transform" with sane headers
+
 #include "components/IComponent.h"
+#include "components/Transform.h"
 #include "../scenes/IScene.h"
 
 #pragma warning(push, 0)
@@ -15,6 +17,8 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+
+class Transform;
 
 class Object {
 public:
@@ -94,15 +98,15 @@ public:
     void Name(const std::string& name) { m_Name = name; }
     
     IScene& Scene() const { return m_Owner.Scene(); }
-    Transform& Transform() { return m_Transform; }
+    Transform& Root();
 
 private:
     std::string m_Name;
     
     ObjectManager& m_Owner;
-    class Transform m_Transform;
-    
+
     std::uint8_t m_NextCompID;
+    Transform* m_Root;
     std::vector<IComponent*> m_Components;
 };
 

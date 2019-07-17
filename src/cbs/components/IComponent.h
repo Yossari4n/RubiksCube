@@ -15,9 +15,7 @@ public:
     IComponent()
         : m_Object(nullptr)
         , m_ID(0) {
-
     }
-    
     virtual ~IComponent() {}
     
     virtual IComponent* Clone() const {

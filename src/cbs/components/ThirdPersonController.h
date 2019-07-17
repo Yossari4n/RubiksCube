@@ -19,7 +19,7 @@ public:
     
     void Update() override;
     
-    void Target(class Object* target) { m_Target = &target->Transform(); }
+    void Target(class Object* target) { m_Target = &target->Root(); }
     void Radius(float radius);
     float Radius() const  { return m_Radius; }
     

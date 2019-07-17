@@ -13,8 +13,8 @@ void MainScene::CreateScene() {
            "data/skybox/front.jpg");
         
     auto camera = CreateObject("Camera");
-    camera->Transform().Position(glm::vec3(0.0f, 0.0f, 80.0f));
-    camera->Transform().Rotate(glm::vec3(0.0f, 0.0f, 0.0f));
+    camera->Root().Position(glm::vec3(0.0f, 0.0f, 80.0f));
+    camera->Root().Rotate(glm::vec3(0.0f, 0.0f, 0.0f));
     camera->CreateComponent<Camera>(glm::perspective(glm::radians(45.0f), 2880.0f / 1800.0f, 0.1f, 3000.0f));
     auto camera_fpc = camera->CreateComponent<FirstPersonController>();
 }

@@ -18,7 +18,7 @@ void MeshRenderer::Destroy() {
 }
 
 void MeshRenderer::Draw(const ShaderProgram &shader) const {
-    shader.Uniform("model", Object().Transform().Model());
+    shader.Uniform("model", Object().Root().Model());
     
     for (const Mesh &mesh: m_Meshes) {
         mesh.Draw(shader);

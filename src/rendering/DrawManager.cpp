@@ -96,7 +96,7 @@ void DrawManager::CallDraws() const {
         
         // For each trait in shader set corresponding properties 
         if (curr_shader.Traits() & ShaderProgram::Trait::LIGHT_RECEIVER) {
-            curr_shader.Uniform("viewPos", m_Camera->Object().Transform().Position());
+            curr_shader.Uniform("viewPos", m_Camera->Object().Root().Position());
             curr_shader.Uniform("material.shininess", 32.0f);
             
             for (auto light_source = m_LightSources.begin(); light_source != m_LightSources.end(); ++light_source) {

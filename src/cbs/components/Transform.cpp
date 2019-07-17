@@ -7,6 +7,13 @@ Transform::Transform()
     UpdateModel();
 }
 
+Transform::Transform(const Transform& other)
+    : m_Position(other.m_Position)
+    , m_Rotation(other.m_Rotation)
+    , m_Scale(other.m_Scale)
+    , m_Model(other.m_Model) {
+}
+
 const glm::mat4& Transform::Model() {
     return m_Model;
 }

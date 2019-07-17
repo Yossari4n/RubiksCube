@@ -1,7 +1,7 @@
 #include "ThirdPersonController.h"
 
 ThirdPersonController::ThirdPersonController(class Object* target, float radius, float mouse_sensitivity)
-    : m_Target(&target->Transform())
+    : m_Target(&target->Root())
     , m_Radius(radius)
     , m_MouseSensitivity(mouse_sensitivity)
     , m_Front(1.0f, 0.0f, 0.0f)
@@ -49,8 +49,8 @@ void ThirdPersonController::Update() {
     glm::quat front_rot_ver = m_RotationBeetwen(front_rot_hor * m_Front, diff);
     
     // Apply
-    Object().Transform().Position(new_pos);
-    Object().Transform().Rotation(front_rot_ver * front_rot_hor);
+    Object().Root().Position(new_pos);
+    Object().Root().Rotation(front_rot_ver * front_rot_hor);
 }
 
 glm::quat ThirdPersonController::m_RotationBeetwen(const glm::vec3 &start, const glm::vec3 &dest) {
