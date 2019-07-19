@@ -1,6 +1,6 @@
 #include "MeshRenderer.h"
 
-MeshRenderer::MeshRenderer(std::string path, ShaderProgram::Type type)
+MeshRenderer::MeshRenderer(const std::string& path, ShaderProgram::Type type)
     : IDrawable(type) {
     LoadModel(path);
 }
@@ -25,7 +25,7 @@ void MeshRenderer::Draw(const ShaderProgram &shader) const {
     }
 }
 
-void MeshRenderer::LoadModel(std::string path) {
+void MeshRenderer::LoadModel(const std::string& path) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
     

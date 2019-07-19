@@ -3,6 +3,7 @@
 Object::Object(ObjectManager& owner, std::string name)
     : m_Name(name)
     , m_Owner(owner)
+    , m_MessageManager(1)
     , m_NextCompID(2)
     , m_Root() {
     IComponent* root = &m_Root;
@@ -13,6 +14,7 @@ Object::Object(ObjectManager& owner, std::string name)
 Object::Object(const Object& other, std::string name)
     : m_Name(name.empty() ? other.Name() + "_copy" : name)
     , m_Owner(other.m_Owner)
+    , m_MessageManager(1)
     , m_Root(other.m_Root)
     , m_NextCompID(other.m_NextCompID) {
     

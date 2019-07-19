@@ -1,6 +1,7 @@
 #ifndef Object_h
 #define Object_h
 
+#include "message_system/MessageManager.h"
 #include "components/IComponent.h"
 #include "components/Transform.h"
 #include "../scenes/IScene.h"
@@ -150,6 +151,7 @@ public:
     const std::string& Name() const { return m_Name; }
     void Name(const std::string& name) { m_Name = name; }
     
+    MessageManager& MessageManager() { return m_MessageManager; }
     IScene& Scene() const { return m_Owner.Scene(); }
     Transform& Root();
 
@@ -157,6 +159,7 @@ private:
     std::string m_Name;
     
     ObjectManager& m_Owner;
+    class MessageManager m_MessageManager;
 
     std::uint8_t m_NextCompID;
     Transform m_Root;

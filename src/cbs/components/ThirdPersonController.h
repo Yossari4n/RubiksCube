@@ -2,6 +2,7 @@
 #define ThirdPersonController_h
 
 #include "IComponent.h"
+#include "../Object.h"
 
 #include "../../utilities/Time.h"
 #include "../../utilities/Input.h"

@@ -43,14 +43,14 @@ public:
     const std::vector<Texture>& Textures() const { return m_Textures; }
     
 private:
+    void SetupMesh();
+
     std::vector<Vertex> m_Vertices;
     std::vector<unsigned int> m_Indices;
     std::vector<Texture> m_Textures;
     unsigned int m_VAO;
     unsigned int m_VBO;
     unsigned int m_EBO;
-    
-    void SetupMesh();
 };
 
 #endif
