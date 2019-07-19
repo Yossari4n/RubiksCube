@@ -5,6 +5,7 @@
 
 #include "Mesh.h"
 #include "../IComponent.h"
+#include "../../Object.h"
 #include "../../../rendering/IDrawable.h"
 
 #pragma warning(push, 0)
@@ -25,7 +26,7 @@
 
 class MeshRenderer : public IComponent, public IDrawable {
 public:
-    MeshRenderer(std::string path, ShaderProgram::Type type);
+    MeshRenderer(const std::string& path, ShaderProgram::Type type);
     ~MeshRenderer();
     
     void Initialize() override;
@@ -44,7 +45,7 @@ private:
     std::vector<Texture> m_TexturesLoaded;
     std::string m_Directory;
     
-    void LoadModel(std::string path);
+    void LoadModel(const std::string& path);
     void ProcessNode(aiNode *node, const aiScene *scene);
     void ProcessMesh(aiMesh *mesh, const aiScene *scene);
     std::vector<Texture> LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);

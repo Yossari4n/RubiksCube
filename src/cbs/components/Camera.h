@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IComponent.h"
+#include "../Object.h"
 #include "../../utilities/Time.h"
 #include "../../utilities/Input.h"
 #include "../../rendering/Cubemap.h"

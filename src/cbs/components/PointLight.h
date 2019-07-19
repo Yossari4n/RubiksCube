@@ -7,6 +7,7 @@
 
 #include "../../rendering/ILightSource.h"
 #include "IComponent.h"
+#include "../Object.h"
 
 class PointLight : public IComponent, public ILightSource {
 public:

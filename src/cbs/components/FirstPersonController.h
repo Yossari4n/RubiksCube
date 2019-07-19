@@ -2,6 +2,7 @@
 #define FirstPersonController_h
 
 #include "IComponent.h"
+#include "../Object.h"
 #include "Camera.h"
 #include "../../utilities/Time.h"
 #include "../../utilities/Input.h"

@@ -1,8 +1,6 @@
 #ifndef Object_h
 #define Object_h
 
-// TODO fix "use of undefined class Transform" with sane headers
-
 #include "components/IComponent.h"
 #include "components/Transform.h"
 #include "../scenes/IScene.h"
@@ -18,8 +16,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-
-class Transform;
+#include <type_traits>
 
 class Object {
 public:
@@ -34,7 +31,7 @@ public:
     template <class T, typename ...Args>
     T* CreateComponent(Args&&... params) {
         // Create new IComponent
-        auto comp = new T(params...);
+        IComponent* comp = new T(params...);
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
         
@@ -45,13 +42,13 @@ public:
         m_NextCompID = m_NextCompID + 1;
 
         // Return pointer of T type
-        return comp;
+        return dynamic_cast<T*>(comp);
     }
 
     template <class T>
     T* CreateComponent(T* other) {
         // Create new IComponent by invoking copy constructor
-        auto comp = new T(*other);
+        IComponent* comp = new T(*other);
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
         
@@ -62,7 +59,7 @@ public:
         m_NextCompID = m_NextCompID + 1;
 
         // Return pointer of T type
-        return comp;
+        return dynamic_cast<T*>(comp);
     }
 
     template <class T>
@@ -162,7 +159,7 @@ private:
     ObjectManager& m_Owner;
 
     std::uint8_t m_NextCompID;
-    Transform* m_Root;
+    Transform m_Root;
     std::vector<IComponent*> m_Components;
 };
 

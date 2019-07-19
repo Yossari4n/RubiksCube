@@ -41,6 +41,4 @@ private:
     std::uint8_t m_ID;
 };
 
-#include "../Object.h"
-
 #endif
