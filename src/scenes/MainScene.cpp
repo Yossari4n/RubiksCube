@@ -29,11 +29,11 @@ void MainScene::CreateScene() {
 
     glm::vec3 model_scale(1.0f / (976.032f * 2.0f), 1.0f / (976.032f * 2.0f), 1.0f / (986.312f * 2.0f));
 
-    
+
     auto first = CreateObject("First");
     first->Root().Scale(model_scale);
     first->CreateComponent<MeshRenderer>("data/earth/13902_Earth_v1_l3.obj",
                                          ShaderProgram::Type::PHONG);
     auto dummy = first->CreateComponent<DummyComp>();
-    first->MessageManager().Connect<std::string, DummyComp, &DummyComp::OnMessage>(dummy->m_MessageOut, dummy->m_MessageIn);
+    first->Connect<std::string, DummyComp, &DummyComp::OnMessage>(dummy->m_MessageOut, dummy->m_MessageIn);
 }

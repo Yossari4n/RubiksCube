@@ -3,7 +3,6 @@
 Object::Object(ObjectManager& owner, std::string name)
     : m_Name(name)
     , m_Owner(owner)
-    , m_MessageManager(1)
     , m_NextCompID(2)
     , m_Root() {
     IComponent* root = &m_Root;

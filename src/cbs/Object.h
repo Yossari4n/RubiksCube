@@ -151,9 +151,17 @@ public:
     const std::string& Name() const { return m_Name; }
     void Name(const std::string& name) { m_Name = name; }
     
-    MessageManager& MessageManager() { return m_MessageManager; }
     IScene& Scene() const { return m_Owner.Scene(); }
     Transform& Root();
+
+    template<class M, class T, void(T::* F)(M)>
+    void Connect(MessageOut<M>& sender, MessageIn<M, T, F>& receiver) {
+        m_MessageManager.Connect(sender, receiver);
+    }
+
+    void Disconnect(IMessageOut& sender, IMessageIn& receiver) {
+
+    }
 
 private:
     std::string m_Name;
