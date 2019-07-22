@@ -1,6 +1,8 @@
 #ifndef MessageManager_h
 #define MessageManager_h
 
+#include "../components/IComponent.h"
+
 #include <algorithm>
 #include <vector>
 #include <unordered_map>
@@ -23,6 +25,8 @@ public:
     void Disconnect(IMessageOut* sender, IMessageIn* receiver);
 
     void ForwardMessage(IMessageOut* sender, void* message);
+
+    void RemoveConnections(IComponent* component);
 
 private:
     std::unordered_map<IMessageOut*, std::vector<IMessageIn*>> m_MessageConnections;

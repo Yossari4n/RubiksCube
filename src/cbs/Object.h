@@ -39,7 +39,6 @@ public:
         // Register IComponent in a pool
         m_Components.push_back(comp);
 
-        // 
         m_NextCompID = m_NextCompID + 1;
 
         // Return pointer of T type
@@ -56,7 +55,6 @@ public:
         // Register IComponent in a pool
         m_Components.push_back(comp);
 
-        // 
         m_NextCompID = m_NextCompID + 1;
 
         // Return pointer of T type
@@ -65,42 +63,49 @@ public:
 
     template <class T>
     void RemoveComponent() {
-        m_Components.erase(std::find_if(m_Components.begin(),
-                                        m_Components.end(),
-                                        [](IComponent* comp) {
-                                            if (dynamic_cast<T*>(comp) != nullptr) {
-                                                comp->Destroy();
-                                                return true;
-                                            }
-                                            return false;
-                                        }));
+        auto comp = std::find_if(m_Components.begin(),
+                                 m_Components.end(),
+                                 [](IComponent* comp) { return dynamic_cast<T*>(comp) != nullptr; });
+
+        if (comp != m_Components.end()) {
+            m_MessageManager.RemoveConnections(*comp);
+            // TODO move destroy logic to update loop
+            (*comp)->Destroy();
+            m_Components.erase(comp);
+        }
     }
 
     template <class T>
     void RemoveComponents() {
-        m_Components.erase(std::remove_if(m_Components.begin(),
-                                          m_Components.end(),
-                                          [](IComponent* comp) {
-                                              if (dynamic_cast<T*>(comp) != nullptr) {
-                                                  comp->Destroy();
-                                                  return true;
-                                              }
-                                              return false;
-                                          }),
-                           m_Components.end());
+        std::vector<std::vector<IComponent*>::iterator> to_remove;
+
+        for (auto comp : m_Components) {
+            if (dynamic_cast<T*>(comp) != nullptr) {
+                to_remove.push_back(comp);
+            }
+        }
+
+        for (auto& comp : to_remove) {
+            m_MessageManager.RemoveConnections(*comp);
+            // TODO move destroy logic to update loop
+            (*comp)->Destroy();
+            m_Components.erase(comp);
+        }
     }
     
     void RemoveComponent(std::uint8_t id) {
         assert(id > 1);
-        m_Components.erase(std::find_if(m_Components.begin(),
-                                        m_Components.end(),
-                                        [=](IComponent* comp) {
-                                            if (comp->ID() == id) {
-                                                comp->Destroy();
-                                                return true;
-                                            }
-                                            return false;
-                                        }));
+        
+        auto comp = std::find_if(m_Components.begin(),
+                                 m_Components.end(),
+                                 [=](IComponent* comp) { return comp->ID() == id; });
+
+        if (comp != m_Components.end()) {
+            m_MessageManager.RemoveConnections(*comp);
+            // TODO move destroy logic to update loop
+            (*comp)->Destroy();
+            m_Components.erase(comp);
+        }
     }
 
     template <class T>
@@ -159,19 +164,23 @@ public:
         m_MessageManager.Connect(sender, receiver);
     }
 
-    void Disconnect(IMessageOut& sender, IMessageIn& receiver) {
-
-    }
+    void Disconnect(IMessageOut& sender, IMessageIn& receiver);
 
 private:
     std::string m_Name;
     
     ObjectManager& m_Owner;
-    class MessageManager m_MessageManager;
+    MessageManager m_MessageManager;
+
+    Transform m_Root;
 
     std::uint8_t m_NextCompID;
-    Transform m_Root;
     std::vector<IComponent*> m_Components;
+/*
+    std::vector<IComponent*>::iterator m_ToInitialize;
+    std::vector<IComponent*>::iterator m_ToUpdate;
+    std::vector<IComponent*>::iterator m_ToDestroy;
+*/
 };
 
 #endif

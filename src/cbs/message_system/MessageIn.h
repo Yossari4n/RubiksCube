@@ -7,28 +7,29 @@
 class IMessageIn {
     friend class MessageManager;
 public:
-    IMessageIn()
-        : m_MessageManager(nullptr) {
+    IMessageIn(IComponent* owner)
+        : m_MessageManager(nullptr)
+        , m_Owner(owner) {
     }
 
     virtual void Receive(void* message) = 0;
 
 protected:
     MessageManager* m_MessageManager;
+    IComponent* m_Owner;
 };
 
 template <class M, class O, void(O::*F)(M)>
 class MessageIn : public IMessageIn {
 public:
     MessageIn(O* owner)
-        : m_Owner(owner) 
+        : IMessageIn(owner)
         , m_Component(owner) {
     }
 
     void Receive(void* message) override;
 
 private:
-    IComponent* m_Owner;
     O* m_Component;
 };
 

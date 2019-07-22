@@ -7,19 +7,21 @@
 class IMessageOut {
     friend class MessageManager;
 public:
-    IMessageOut()
-        : m_MessageManager(nullptr) {
+    IMessageOut(IComponent* owner)
+        : m_MessageManager(nullptr)
+        , m_Owner(owner) {
     }
 
 protected:
     MessageManager* m_MessageManager;
+    IComponent* m_Owner;
 };
 
 template <class M>
 class MessageOut : public IMessageOut {
 public:
     MessageOut(IComponent* owner)
-        : m_Owner(owner) {
+        : IMessageOut(owner) {
     }
 
     void Send(M message) {
@@ -27,9 +29,6 @@ public:
             m_MessageManager->ForwardMessage(this, &message);
         }
     }
-
-private:
-    IComponent* m_Owner;
 };
 
 #endif

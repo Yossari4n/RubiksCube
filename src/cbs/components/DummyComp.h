@@ -5,6 +5,7 @@
 #include "../Object.h"
 #include "../message_system/MessageOut.h"
 #include "../message_system/MessageIn.h"
+#include "../../utilities/Input.h"
 
 #include <iostream>
 #include <string>
@@ -13,7 +14,7 @@ class DummyComp : public IComponent {
 public:
     DummyComp();
 
-    void Initialize() override;
+    void Update() override;
 
     void OnMessage(std::string msg);
 
