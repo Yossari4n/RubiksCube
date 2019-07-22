@@ -36,8 +36,9 @@ public:
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
         
-        // Register IComponent in a pool
-        m_Components.push_back(comp);
+        // 
+        m_Components.insert(m_Components.begin(), comp);
+        m_ToUpdateStart = m_ToUpdateStart + 1;
 
         m_NextCompID = m_NextCompID + 1;
 
@@ -52,8 +53,9 @@ public:
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
         
-        // Register IComponent in a pool
-        m_Components.push_back(comp);
+        // 
+        m_Components.insert(m_Components.begin(), comp);
+        m_ToUpdateStart = m_ToUpdateStart + 1;
 
         m_NextCompID = m_NextCompID + 1;
 
@@ -68,10 +70,7 @@ public:
                                  [](IComponent* comp) { return dynamic_cast<T*>(comp) != nullptr; });
 
         if (comp != m_Components.end()) {
-            m_MessageManager.RemoveConnections(*comp);
-            // TODO move destroy logic to update loop
-            (*comp)->Destroy();
-            m_Components.erase(comp);
+            MarkToDestroy(comp);
         }
     }
 
@@ -86,10 +85,7 @@ public:
         }
 
         for (auto& comp : to_remove) {
-            m_MessageManager.RemoveConnections(*comp);
-            // TODO move destroy logic to update loop
-            (*comp)->Destroy();
-            m_Components.erase(comp);
+            MarkToDestroy(comp);
         }
     }
     
@@ -101,10 +97,7 @@ public:
                                  [=](IComponent* comp) { return comp->ID() == id; });
 
         if (comp != m_Components.end()) {
-            m_MessageManager.RemoveConnections(*comp);
-            // TODO move destroy logic to update loop
-            (*comp)->Destroy();
-            m_Components.erase(comp);
+            MarkToDestroy(comp);
         }
     }
 
@@ -157,7 +150,7 @@ public:
     void Name(const std::string& name) { m_Name = name; }
     
     IScene& Scene() const { return m_Owner.Scene(); }
-    Transform& Root();
+    Transform& Root() { return m_Root; }
 
     template<class M, class T, void(T::* F)(M)>
     void Connect(MessageOut<M>& sender, MessageIn<M, T, F>& receiver) {
@@ -167,6 +160,8 @@ public:
     void Disconnect(IMessageOut& sender, IMessageIn& receiver);
 
 private:
+    void MarkToDestroy(std::vector<IComponent*>::iterator it);
+
     std::string m_Name;
     
     ObjectManager& m_Owner;
@@ -176,11 +171,8 @@ private:
 
     std::uint8_t m_NextCompID;
     std::vector<IComponent*> m_Components;
-/*
-    std::vector<IComponent*>::iterator m_ToInitialize;
-    std::vector<IComponent*>::iterator m_ToUpdate;
-    std::vector<IComponent*>::iterator m_ToDestroy;
-*/
+    std::size_t m_ToUpdateStart;
+    std::size_t m_ToDestroyCount;
 };
 
 #endif

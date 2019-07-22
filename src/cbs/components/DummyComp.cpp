@@ -11,7 +11,7 @@ void DummyComp::Update() {
         m_MessageOut.Send(m_Message);
     }
     if (g_Input.GetKeyState(GLFW_MOUSE_BUTTON_2) == Input::KeyState::PRESSED) {
-        Object().RemoveComponent(3);
+        Object().RemoveComponent(4);
     }
 }
 
