@@ -1,16 +1,18 @@
 #ifndef ObjectManager_h
 #define ObjectManager_h
 
+#include "Object.h"
+
 #include <vector>
 #include <string>
 
 class IScene;
-class Object;
 
 class ObjectManager {
+    using Objects_t = std::vector<std::unique_ptr<Object>>;
+
 public:
     ObjectManager(IScene& owner);
-    ~ObjectManager();
     
     void ProcessFrame();
 
@@ -25,7 +27,12 @@ public:
     
 private:
     IScene& m_Scene;
-    std::vector<Object*> m_Objects;
+
+    std::uint8_t m_NextObjectID;
+    Objects_t m_Objects;
+    Objects_t::size_type m_ToInitialize;
+    Objects_t::size_type m_ToInitializeNextFrame;
+    Objects_t::size_type m_ToDestroy;
 };
 
 #endif

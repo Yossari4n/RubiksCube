@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "../IComponent.h"
 #include "../../Object.h"
+#include "../../../scenes/IScene.h"
 #include "../../../rendering/IDrawable.h"
 
 #pragma warning(push, 0)

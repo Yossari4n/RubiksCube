@@ -5,9 +5,10 @@
 #include <glm/glm.hpp>
 #pragma warning(pop)
 
-#include "../../rendering/ILightSource.h"
 #include "IComponent.h"
 #include "../Object.h"
+#include "../../scenes/IScene.h"
+#include "../../rendering/ILightSource.h"
 
 class PointLight : public IComponent, public ILightSource {
 public:

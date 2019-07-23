@@ -3,6 +3,7 @@
 
 #include "IComponent.h"
 #include "../Object.h"
+#include "../../scenes/IScene.h"
 
 #include "../../utilities/Time.h"
 #include "../../utilities/Input.h"

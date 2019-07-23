@@ -3,6 +3,7 @@
 
 #include "IComponent.h"
 #include "../Object.h"
+#include "../../scenes/IScene.h"
 #include "../message_system/MessageOut.h"
 #include "../message_system/MessageIn.h"
 #include "../../utilities/Input.h"

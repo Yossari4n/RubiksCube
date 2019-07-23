@@ -1,7 +1,11 @@
 #include "Object.h"
 
-Object::Object(ObjectManager& owner, std::string name)
-    : m_Name(name)
+#include "ObjectManager.h"
+#include "../scenes/IScene.h"
+
+Object::Object(ObjectManager& owner, std::uint8_t id, std::string name)
+    : m_ID(id)
+    , m_Name(name)
     , m_Owner(owner)
     , m_NextCompID(2)
     , m_ToInitialize(0)
@@ -12,8 +16,9 @@ Object::Object(ObjectManager& owner, std::string name)
     root->m_ID = 1;
 }
 
-Object::Object(const Object& other, std::string name)
-    : m_Name(name.empty() ? other.Name() + "_copy" : name)
+Object::Object(const Object& other, std::uint8_t id, std::string name)
+    : m_ID(id)
+    , m_Name(name.empty() ? other.Name() + "_copy" : name)
     , m_Owner(other.m_Owner)
     , m_Root(other.m_Root)
     , m_NextCompID(other.m_NextCompID)
@@ -46,26 +51,33 @@ void Object::ProcessFrame() {
 void Object::InitializeComponents() {
     m_ToInitialize = m_ToInitializeNextFrame;
     m_ToInitializeNextFrame = 0;
-    for (; m_ToInitialize > 0; m_ToInitialize--) {
-        m_Components[m_Components.size() - m_ToInitialize]->Initialize();
+
+    for (Components_t::size_type i = 0; i < m_ToInitialize; i++) {
+        m_Components[m_Components.size() - 1 - i - m_ToInitializeNextFrame]->Initialize();
     }
+
+    m_ToInitialize = 0;
 }
 
 void Object::UpdateComponents() {
-    for (Components_t::size_type i = m_Components.size() - 1 - m_ToInitializeNextFrame; i > m_ToDestroy; i--) {
-        m_Components[i]->Update();
+    for (Components_t::size_type i = m_ToInitializeNextFrame; i < m_Components.size() - m_ToInitializeNextFrame - m_ToDestroy; i++) {
+        m_Components[m_Components.size() - 1 - i - m_ToInitializeNextFrame]->Update();
     }
 }
 
 void Object::DestroyComponents() {
     if (m_ToDestroy > 0) {
-        for (Components_t::size_type i = m_ToDestroy; i > 0; i--) {
-            m_MessageManager.RemoveConnections(m_Components[i].get());
-            m_Components[i]->Destroy();
+        for (Components_t::size_type i = 0; i < m_ToDestroy; i++) {
+            m_MessageManager.RemoveConnections(m_Components[m_Components.size() - i].get());
+            m_Components[m_Components.size() - 1 - i - m_ToInitializeNextFrame]->Destroy();
         }
         m_Components.erase(m_Components.begin(), m_Components.begin() + m_ToDestroy);
         m_ToDestroy = 0;
     }
+}
+
+IScene& Object::Scene() const {
+    return m_Owner.Scene();
 }
 
 void Object::Disconnect(IMessageOut& sender, IMessageIn& receiver) {

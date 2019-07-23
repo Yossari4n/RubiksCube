@@ -4,7 +4,6 @@
 #include "message_system/MessageManager.h"
 #include "components/IComponent.h"
 #include "components/Transform.h"
-#include "../scenes/IScene.h"
 
 #pragma warning(push, 0)
 #include <glm/glm.hpp>
@@ -18,12 +17,15 @@
 #include <vector>
 #include <algorithm>
 
+class ObjectManager;
+class IScene;
+
 class Object {
     using Components_t = std::vector<std::unique_ptr<IComponent>>;
 
 public:
-    Object(ObjectManager& scene, std::string name = "object");
-    Object(const Object& other, std::string name = "");
+    Object(ObjectManager& scene, std::uint8_t id, std::string name = "object");
+    Object(const Object& other, std::uint8_t id, std::string name = "");
     
     void ProcessFrame();
 
@@ -167,11 +169,12 @@ public:
         return dynamic_cast<T*>(*it);
     }
 
+    std::uint8_t ID() const { return m_ID; }
 
     const std::string& Name() const { return m_Name; }
     void Name(const std::string& name) { m_Name = name; }
     
-    IScene& Scene() const { return m_Owner.Scene(); }
+    IScene& Scene() const;
     Transform& Root() { return m_Root; }
 
     template<class M, class T, void(T::* F)(M)>
@@ -184,6 +187,7 @@ public:
 private:
     void MarkToDestroy(Components_t::iterator it);
 
+    std::uint8_t m_ID;
     std::string m_Name;
     
     ObjectManager& m_Owner;
