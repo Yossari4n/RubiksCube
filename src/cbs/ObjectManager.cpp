@@ -14,21 +14,27 @@ ObjectManager::~ObjectManager() {
     }
 }
 
+void ObjectManager::ProcessFrame() {
+    for (auto it = m_Objects.begin(); it != m_Objects.end(); it++) {
+        (*it)->ProcessFrame();
+    }
+}
+
 void ObjectManager::InitializeObjects() {
     for (auto it = m_Objects.begin(); it != m_Objects.end(); ++it) {
-        (*it)->Initialize();
+        (*it)->InitializeComponents();
     }
 }
 
 void ObjectManager::UpdateObjects() {
     for (auto it = m_Objects.begin(); it != m_Objects.end(); ++it) {
-        (*it)->Update();
+        (*it)->UpdateComponents();
     }
 }
 
 void ObjectManager::DestroyObjects() {
     for (auto it = m_Objects.begin(); it != m_Objects.end(); ++it) {
-        (*it)->Destroy();
+        (*it)->DestroyComponents();
     }
 }
 

@@ -16,6 +16,7 @@ void IScene::PreRun() {
     m_Running = true;
     
     m_DrawManager.Initialize();
+    m_ObjectManager.InitializeObjects();
 }
 
 void IScene::Run() {
@@ -36,9 +37,7 @@ void IScene::Run() {
         g_Input.Update(g_Window);
         
         // Managers
-        m_ObjectManager.InitializeObjects();
-        m_ObjectManager.UpdateObjects();
-        m_ObjectManager.DestroyObjects();
+        m_ObjectManager.ProcessFrame();
         m_DrawManager.CallDraws();
     }
 }

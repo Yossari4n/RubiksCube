@@ -12,6 +12,8 @@ public:
     ObjectManager(IScene& owner);
     ~ObjectManager();
     
+    void ProcessFrame();
+
     void InitializeObjects();
     void UpdateObjects();
     void DestroyObjects();

@@ -13,8 +13,11 @@
 class DummyComp : public IComponent {
 public:
     DummyComp();
+    ~DummyComp();
 
+    void Initialize() override;
     void Update() override;
+    void Destroy() override;
 
     void OnMessage(std::string msg);
 

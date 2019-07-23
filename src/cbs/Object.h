@@ -17,18 +17,25 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include <type_traits>
 
 class Object {
+    using Components_t = std::vector<std::unique_ptr<IComponent>>;
+
 public:
     Object(ObjectManager& scene, std::string name = "object");
     Object(const Object& other, std::string name = "");
-    ~Object();
     
-    void Initialize();
-    void Update();
-    void Destroy();
+    void ProcessFrame();
+
+    void InitializeComponents();
+    void UpdateComponents();
+    void DestroyComponents();
     
+    /**
+     * Create component
+     *
+     * TODO dock
+     */
     template <class T, typename ...Args>
     T* CreateComponent(Args&&... params) {
         // Create new IComponent
@@ -36,9 +43,9 @@ public:
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
         
-        // 
-        m_Components.insert(m_Components.begin(), comp);
-        m_ToUpdateStart = m_ToUpdateStart + 1;
+        // Add new IComponent at the end of vecotr to be initialized in the next frame
+        m_Components.emplace_back(comp);
+        m_ToInitializeNextFrame = m_ToInitializeNextFrame + 1;
 
         m_NextCompID = m_NextCompID + 1;
 
@@ -53,9 +60,9 @@ public:
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
         
-        // 
-        m_Components.insert(m_Components.begin(), comp);
-        m_ToUpdateStart = m_ToUpdateStart + 1;
+        // Add new IComponent at the end of vecotr to be initialized in the next frame
+        m_Components.emplace_back(comp);
+        m_ToInitialize = m_ToInitialize + 1;
 
         m_NextCompID = m_NextCompID + 1;
 
@@ -63,44 +70,56 @@ public:
         return dynamic_cast<T*>(comp);
     }
 
+
+    /**
+     * Remove component(s)
+     *
+     * TODO dock
+     */
+    // TODO test
     template <class T>
     void RemoveComponent() {
         auto comp = std::find_if(m_Components.begin(),
                                  m_Components.end(),
-                                 [](IComponent* comp) { return dynamic_cast<T*>(comp) != nullptr; });
+                                 [](std::unique_ptr<IComponent>& comp) { return dynamic_cast<T*>(comp.get()) != nullptr; });
 
         if (comp != m_Components.end()) {
             MarkToDestroy(comp);
         }
     }
 
+    // TODO test
     template <class T>
     void RemoveComponents() {
-        std::vector<std::vector<IComponent*>::iterator> to_remove;
+        std::vector<std::vector<IComponent>::iterator> to_remove;
 
-        for (auto comp : m_Components) {
-            if (dynamic_cast<T*>(comp) != nullptr) {
-                to_remove.push_back(comp);
+        for (auto& comp : m_Components) {
+            if (dynamic_cast<T*>(comp->get()) != nullptr) {
+                MarkToDestroy(comp);
             }
-        }
-
-        for (auto& comp : to_remove) {
-            MarkToDestroy(comp);
         }
     }
     
+    // TODO test
     void RemoveComponent(std::uint8_t id) {
         assert(id > 1);
         
         auto comp = std::find_if(m_Components.begin(),
                                  m_Components.end(),
-                                 [=](IComponent* comp) { return comp->ID() == id; });
+                                 [=](std::unique_ptr<IComponent>& comp) { return comp->ID() == id; });
 
         if (comp != m_Components.end()) {
             MarkToDestroy(comp);
         }
     }
 
+
+    /**
+     * Get component(s)
+     *
+     * TODO dock
+     */
+    // TODO test
     template <class T>
     T* GetComponent() {
         T* comp = nullptr;
@@ -115,6 +134,7 @@ public:
         return comp;
     }
 
+    // TODO test
     template <class T>
     std::vector<T*> GetComponents() {
         std::vector<T*> comps;
@@ -132,6 +152,7 @@ public:
         return comps;
     }
 
+    // TODO test
     template <class T>
     T* GetComponent(std::uint8_t id) {
         auto it = std::find_if(m_Components.begin(),
@@ -145,7 +166,8 @@ public:
                                });
         return dynamic_cast<T*>(*it);
     }
-    
+
+
     const std::string& Name() const { return m_Name; }
     void Name(const std::string& name) { m_Name = name; }
     
@@ -160,7 +182,7 @@ public:
     void Disconnect(IMessageOut& sender, IMessageIn& receiver);
 
 private:
-    void MarkToDestroy(std::vector<IComponent*>::iterator it);
+    void MarkToDestroy(Components_t::iterator it);
 
     std::string m_Name;
     
@@ -170,9 +192,11 @@ private:
     Transform m_Root;
 
     std::uint8_t m_NextCompID;
-    std::vector<IComponent*> m_Components;
-    std::size_t m_ToUpdateStart;
-    std::size_t m_ToDestroyCount;
+    // [ToDestroy_1, ..., ToDestroy_i, ToUpdate_1, ..., ToUpdate_j, ToInit_1, ..., ToInit_k]
+    Components_t m_Components;
+    Components_t::size_type m_ToInitialize;
+    Components_t::size_type m_ToInitializeNextFrame;
+    Components_t::size_type m_ToDestroy;
 };
 
 #endif

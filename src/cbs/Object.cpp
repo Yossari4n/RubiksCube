@@ -4,8 +4,9 @@ Object::Object(ObjectManager& owner, std::string name)
     : m_Name(name)
     , m_Owner(owner)
     , m_NextCompID(2)
-    , m_ToUpdateStart(0)
-    , m_ToDestroyCount(0) {
+    , m_ToInitialize(0)
+    , m_ToInitializeNextFrame(0)
+    , m_ToDestroy(0) {
     IComponent* root = &m_Root;
     root->m_Object = this;
     root->m_ID = 1;
@@ -16,16 +17,17 @@ Object::Object(const Object& other, std::string name)
     , m_Owner(other.m_Owner)
     , m_Root(other.m_Root)
     , m_NextCompID(other.m_NextCompID)
-    , m_ToUpdateStart(other.m_ToUpdateStart)
-    , m_ToDestroyCount(other.m_ToDestroyCount) {
+    , m_ToInitialize(other.m_ToInitialize)
+    , m_ToInitializeNextFrame(other.m_ToInitializeNextFrame)
+    , m_ToDestroy(other.m_ToDestroy) {
 
     // Copy root component
     IComponent* root = &m_Root;
     root->m_Object = this;
 
     // Copy components
-    for (auto comp : other.m_Components) {
-        m_Components.push_back(comp->Clone());
+    for (auto& comp : other.m_Components) {
+        m_Components.emplace_back(comp->Clone());
         m_Components[m_Components.size() - 1]->m_Object = this;
         m_Components[m_Components.size() - 1]->m_ID = comp->m_ID;
         m_Components[m_Components.size() - 1]->Initialize();
@@ -35,33 +37,34 @@ Object::Object(const Object& other, std::string name)
     // TODO
 }
 
-Object::~Object() {
-    for (auto it = m_Components.begin(); it != m_Components.end(); it++) {
-        delete (*it);
+void Object::ProcessFrame() {
+    InitializeComponents();
+    UpdateComponents();
+    DestroyComponents();
+}
+
+void Object::InitializeComponents() {
+    m_ToInitialize = m_ToInitializeNextFrame;
+    m_ToInitializeNextFrame = 0;
+    for (; m_ToInitialize > 0; m_ToInitialize--) {
+        m_Components[m_Components.size() - m_ToInitialize]->Initialize();
     }
 }
 
-void Object::Initialize() {
-    for (auto it = m_Components.begin(); it != m_Components.begin() + m_ToUpdateStart; it++) {
-        (*it)->Initialize();
-    }
-    m_ToUpdateStart = 0;
-}
-
-void Object::Update() {
-    for (auto it = m_Components.begin() + m_ToUpdateStart; it != m_Components.end() - m_ToDestroyCount; it++) {
-        (*it)->Update();
+void Object::UpdateComponents() {
+    for (Components_t::size_type i = m_Components.size() - 1 - m_ToInitializeNextFrame; i > m_ToDestroy; i--) {
+        m_Components[i]->Update();
     }
 }
 
-void Object::Destroy() {
-    if (m_ToDestroyCount > 0) {
-        for (auto it = m_Components.end() - m_ToDestroyCount; it != m_Components.end(); it++) {
-            m_MessageManager.RemoveConnections(*it);
-            (*it)->Destroy();
+void Object::DestroyComponents() {
+    if (m_ToDestroy > 0) {
+        for (Components_t::size_type i = m_ToDestroy; i > 0; i--) {
+            m_MessageManager.RemoveConnections(m_Components[i].get());
+            m_Components[i]->Destroy();
         }
-        m_Components.erase(m_Components.end() - m_ToDestroyCount, m_Components.end());
-        m_ToDestroyCount = 0;
+        m_Components.erase(m_Components.begin(), m_Components.begin() + m_ToDestroy);
+        m_ToDestroy = 0;
     }
 }
 
@@ -69,9 +72,10 @@ void Object::Disconnect(IMessageOut& sender, IMessageIn& receiver) {
     m_MessageManager.Disconnect(&sender, &receiver);
 }
 
-void Object::MarkToDestroy(std::vector<IComponent*>::iterator it) {
-    if (std::distance(it, m_Components.end()) > m_ToDestroyCount) {
-        m_ToDestroyCount = m_ToDestroyCount + 1;
-        std::iter_swap(it, m_Components.end() - m_ToDestroyCount);
+void Object::MarkToDestroy(Components_t::iterator it) {
+    // Check if component hasn't been already marked
+    if (std::distance(it, m_Components.begin()) > static_cast<ptrdiff_t>(m_ToDestroy)) {
+        m_ToDestroy = m_ToDestroy + 1;
+        std::iter_swap(m_Components.begin() + m_ToDestroy, it);
     }
 }
