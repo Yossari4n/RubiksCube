@@ -12,10 +12,6 @@ DummyComp::~DummyComp() {
 
 void DummyComp::Initialize() {
     std::cout << "Init " << static_cast<int>(ID()) << '\n';
-
-    if (ID() == 3) {
-        Object().CreateComponent<DummyComp>();
-    }
 }
 
 void DummyComp::Update() {

@@ -7,6 +7,17 @@
 #include <vector>
 #include <unordered_map>
 
+#pragma region ForwardDeclarations
+class IPropertyOut;
+
+template <class T>
+class PropertyOut;
+
+class IPropertyIn;
+
+template <class T>
+class PropertyIn;
+
 class IMessageOut;
 
 template <class M>
@@ -16,6 +27,7 @@ class IMessageIn;
 
 template <class M, class O, void(O::*F)(M)>
 class MessageIn;
+#pragma endregion
 
 class MessageManager {
 public:
@@ -32,8 +44,39 @@ private:
     std::unordered_map<IMessageOut*, std::vector<IMessageIn*>> m_MessageConnections;
 };
 
-#include "MessageOut.h"
-#include "MessageIn.h"
+
+class IPropertyOut {
+};
+
+class IPropertyIn {
+};
+
+class IMessageOut {
+    friend class MessageManager;
+public:
+    IMessageOut(IComponent* owner)
+        : m_MessageManager(nullptr)
+        , m_Owner(owner) {}
+
+protected:
+    MessageManager* m_MessageManager;
+    IComponent* m_Owner;
+};
+
+class IMessageIn {
+    friend class MessageManager;
+public:
+    IMessageIn(IComponent* owner)
+        : m_MessageManager(nullptr)
+        , m_Owner(owner) {}
+
+    virtual void Receive(void* message) = 0;
+
+protected:
+    MessageManager* m_MessageManager;
+    IComponent* m_Owner;
+};
+
 
 template<class M, class T, void(T::* F)(M)>
 void MessageManager::Connect(MessageOut<M>& sender, MessageIn<M, T, F>& receiver) {
