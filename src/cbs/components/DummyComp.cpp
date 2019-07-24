@@ -26,7 +26,7 @@ void DummyComp::Update() {
     }
 
     if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        std::cout << m_PropertyOut << '\n';
+        std::cout << m_PropertyIn << '\n';
     }
 
     if (g_Input.GetKeyState(GLFW_KEY_ESCAPE)) {

@@ -32,10 +32,9 @@ void MainScene::CreateScene() {
     auto first = CreateObject("First");
     first->Root().Scale(model_scale);
     first->CreateComponent<MeshRenderer>("data/earth/13902_Earth_v1_l3.obj",
-                                         ShaderProgram::Type::PHONG);
+                                         ShaderProgram::Type::PHONG); // id = 2
     auto dummy1 = first->CreateComponent<DummyComp>(); // id = 3
-    auto dummy2 = first->CreateComponent<DummyComp>(); // id = 4
-    // auto dummy3 = first->CreateComponent<DummyComp>(); // id = 5
-    first->Connect<std::string, DummyComp, &DummyComp::OnMessage>(dummy1->m_MessageOut, dummy2->m_MessageIn);
-    // first->Connect<std::string, DummyComp, &DummyComp::OnMessage>(dummy1->m_MessageOut, dummy3->m_MessageIn);
+    //auto dummy2 = first->CreateComponent<DummyComp>(); // id = 4
+    first->Connect(dummy1->m_MessageOut, dummy1->m_MessageIn);
+    first->Connect(dummy1->m_PropertyOut, dummy1->m_PropertyIn);
 }

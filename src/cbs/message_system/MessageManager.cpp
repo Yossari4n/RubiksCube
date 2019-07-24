@@ -1,11 +1,20 @@
 #include "MessageManager.h"
 
-void MessageManager::Disconnect(IPropertyOut* subject, IPropertyIn* observer) {
-
+void MessageManager::UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observer) {
+    m_PropertyConnections.erase(std::remove_if(m_PropertyConnections.begin(),
+                                               m_PropertyConnections.end(),
+                                               [=](std::pair<IPropertyOut*, IPropertyIn*>& pair) { 
+                                                   if (pair.second == observer) {
+                                                       pair.second->Reset();
+                                                       return true;
+                                                   }
+                                                   return false; }));
 }
 
-void MessageManager::Disconnect(IMessageOut* sender, IMessageIn* receiver) {
-    m_MessageConnections[sender].erase(std::remove(m_MessageConnections[sender].begin(), m_MessageConnections[sender].end(), receiver));
+void MessageManager::UnsafeDisconnect(IMessageOut* sender, IMessageIn* receiver) {
+    m_MessageConnections[sender].erase(std::remove(m_MessageConnections[sender].begin(), 
+                                                   m_MessageConnections[sender].end(), 
+                                                   receiver));
 }
 
 void MessageManager::ForwardMessage(IMessageOut* sender, void* message) {
@@ -22,9 +31,20 @@ void MessageManager::RemoveConnections(IComponent* component) {
             m_MessageConnections.erase(it++);
         } else {
             it->second.erase(std::remove_if(it->second.begin(),
-                                              it->second.end(),
-                                              [=](auto receiver) { return receiver->m_Owner->ID() == comp_id; }));
+                                            it->second.end(),
+                                            [=](auto receiver) { return receiver->m_Owner->ID() == comp_id; }));
             ++it;
         }
     }
+
+    m_PropertyConnections.erase(std::remove_if(m_PropertyConnections.begin(),
+                                               m_PropertyConnections.end(),
+                                               [=](PropertyConnection_t& conn) { 
+                                                   if (conn.second->m_Owner->ID() == comp_id) {
+                                                       conn.second->Reset();
+                                                       return true;
+                                                   } else if (conn.first->m_Owner->ID() == comp_id) {
+                                                       return true;
+                                                   }
+                                                   return false; }));
 }

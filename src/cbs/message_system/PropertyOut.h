@@ -20,13 +20,15 @@ public:
         , m_Value(value) {
     }
 
+    PropertyOut(PropertyOut&& other) = default;
+
     T& operator=(const T& value) {
         m_Value = value;
 
         return m_Value;
     }
 
-    operator T&() { return m_Value;  }
+    operator T&() { return m_Value; }
 
 private:
     T m_Value;

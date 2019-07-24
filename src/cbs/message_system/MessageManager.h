@@ -7,7 +7,7 @@
 #include <vector>
 #include <unordered_map>
 
-#pragma region ForwardDeclarations
+#pragma region InterfacesForwardDeclarations
 class IPropertyOut;
 
 template <class T>
@@ -30,6 +30,10 @@ class MessageIn;
 #pragma endregion
 
 class MessageManager {
+    using PropertyConnection_t = std::pair<IPropertyOut*, IPropertyIn*>;
+    using PropertyConnections_t = std::vector<PropertyConnection_t>;
+    using MessageConnections_t = std::unordered_map<IMessageOut*, std::vector<IMessageIn*>>;
+
 public:
     template <class T>
     void Connect(PropertyOut<T>& subject, PropertyIn<T>& observer);
@@ -37,7 +41,7 @@ public:
     template <class T>
     void Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer);
 
-    void Disconnect(IPropertyOut* subject, IPropertyIn* observer);
+    void UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observer);
 
     template <class M, class O, void (O::*F)(M)>
     void Connect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver);
@@ -45,18 +49,18 @@ public:
     template <class M, class O, void (O::*F)(M)>
     void Disconnect(MessageOut<M> sender, MessageIn<M, O, F>& receiver);
 
-    void Disconnect(IMessageOut* sender, IMessageIn* receiver);
+    void UnsafeDisconnect(IMessageOut* sender, IMessageIn* receiver);
 
     void ForwardMessage(IMessageOut* sender, void* message);
 
     void RemoveConnections(IComponent* component);
 
 private:
-    std::vector<std::pair<IPropertyOut*, IPropertyIn>> m_PropertyConnections;
-    std::unordered_map<IMessageOut*, std::vector<IMessageIn*>> m_MessageConnections;
+    PropertyConnections_t m_PropertyConnections;
+    MessageConnections_t m_MessageConnections;
 };
 
-
+#pragma region InterfacesImplementations
 class IPropertyOut {
     friend class MessageManager;
 
@@ -74,6 +78,9 @@ class IPropertyIn {
 public:
     IPropertyIn(IComponent* owner)
         : m_Owner(owner) {}
+
+protected:
+    virtual void Reset() = 0;
 
 private:
     IComponent* m_Owner;
@@ -106,21 +113,21 @@ protected:
     MessageManager* m_MessageManager;
     IComponent* m_Owner;
 };
-
+#pragma endregion
 
 template <class T>
 void MessageManager::Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
-    if (observer.m_Source != nullptr) {
+    if (observer.m_Source == nullptr) {
         observer.m_Source = &subject;
-        m_PropertyConnections.emplace(&subject, &observer);
+        m_PropertyConnections.emplace_back(&subject, &observer);
     } else {
-        std::cerr << "PropertyIn of type " << typeid(T).name() << " already has connection\n";
+        std::cout << "PropertyIn of type " << typeid(T).name() << " already has connection\n";
     }
 }
 
 template <class T>
 void MessageManager::Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
-
+    UnsafeDisconnect(&subject, &observer);
 }
 
 template <class M, class O, void(O::*F)(M)>
@@ -132,7 +139,7 @@ void MessageManager::Connect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver
 
 template <class M, class O, void (O::*F)(M)>
 void MessageManager::Disconnect(MessageOut<M> sender, MessageIn<M, O, F>& receiver) {
-
+    UnsafeDisconnect(&sender, &receiver);
 }
 
 #endif
