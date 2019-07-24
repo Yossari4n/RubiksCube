@@ -32,7 +32,16 @@ public:
     void InitializeComponents();
     void UpdateComponents();
     void DestroyComponents();
-    
+
+    std::uint8_t ID() const { return m_ID; }
+
+    const std::string& Name() const { return m_Name; }
+    void Name(const std::string& name) { m_Name = name; }
+
+    IScene& Scene() const;
+    Transform& Root() { return m_Root; }
+
+
     /**
      * Create component
      *
@@ -169,20 +178,37 @@ public:
         return dynamic_cast<T*>(*it);
     }
 
-    std::uint8_t ID() const { return m_ID; }
 
-    const std::string& Name() const { return m_Name; }
-    void Name(const std::string& name) { m_Name = name; }
-    
-    IScene& Scene() const;
-    Transform& Root() { return m_Root; }
+    /**
+     * Connect
+     *
+     * TODO doc
+     */
+    template <class T>
+    void Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
+        m_MessageManager.Connect(subject, observer);
+    }
 
-    template<class M, class T, void(T::* F)(M)>
-    void Connect(MessageOut<M>& sender, MessageIn<M, T, F>& receiver) {
+    template <class M, class O, void(O::* F)(M)>
+    void Connect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver) {
         m_MessageManager.Connect(sender, receiver);
     }
 
-    void Disconnect(IMessageOut& sender, IMessageIn& receiver);
+
+    /**
+     * Disconnect
+     *
+     * TODO doc
+     */
+    template <class T>
+    void Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
+        m_MessageManager.Disconnect(subject, observer);
+    }
+
+    template <class M, class O, void (O::*F)(M)>
+    void Disconnect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver) {
+        m_MessageManager.Disconnect(sender, receiver);
+    }
 
 private:
     void MarkToDestroy(Components_t::iterator it);

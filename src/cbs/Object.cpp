@@ -80,10 +80,6 @@ IScene& Object::Scene() const {
     return m_Owner.Scene();
 }
 
-void Object::Disconnect(IMessageOut& sender, IMessageIn& receiver) {
-    m_MessageManager.Disconnect(&sender, &receiver);
-}
-
 void Object::MarkToDestroy(Components_t::iterator it) {
     // Check if component hasn't been already marked
     if (std::distance(it, m_Components.begin()) > static_cast<ptrdiff_t>(m_ToDestroy)) {
