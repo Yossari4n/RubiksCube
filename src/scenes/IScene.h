@@ -31,6 +31,7 @@ public:
     // ObjectManger functions
     Object* CreateObject(std::string name = "");
     Object* CreateObject(const Object* other, std::string name = "");
+    void DestroyObject(std::uint8_t id);
 
 private:
     ObjectManager m_ObjectManager;

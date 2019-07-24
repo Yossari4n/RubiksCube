@@ -60,3 +60,21 @@ Object* ObjectManager::CreateObject(const Object* other, std::string name) {
     
     return m_Objects.at(m_Objects.size() - 1).get();
 }
+
+void ObjectManager::DestroyObject(std::uint8_t id) {
+    auto object = std::find_if(m_Objects.begin(),
+                               m_Objects.end(),
+                               [=](std::unique_ptr<Object>& obj) { return obj->ID() == id; });
+
+    if (object != m_Objects.end()) {
+        MarkToDestroy(object);
+    }
+}
+
+void ObjectManager::MarkToDestroy(Objects_t::iterator it) {
+    // Check if object hasn't been already marked
+    if (std::distance(it, m_Objects.begin()) > static_cast<ptrdiff_t>(m_ToDestroy)) {
+        m_ToDestroy = m_ToDestroy + 1;
+        std::iter_swap(m_Objects.begin() + m_ToDestroy, it);
+    }
+}
