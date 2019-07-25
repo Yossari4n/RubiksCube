@@ -16,7 +16,10 @@ public:
 
     PropertyIn(PropertyIn&& other) = default;
 
-    operator T&() { return *m_Source; }
+    T& Value() const { return *m_Source; }
+    operator const T&() const { return *m_Source; }
+
+    bool Connected() const { return m_Source != nullptr; }
 
 private:
     void Reset() override {

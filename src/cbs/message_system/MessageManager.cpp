@@ -1,5 +1,9 @@
 #include "MessageManager.h"
 
+void MessageManager::UnsafeConnect(IPropertyOut* subject, IPropertyIn* observer) {
+
+}
+
 void MessageManager::UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observer) {
     m_PropertyConnections.erase(std::remove_if(m_PropertyConnections.begin(),
                                                m_PropertyConnections.end(),
@@ -9,6 +13,10 @@ void MessageManager::UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observ
                                                        return true;
                                                    }
                                                    return false; }));
+}
+
+void MessageManager::UnsafeConnect(IMessageOut* sender, IMessageIn* receiver) {
+
 }
 
 void MessageManager::UnsafeDisconnect(IMessageOut* sender, IMessageIn* receiver) {

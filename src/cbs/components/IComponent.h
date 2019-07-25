@@ -19,7 +19,7 @@ public:
     virtual ~IComponent() {}
     
     virtual IComponent* Clone() const {
-        std::cerr << "Attempted to create copy of Compononent not implementing Clone() function\n";
+        std::cout << "Attempted to create copy of Compononent not implementing Clone() function\n";
         return nullptr;
     }
     

@@ -1,67 +1,97 @@
 #include "Transform.h"
 
+#include "../Object.h"
+
 Transform::Transform()
-    : m_Position(glm::vec3(0.0f))
-    , m_Rotation(glm::vec3(0.0f))
-    , m_Scale(glm::vec3(1.0f)) {
+    : TransformOut(this, *this)
+    , TransformIn(this)
+    , PositionOut(this, glm::vec3(0.0f))
+    , RotationOut(this, glm::vec3(0.0f))
+    , ScaleOut(this, glm::vec3(1.0f))
+    , ModelOut(this, glm::mat4(1.0f)) {
     UpdateModel();
 }
 
 Transform::Transform(const Transform& other)
-    : m_Position(other.m_Position)
-    , m_Rotation(other.m_Rotation)
-    , m_Scale(other.m_Scale)
-    , m_Model(other.m_Model) {
+    : TransformOut(this, *this)
+    , TransformIn(this)
+    , PositionOut(this, other.PositionOut)
+    , RotationOut(this, other.RotationOut)
+    , ScaleOut(this, other.ScaleOut)
+    , ModelOut(this, other.ModelOut) {
+    UpdateModel();
 }
 
-const glm::mat4& Transform::Model() {
-    return m_Model;
+void Transform::Initialize() {
+    UpdateModel();
+}
+
+const glm::mat4& Transform::Model() const {
+    return ModelOut.Value();
+}
+
+const glm::vec3& Transform::Position() const {
+    return PositionOut.Value();
 }
 
 void Transform::Position(const glm::vec3& position) {
-    m_Position = position;
+    PositionOut = position;
     
     UpdateModel();
 }
 
 void Transform::Move(const glm::vec3& vector) {
-    m_Position = m_Position + vector;
-    
+    PositionOut = PositionOut.Value() + vector;
+
     UpdateModel();
 }
 
 void Transform::MoveRelative(const glm::vec3& vector) {
-    m_Position = m_Position + m_Rotation * vector;
+    PositionOut = PositionOut.Value() + RotationOut.Value() * vector;
+
+    UpdateModel();
+}
+
+const glm::quat& Transform::Rotation() const {
+    return RotationOut.Value();
 }
 
 void Transform::Rotation(const glm::quat &rotation) {
-    m_Rotation = rotation;
-    
+    RotationOut = rotation;
+
     UpdateModel();
 }
 
 void Transform::Rotate(const glm::quat& rotation) {
-    m_Rotation =  rotation * m_Rotation;
-    
+    RotationOut = rotation * RotationOut.Value();
+
     UpdateModel();
 }
 
 void Transform::RotateRelative(const glm::quat& rotation) {
-    m_Rotation = m_Rotation * rotation;
+    RotationOut = RotationOut.Value() * rotation;
 
     UpdateModel();
 }
 
+const glm::vec3& Transform::Scale() const {
+    return ScaleOut.Value();
+}
+
 void Transform::Scale(const glm::vec3& scale) {
-    m_Scale = scale;
+    ScaleOut = scale;
     
     UpdateModel();
 }
 
 void Transform::UpdateModel() {
-    glm::mat4 translate_matrix = glm::translate(glm::mat4(1.0f), m_Position);
-    glm::mat4 rotation_matrix = glm::toMat4(m_Rotation);
-    glm::mat4 scale_matrix = glm::scale(glm::mat4(1.0f), m_Scale);
-    
-    m_Model = translate_matrix * rotation_matrix * scale_matrix;
+    glm::mat4 translate_matrix = glm::translate(glm::mat4(1.0f), PositionOut.Value());
+    glm::mat4 rotation_matrix = glm::toMat4(RotationOut.Value());
+    glm::mat4 scale_matrix = glm::scale(glm::mat4(1.0f), ScaleOut.Value());
+
+    if (TransformIn.Connected()) {
+        ModelOut = TransformIn.Value().Model() * (translate_matrix * rotation_matrix * scale_matrix);
+    } else {
+        ModelOut = translate_matrix * rotation_matrix * scale_matrix;
+    }
 }

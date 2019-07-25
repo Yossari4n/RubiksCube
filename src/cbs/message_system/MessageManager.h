@@ -35,13 +35,16 @@ class MessageManager {
     using MessageConnections_t = std::unordered_map<IMessageOut*, std::vector<IMessageIn*>>;
 
 public:
+    /**
+     * Type safe managment
+     * 
+     * TODO docs
+     */
     template <class T>
     void Connect(PropertyOut<T>& subject, PropertyIn<T>& observer);
 
     template <class T>
     void Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer);
-
-    void UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observer);
 
     template <class M, class O, void (O::*F)(M)>
     void Connect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver);
@@ -49,7 +52,19 @@ public:
     template <class M, class O, void (O::*F)(M)>
     void Disconnect(MessageOut<M> sender, MessageIn<M, O, F>& receiver);
 
+    /**
+     * Type unsafe managment
+     *
+     * TODO docs
+     */
+    void UnsafeConnect(IPropertyOut* subject, IPropertyIn* observer);
+
+    void UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observer);
+
+    void UnsafeConnect(IMessageOut* sender, IMessageIn* receiver);
+
     void UnsafeDisconnect(IMessageOut* sender, IMessageIn* receiver);
+
 
     void ForwardMessage(IMessageOut* sender, void* message);
 

@@ -8,16 +8,19 @@ class PropertyOut : public IPropertyOut {
     friend class MessageManager;
 
 public:
-    PropertyOut() = default;
-
     PropertyOut(IComponent* owner)
         : IPropertyOut(owner)
         , m_Value() {
     }
-
+    
     PropertyOut(IComponent* owner, const T& value)
         : IPropertyOut(owner)
         , m_Value(value) {
+    }
+
+    PropertyOut(IComponent* owner, const PropertyOut<T>& other)
+        : IPropertyOut(owner)
+        , m_Value(other.m_Value) {
     }
 
     PropertyOut(PropertyOut&& other) = default;
@@ -28,7 +31,11 @@ public:
         return m_Value;
     }
 
+    T& Value() { return m_Value; }
+    const T& Value() const { return m_Value; }
+
     operator T&() { return m_Value; }
+    operator const T&() const { return m_Value; }
 
 private:
     T m_Value;

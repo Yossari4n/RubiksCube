@@ -2,6 +2,8 @@
 #define Transform_h
 
 #include "IComponent.h"
+#include "../message_system/PropertyOut.h"
+#include "../message_system/PropertyIn.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #pragma warning(push, 0)
@@ -21,31 +23,36 @@ public:
     Transform();
     Transform(const Transform& other);
 
-    const glm::mat4& Model();
+    void Initialize() override;
+
+    const glm::mat4& Model() const;
     
-    const glm::vec3& Position() const { return m_Position; }
+    const glm::vec3& Position() const;
     void Position(const glm::vec3& position);
     void Move(const glm::vec3& vector);
     void MoveRelative(const glm::vec3& vector);
 
-    const glm::quat& Rotation() const { return m_Rotation; }
+    const glm::quat& Rotation() const;
     void Rotation(const glm::quat& rotation);
     void Rotate(const glm::quat& rotation);
     void RotateRelative(const glm::quat& rotation);
 
-    const glm::vec3& Scale() const { return m_Scale; }
+    const glm::vec3& Scale() const;
     void Scale(const glm::vec3& scale);
 
-    glm::vec3 Front() { return m_Rotation * glm::vec3(1.0f, 0.0f, 0.0f); }
-    glm::vec3 Up() { return m_Rotation * glm::vec3(0.0f, 1.0f, 0.0f); }
-    glm::vec3 Right() { return m_Rotation * glm::vec3(0.0f, 0.0f, 1.0f); }
+    glm::vec3 Front() { return RotationOut.Value() * glm::vec3(1.0f, 0.0f, 0.0f); }
+    glm::vec3 Up() { return RotationOut.Value() * glm::vec3(0.0f, 1.0f, 0.0f); }
+    glm::vec3 Right() { return RotationOut.Value() * glm::vec3(0.0f, 0.0f, 1.0f); }
+
+    PropertyOut<Transform&> TransformOut;
+    PropertyIn<Transform&> TransformIn;
+
+    PropertyOut<glm::mat4> ModelOut;
+    PropertyOut<glm::vec3> PositionOut;
+    PropertyOut<glm::quat> RotationOut;
+    PropertyOut<glm::vec3> ScaleOut;
 
 private:
-    glm::mat4 m_Model;
-    glm::vec3 m_Position;
-    glm::quat m_Rotation;
-    glm::vec3 m_Scale;
-
     void UpdateModel();
 };
 
