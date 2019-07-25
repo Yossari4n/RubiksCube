@@ -9,7 +9,7 @@
 IScene::IScene()
     : m_ObjectManager(*this)
     , m_Running(true)
-    , m_FrameRate(0.0f) {
+    , m_FrameRateLimit(0.0f) {
 }
 
 void IScene::PreRun() {
@@ -30,7 +30,7 @@ void IScene::Run() {
         do {
             g_Time.Hold();
             glfwPollEvents();
-        } while (g_Time.DeltaTime() < m_FrameRate);
+        } while (g_Time.DeltaTime() < m_FrameRateLimit);
         
         // Update global systems
         g_Time.Update();
@@ -95,9 +95,9 @@ void IScene::DestroyObject(std::uint8_t id) {
 }
 
 float IScene::FrameRate() const {
-    return 1.0f / m_FrameRate;
+    return 1.0f / g_Time.DeltaTime;
 }
 
-void IScene::FrameRate(unsigned int frame_rate) {
-    m_FrameRate = frame_rate != 0 ? 1.0f / (float)frame_rate : 0.0f;
+void IScene::FrameRateLimit(unsigned int frame_rate) {
+    m_FrameRateLimit = frame_rate != 0 ? 1.0f / (float)frame_rate : 0.0f;
 }

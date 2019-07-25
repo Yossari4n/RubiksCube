@@ -15,7 +15,7 @@ public:
     void PostRun();
 
     void Exit();
-    void FrameRate(unsigned int frame_rate);
+    void FrameRateLimit(unsigned int frame_rate);
     float FrameRate() const;
 
     // DrawManager functions
@@ -38,7 +38,7 @@ private:
     DrawManager m_DrawManager;
 
     bool m_Running;
-    float m_FrameRate;
+    float m_FrameRateLimit;
 };
 
 #endif
