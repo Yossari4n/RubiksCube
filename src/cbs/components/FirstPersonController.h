@@ -3,6 +3,7 @@
 
 #include "IComponent.h"
 #include "../Object.h"
+#include "../message_system/PropertyIn.h"
 #include "../../scenes/IScene.h"
 
 #include "../../utilities/Time.h"
@@ -15,7 +16,7 @@
 
 #include <iostream>
 
-#define DEGREES_60 (60.0f * 3.14f / 180.0f)
+constexpr auto DEGREES_60 = (60.0f * 3.14f / 180.0f);
 
 class FirstPersonController : public IComponent {
 public:
@@ -24,6 +25,8 @@ public:
     void Initialize() override;
     void Update() override;
     
+    PropertyIn<Transform&> TransformIn;
+
 private:
     float m_CurrentMovementSpeed;
     float m_MovementSpeedFast;
@@ -32,8 +35,6 @@ private:
     float m_VerticalRotation;
     
     glm::vec2 m_LastMousePos;
-    
-    Transform* m_Transform;
 };
 
 #endif

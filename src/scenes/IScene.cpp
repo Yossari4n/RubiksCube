@@ -95,7 +95,7 @@ void IScene::DestroyObject(std::uint8_t id) {
 }
 
 float IScene::FrameRate() const {
-    return 1.0f / g_Time.DeltaTime;
+    return 1.0f / g_Time.DeltaTime();
 }
 
 void IScene::FrameRateLimit(unsigned int frame_rate) {

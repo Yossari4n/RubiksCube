@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "../IComponent.h"
 #include "../../Object.h"
+#include "../../message_system/PropertyIn.h"
 #include "../../../scenes/IScene.h"
 #include "../../../rendering/IDrawable.h"
 
@@ -41,6 +42,8 @@ public:
     
     const std::string& Directory() const { return m_Directory; }
     
+    PropertyIn<Transform&> TransformIn;
+
 private:
     std::vector<Mesh> m_Meshes;
     std::vector<Texture> m_TexturesLoaded;

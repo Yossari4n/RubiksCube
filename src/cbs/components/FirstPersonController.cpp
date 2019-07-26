@@ -1,19 +1,18 @@
 #include "FirstPersonController.h"
 
 FirstPersonController::FirstPersonController(float movement_speed_fast, float movement_speed_slow, float mouse_sensivity)
-    : m_CurrentMovementSpeed(0.0f)
+    : TransformIn(this)
+    , m_CurrentMovementSpeed(0.0f)
     , m_MovementSpeedFast(movement_speed_fast)
     , m_MovementSpeedSlow(movement_speed_slow)
     , m_MouseSensitivity(mouse_sensivity)
     , m_VerticalRotation(0.0f)
-    , m_LastMousePos(0.0f) 
-    , m_Transform(nullptr) {
-    
+    , m_LastMousePos(0.0f) {
 }
 
 void FirstPersonController::Initialize() {
+    // TODO store original rotation from Transform component
     m_LastMousePos = g_Input.MousePosition();
-    m_Transform = &Object().Root();
 }
 
 void FirstPersonController::Update() {    
@@ -32,8 +31,8 @@ void FirstPersonController::Update() {
     }
     
     // Update vectors
-    m_Transform->Rotate(glm::vec3(0.0f, rot_hor, 0.0f));
-    m_Transform->RotateRelative(glm::vec3(0.0f, 0.0f, rot_ver));
+    TransformIn.Value().Rotate(glm::vec3(0.0f, rot_hor, 0.0f));
+    TransformIn.Value().RotateRelative(glm::vec3(0.0f, 0.0f, rot_ver));
     
     // Keyboard
     if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT)) {
@@ -56,5 +55,5 @@ void FirstPersonController::Update() {
         movement.z = m_CurrentMovementSpeed * g_Time.DeltaTime();;
     }
     
-    m_Transform->MoveRelative(movement);
+    TransformIn.Value().MoveRelative(movement);
 }
