@@ -85,13 +85,15 @@ void Transform::Scale(const glm::vec3& scale) {
 }
 
 void Transform::UpdateModel() {
-    glm::mat4 translate_matrix = glm::translate(glm::mat4(1.0f), PositionOut.Value());
-    glm::mat4 rotation_matrix = glm::toMat4(RotationOut.Value());
-    glm::mat4 scale_matrix = glm::scale(glm::mat4(1.0f), ScaleOut.Value());
+    glm::mat4 model(1.0f);
 
     if (TransformIn.Connected()) {
-        ModelOut = TransformIn.Value().Model() * (translate_matrix * rotation_matrix * scale_matrix);
-    } else {
-        ModelOut = translate_matrix * rotation_matrix * scale_matrix;
+        model = TransformIn.Value().Model();
     }
+
+    model = glm::translate(model, PositionOut.Value());
+    model = model * glm::toMat4(RotationOut.Value());
+    model = glm::scale(model, ScaleOut.Value());
+
+    ModelOut = model;
 }
