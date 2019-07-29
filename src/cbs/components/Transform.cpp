@@ -2,20 +2,12 @@
 
 #include "../Object.h"
 
-Transform::Transform()
-    : TransformOut(this, *this)
-    , TransformIn(this)
-    , PositionOut(this, glm::vec3(0.0f))
-    , RotationOut(this, glm::vec3(0.0f))
-    , ScaleOut(this, glm::vec3(1.0f))
-    , ModelOut(this, glm::mat4(1.0f)) {
+Transform::Transform() {
     UpdateModel();
 }
 
 Transform::Transform(const Transform& other)
-    : TransformOut(this, *this)
-    , TransformIn(this)
-    , PositionOut(this, other.PositionOut)
+    : PositionOut(this, other.PositionOut)
     , RotationOut(this, other.RotationOut)
     , ScaleOut(this, other.ScaleOut)
     , ModelOut(this, other.ModelOut) {
@@ -85,15 +77,13 @@ void Transform::Scale(const glm::vec3& scale) {
 }
 
 void Transform::UpdateModel() {
-    glm::mat4 model(1.0f);
-
-    if (TransformIn.Connected()) {
-        model = TransformIn.Value().Model();
+    if (Parent.Connected()) {
+        ModelOut = Parent.Value().Model();
+    } else {
+        ModelOut = glm::mat4(1.0f);
     }
 
-    model = glm::translate(model, PositionOut.Value());
-    model = model * glm::toMat4(RotationOut.Value());
-    model = glm::scale(model, ScaleOut.Value());
-
-    ModelOut = model;
+    ModelOut = glm::translate(ModelOut.Value(), PositionOut.Value());
+    ModelOut = ModelOut.Value() * glm::toMat4(RotationOut.Value());
+    ModelOut = glm::scale(ModelOut.Value(), ScaleOut.Value());
 }

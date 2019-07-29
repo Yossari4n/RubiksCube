@@ -28,7 +28,7 @@ void PointLight::Destroy() {
 
 void PointLight::SetLightProperties(const ShaderProgram& shader) {
     std::string pointLight = "pointLights[" + std::to_string(m_Index) + "].";
-    
+
     shader.Uniform(pointLight + "position", Object().Root().Position());
     shader.Uniform(pointLight + "ambient", m_Ambient);
     shader.Uniform(pointLight + "diffuse", m_Diffuse);
@@ -39,7 +39,7 @@ void PointLight::SetLightProperties(const ShaderProgram& shader) {
 
 void PointLight::Ambient(const glm::vec3& ambient) {
     m_Ambient = ambient;
-    
+
     NumberInRange(m_Ambient.x);
     NumberInRange(m_Ambient.y);
     NumberInRange(m_Ambient.z);
@@ -47,7 +47,7 @@ void PointLight::Ambient(const glm::vec3& ambient) {
 
 void PointLight::Diffuse(const glm::vec3& diffuse) {
     m_Diffuse = diffuse;
-    
+
     NumberInRange(m_Diffuse.x);
     NumberInRange(m_Diffuse.y);
     NumberInRange(m_Diffuse.z);
@@ -57,7 +57,7 @@ void PointLight::Constant(float constant) {
     if (constant <= 0) {
         constant = 0.0000001f;
     }
-    
+
     m_Constant = constant;
 }
 
@@ -65,7 +65,7 @@ void PointLight::Linear(float linear) {
     if (linear <= 0) {
         linear = 0.0000001f;
     }
-    
+
     m_Linear = linear;
 }
 
@@ -73,6 +73,6 @@ void PointLight::Quadratic(float quadratic) {
     if (quadratic <= 0) {
         quadratic = 0.0000001f;
     }
-    
+
     m_Quadratic = quadratic;
 }

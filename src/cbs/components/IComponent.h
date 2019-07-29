@@ -17,20 +17,24 @@ public:
         , m_ID(0) {
     }
     virtual ~IComponent() {}
-    
+
     virtual IComponent* Clone() const {
         std::cout << "Attempted to create copy of Compononent not implementing Clone() function\n";
         return nullptr;
-    }
-    
-    Object& Object() const {
-        return *m_Object;
     }
 
     std::uint8_t ID() const {
         return m_ID;
     }
-    
+
+    Object& Object() const {
+        return *m_Object;
+    }
+
+    Transform& Root() const {
+        return m_Object->Root();
+    }
+
 protected:
     virtual void Initialize() {};
     virtual void Update() {};

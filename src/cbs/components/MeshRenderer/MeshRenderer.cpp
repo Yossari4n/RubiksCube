@@ -1,13 +1,8 @@
 #include "MeshRenderer.h"
 
 MeshRenderer::MeshRenderer(const std::string& path, ShaderProgram::Type type)
-    : IDrawable(type)
-    , TransformIn(this) {
+    : IDrawable(type) {
     LoadModel(path);
-}
-
-MeshRenderer::~MeshRenderer() {
-    // delete objects in nodes
 }
 
 void MeshRenderer::Initialize() {
@@ -19,8 +14,7 @@ void MeshRenderer::Destroy() {
 }
 
 void MeshRenderer::Draw(const ShaderProgram &shader) const {
-    glm::mat4 model = TransformIn.Value().Model();
-    shader.Uniform("model", model);
+    shader.Uniform("model", Model);
     
     for (const Mesh &mesh: m_Meshes) {
         mesh.Draw(shader);

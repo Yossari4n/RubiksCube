@@ -44,13 +44,14 @@ public:
     glm::vec3 Up() { return RotationOut.Value() * glm::vec3(0.0f, 1.0f, 0.0f); }
     glm::vec3 Right() { return RotationOut.Value() * glm::vec3(0.0f, 0.0f, 1.0f); }
 
-    PropertyOut<Transform&> TransformOut;
-    PropertyIn<Transform&> TransformIn;
+    PropertyIn<Transform&> Parent{ this };
+    // TODO find new names to remove redundant "Out" in names
+    PropertyOut<Transform&> TransformOut{ this, *this };
 
-    PropertyOut<glm::mat4> ModelOut;
-    PropertyOut<glm::vec3> PositionOut;
-    PropertyOut<glm::quat> RotationOut;
-    PropertyOut<glm::vec3> ScaleOut;
+    PropertyOut<glm::mat4> ModelOut{ this, 1.0f };
+    PropertyOut<glm::vec3> PositionOut{ this, 0.0f };
+    PropertyOut<glm::quat> RotationOut{ this, glm::vec3(0.0f) };
+    PropertyOut<glm::vec3> ScaleOut{ this, 1.0f };
 
 private:
     void UpdateModel();

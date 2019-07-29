@@ -29,26 +29,25 @@
 class MeshRenderer : public IComponent, public IDrawable {
 public:
     MeshRenderer(const std::string& path, ShaderProgram::Type type);
-    ~MeshRenderer();
-    
+
     void Initialize() override;
     void Destroy() override;
-    
+
     void Draw(const ShaderProgram &shader) const override;
-    
+
     const std::vector<Mesh>& Meshes() const { return m_Meshes; }
-    
+
     const std::vector<Texture>& TexturesLoaded() const { return m_TexturesLoaded; }
-    
+
     const std::string& Directory() const { return m_Directory; }
-    
-    PropertyIn<Transform&> TransformIn;
+
+    PropertyIn<glm::mat4> Model{ this };
 
 private:
     std::vector<Mesh> m_Meshes;
     std::vector<Texture> m_TexturesLoaded;
     std::string m_Directory;
-    
+
     void LoadModel(const std::string& path);
     void ProcessNode(aiNode *node, const aiScene *scene);
     void ProcessMesh(aiMesh *mesh, const aiScene *scene);

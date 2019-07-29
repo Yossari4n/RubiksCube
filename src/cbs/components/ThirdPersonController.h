@@ -4,6 +4,7 @@
 #include "IComponent.h"
 #include "../Object.h"
 #include "../../scenes/IScene.h"
+#include "../message_system/PropertyIn.h"
 
 #include "../../utilities/Time.h"
 #include "../../utilities/Input.h"
@@ -24,7 +25,7 @@ public:
     void Target(class Object* target) { m_Target = &target->Root(); }
     void Radius(float radius);
     float Radius() const  { return m_Radius; }
-    
+
 private:
     Transform* m_Target;
     float m_Radius;

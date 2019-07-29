@@ -24,8 +24,6 @@ public:
 
     void Initialize() override;
     void Update() override;
-    
-    PropertyIn<Transform&> TransformIn;
 
 private:
     float m_CurrentMovementSpeed;
