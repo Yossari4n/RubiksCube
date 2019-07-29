@@ -18,6 +18,13 @@ public:
         , m_Value(value) {
     }
 
+    template <class ...Args>
+    PropertyOut(IComponent* owner, Args&& ... params)
+        : IPropertyOut(owner)
+        , m_Value(params...) {
+
+    }
+
     PropertyOut(IComponent* owner, const PropertyOut<T>& other)
         : IPropertyOut(owner)
         , m_Value(other.m_Value) {
