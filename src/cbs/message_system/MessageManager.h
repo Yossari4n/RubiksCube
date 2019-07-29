@@ -52,25 +52,22 @@ public:
     template <class M, class O, void (O::*F)(M)>
     void Disconnect(MessageOut<M> sender, MessageIn<M, O, F>& receiver);
 
+    void ForwardMessage(IMessageOut* sender, void* message);
+
+    void RemoveConnections(IComponent* component);
+
+private:
     /**
      * Type unsafe managment
      *
      * TODO docs
      */
     void UnsafeConnect(IPropertyOut* subject, IPropertyIn* observer);
-
     void UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observer);
 
     void UnsafeConnect(IMessageOut* sender, IMessageIn* receiver);
-
     void UnsafeDisconnect(IMessageOut* sender, IMessageIn* receiver);
 
-
-    void ForwardMessage(IMessageOut* sender, void* message);
-
-    void RemoveConnections(IComponent* component);
-
-private:
     PropertyConnections_t m_PropertyConnections;
     MessageConnections_t m_MessageConnections;
 };
@@ -134,7 +131,8 @@ template <class T>
 void MessageManager::Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
     if (observer.m_Source == nullptr) {
         observer.m_Source = &subject;
-        m_PropertyConnections.emplace_back(&subject, &observer);
+
+        UnsafeConnect(&subject, &observer);
     } else {
         std::cout << "PropertyIn of type " << typeid(T).name() << " already has connection\n";
     }
@@ -147,9 +145,7 @@ void MessageManager::Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer
 
 template <class M, class O, void(O::*F)(M)>
 void MessageManager::Connect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver) {
-    sender.m_MessageManager = this;
-    receiver.m_MessageManager = this;
-    m_MessageConnections[&sender].push_back(&receiver);
+    UnsafeConnect(&sender, &receiver);
 }
 
 template <class M, class O, void (O::*F)(M)>

@@ -30,8 +30,8 @@ void FirstPersonController::Update() {
     }
 
     // Update vectors
-    Root().Rotate(glm::vec3(0.0f, rot_hor, 0.0f));
-    Root().RotateRelative(glm::vec3(0.0f, 0.0f, rot_ver));
+    Object().Root().Rotate(glm::vec3(0.0f, rot_hor, 0.0f));
+    Object().Root().RotateRelative(glm::vec3(0.0f, 0.0f, rot_ver));
 
     // Keyboard
     if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT)) {
@@ -54,5 +54,5 @@ void FirstPersonController::Update() {
         movement.z = m_CurrentMovementSpeed * g_Time.DeltaTime();;
     }
 
-    Root().MoveRelative(movement);
+    Object().Root().MoveRelative(movement);
 }

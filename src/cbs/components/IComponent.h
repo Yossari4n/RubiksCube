@@ -6,6 +6,7 @@
 #include <exception>
 
 class Object;
+class Transform;
 
 class IComponent {
     // TODO doc about friendship and constructors
@@ -29,10 +30,6 @@ public:
 
     Object& Object() const {
         return *m_Object;
-    }
-
-    Transform& Root() const {
-        return m_Object->Root();
     }
 
 protected:
