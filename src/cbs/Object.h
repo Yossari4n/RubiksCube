@@ -186,11 +186,13 @@ public:
      */
     template <class T>
     void Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
+        assert(subject.Owner()->Object().ID() == observer.Owner()->Object().ID());
         m_MessageManager.Connect(subject, observer);
     }
 
     template <class M, class O, void(O::* F)(M)>
     void Connect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver) {
+        assert(sender.Owner()->Object().ID() == receiver.Owner()->Object().ID());
         m_MessageManager.Connect(sender, receiver);
     }
 
@@ -202,11 +204,13 @@ public:
      */
     template <class T>
     void Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
+        assert(subject.Owner()->Object().ID() == observer.Owner()->Object().ID());
         m_MessageManager.Disconnect(subject, observer);
     }
 
     template <class M, class O, void (O::*F)(M)>
     void Disconnect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver) {
+        assert(sender.Owner()->Object().ID() == receiver.Owner()->Object().ID());
         m_MessageManager.Disconnect(sender, receiver);
     }
 

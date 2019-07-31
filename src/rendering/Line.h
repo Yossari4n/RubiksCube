@@ -9,16 +9,16 @@ public:
     Line(const Line& other);
     Line& operator=(const Line& other);
     ~Line();
-    
+
     void Draw(const ShaderProgram& shader) const override;
-    
+
     const glm::vec3& Start() const { return m_Start; }
 
     const glm::vec3& End() const { return m_End; }
-    
+
     const glm::vec3& Color() const { return m_Color; }
     void Color(const glm::vec3 color) { m_Color = color; }
-        
+
 private:
     glm::vec3 m_Start;
     glm::vec3 m_End;

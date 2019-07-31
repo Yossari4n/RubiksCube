@@ -3,6 +3,9 @@
 
 #include "../cbs/ObjectManager.h"
 #include "../rendering/DrawManager.h"
+#include "../utilities/Time.h"
+#include "../utilities/Input.h"
+#include "../utilities/Window.h"
 
 class IScene {
 public:

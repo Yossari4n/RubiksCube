@@ -2,9 +2,6 @@
 
 #include "../rendering/IDrawable.h"
 #include "../rendering/ILightSource.h"
-#include "../utilities/Time.h"
-#include "../utilities/Input.h"
-#include "../utilities/Window.h"
 
 IScene::IScene()
     : m_ObjectManager(*this)

@@ -1,21 +1,22 @@
 #ifndef RubiksCube_h
 #define RubiksCube_h
 
-#include "../IComponent.h"
-#include "../../Object.h"
-#include "../../message_system/PropertyOut.h"
-#include "../Transform.h"
 #include "Cubie.h"
 
+#include "../IComponent.h"
+#include "../../Object.h"
+#include "../../../scenes/IScene.h"
+#include "../../message_system/PropertyOut.h"
+
 #include <vector>
+#include <array>
 
 class RubiksCube : public IComponent {
 public:
-    RubiksCube() = default;
+    RubiksCube();
 
     void Initialize() override;
-
-    PropertyIn<Transform&> m_FrontFace{ this };
+    void Destroy() override;
 
 private:
     std::vector<Cubie> m_Cubies;

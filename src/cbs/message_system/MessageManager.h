@@ -80,6 +80,8 @@ public:
     IPropertyOut(IComponent* owner)
         : m_Owner(owner) {}
 
+    IComponent* Owner() const { return m_Owner; }
+
 private:
     IComponent* m_Owner;
 };
@@ -90,6 +92,8 @@ class IPropertyIn {
 public:
     IPropertyIn(IComponent* owner)
         : m_Owner(owner) {}
+
+    IComponent* Owner() const { return m_Owner; }
 
 protected:
     virtual void Reset() = 0;
@@ -106,6 +110,8 @@ public:
         : m_MessageManager(nullptr)
         , m_Owner(owner) {}
 
+    IComponent* Owner() const { return m_Owner; }
+
 protected:
     MessageManager* m_MessageManager;
     IComponent* m_Owner;
@@ -120,6 +126,8 @@ public:
         , m_Owner(owner) {}
 
     virtual void Receive(void* message) = 0;
+
+    IComponent* Owner() const { return m_Owner; }
 
 protected:
     MessageManager* m_MessageManager;
