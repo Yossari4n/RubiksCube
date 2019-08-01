@@ -29,8 +29,8 @@ public:
     void RotateBack(int direction);
     void RotateLeft(int direction);
     void RotateRight(int direction);
-    void RotateTop(int direction);
-    void RotateBottom(int direction);
+    void RotateUp(int direction);
+    void RotateDown(int direction);
 
     void Print();
     int gcd(int a, int b);

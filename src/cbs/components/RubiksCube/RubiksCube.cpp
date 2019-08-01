@@ -101,10 +101,10 @@ void RubiksCube::Update() {
         RotateBack(1);
     } else if (g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
         RotateRight(1);
-    } else if (g_Input.GetKeyState(GLFW_KEY_T) == Input::KeyState::PRESSED) {
-        RotateTop(1);
+    } else if (g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
+        RotateUp(1);
     } else if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        RotateBottom(1);
+        RotateDown(1);
     }
 }
 
@@ -196,7 +196,7 @@ void RubiksCube::RotateRight(int direction) {
     RotateFace(right, -90.0f, glm::vec3(0.0f, 0.0f, -1.0f));
 }
 
-void RubiksCube::RotateTop(int direction) {
+void RubiksCube::RotateUp(int direction) {
     const size_t top[8][3] = {
         {2, 0, 0},
         {2, 0, 1},
@@ -208,11 +208,11 @@ void RubiksCube::RotateTop(int direction) {
         {1, 0, 0}
     };
 
-    std::cout << "Rotatino top:\n";
+    std::cout << "Rotatino up:\n";
     RotateFace(top, -90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void RubiksCube::RotateBottom(int direction) {
+void RubiksCube::RotateDown(int direction) {
     const size_t bottom[8][3] = {
         {0, 2, 2},
         {0, 2, 1},
@@ -224,7 +224,7 @@ void RubiksCube::RotateBottom(int direction) {
         {1, 2, 2}
     };
 
-    std::cout << "Rotating bottom:\n";
+    std::cout << "Rotating down:\n";
     RotateFace(bottom, -90.0f, glm::vec3(0.0f, -1.0f, 0.0f));
 }
 
