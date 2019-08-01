@@ -2,6 +2,7 @@
 
 Cubie::Cubie(glm::vec3 position, EColor front, EColor left, EColor right, EColor top, EColor bottom)
     : IDrawable(ShaderProgram::Type::PURE_COLOR)
+    , m_ID(0)
     , m_FrontFace(front)
     , m_LeftFace(left)
     , m_RightFace(right)
@@ -14,36 +15,46 @@ Cubie::Cubie(glm::vec3 position, EColor front, EColor left, EColor right, EColor
 }
 
 Cubie::~Cubie() {
+    std::cout << "Shall I be destroyed?\n";
     glDeleteVertexArrays(1, &m_VAO);
     glDeleteBuffers(1, &m_VAO);
 }
 
 void Cubie::Draw(const ShaderProgram& shader) const {
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Position);
-    model = model * glm::toMat4(m_Rotation);
+    if (true || m_ID == 19 || m_ID == 20 || m_ID == 21 || m_ID == 10 || m_ID == 11 || m_ID == 12 || m_ID == 1 || m_ID == 2 || m_ID == 3) {
 
-    shader.Uniform("model", model);
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Position);
+        model = model * glm::toMat4(m_Rotation);
 
-    glBindVertexArray(m_VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 396);
-    glBindVertexArray(0);
+        shader.Uniform("model", model);
+
+        glBindVertexArray(m_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 396);
+        glBindVertexArray(0);
+    }
 }
 
 void Cubie::RotateAround(float angle, glm::vec3 axis) {
     angle = glm::radians(angle);
+
     m_Position = glm::rotate(m_Position, angle, axis);
     m_Position.x = std::round(m_Position.x);
     m_Position.y = std::round(m_Position.y);
     m_Position.z = std::round(m_Position.z);
-    m_Rotation = glm::quat(axis * angle);
+
+    m_Rotation = glm::quat(axis * angle) * m_Rotation;
 }
 
-void Cubie::Rotate(glm::quat rotation) {
-    m_Rotation = m_Rotation * rotation;
+Cubie::EColor Cubie::XColor(int direction) {
+    return BLACK;
 }
 
-void Cubie::Move(glm::vec3 direction) {
-    m_Position = m_Position + direction;
+Cubie::EColor Cubie::YColor(int direction) {
+    return BLACK;
+}
+
+Cubie::EColor Cubie::ZColoe(int direction) {
+    return BLACK;
 }
 
 glm::vec3 Cubie::ColorToVec(Cubie::EColor color) const {

@@ -20,7 +20,7 @@ public:
         GREEN = 0x00FF00,
         BLUE = 0x0000FF,
         YELLOW = 0xFFFF00,
-        ORANGE = 0xFF8C00
+        ORANGE = 0xFF4500
     };
 
     Cubie(glm::vec3 position, EColor front, EColor left = BLACK, EColor right = BLACK, EColor top = BLACK, EColor bottom = BLACK);
@@ -29,8 +29,11 @@ public:
     void Draw(const ShaderProgram& shader) const override;
 
     void RotateAround(float angle, glm::vec3 axis);
-    void Rotate(glm::quat rotation);
-    void Move(glm::vec3 direction);
+    EColor XColor(int direction);
+    EColor YColor(int direction);
+    EColor ZColoe(int direction);
+
+    int m_ID;
 
 private:
     glm::vec3 ColorToVec(Cubie::EColor color) const;
