@@ -13,12 +13,11 @@
 #include <glm/gtx/rotate_vector.hpp>
 #pragma warning(pop)
 
-constexpr auto DEGREES_60 = (60.0f * 3.14f / 180.0f);
-constexpr auto DEGREES_170 = (170.0f * 3.14f / 180.0f);
+constexpr auto ROTATION_LIMIT = (75.0f * 3.14f / 180.0f);
 
 class ThirdPersonController : public IComponent {
 public:
-    ThirdPersonController(class Object* target = nullptr, float radius = 0.0f, float mouse_sensitivity = 0.1f);
+    ThirdPersonController(class Object* target, glm::vec3 front, glm::vec3 right, float radius = 0.0f, float mouse_sensitivity = 0.1f);
     
     void Initialize() override;
     void Update() override;

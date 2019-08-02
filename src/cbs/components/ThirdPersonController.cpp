@@ -1,11 +1,12 @@
 #include "ThirdPersonController.h"
 
-ThirdPersonController::ThirdPersonController(class Object* target, float radius, float mouse_sensitivity)
+ThirdPersonController::ThirdPersonController(class Object* target, glm::vec3 front, glm::vec3 right, float radius, float mouse_sensitivity)
     : m_Target(target)
     , m_TargetTransform(nullptr)
     , m_Radius(radius)
     , m_MouseSensitivity(mouse_sensitivity)
-    , m_Front(1.0f, 0.0f, 0.0f)
+    , m_Front(-front)
+    , m_RotationAxis(right)
     , m_XRotation(0.0f)
     , m_YRotation(0.0f) {
 }
@@ -15,31 +16,33 @@ void ThirdPersonController::Initialize() {
 }
 
 void ThirdPersonController::Update() {
-    // Accumulate mouse movement as rotations
     if (g_Input.GetKeyState(GLFW_MOUSE_BUTTON_2)) {
         m_XRotation += -glm::radians(g_Input.MouseOffset().y * m_MouseSensitivity);
         m_YRotation += glm::radians(g_Input.MouseOffset().x * m_MouseSensitivity);
     }
 
     // Prevent object flip by keeping m_XRotation beetwen <-60, 60> degrees
-    if (m_XRotation > DEGREES_60) {
-        m_XRotation = DEGREES_60;
-    } else if (m_XRotation < -DEGREES_60) {
-        m_XRotation = -DEGREES_60;
+    if (m_XRotation > ROTATION_LIMIT) {
+        m_XRotation = ROTATION_LIMIT;
+    } else if (m_XRotation < -ROTATION_LIMIT) {
+        m_XRotation = -ROTATION_LIMIT;
     }
 
     // Get whole rotation around Y axis
     glm::quat rot_y(glm::vec3(0.0f, m_YRotation, 0.0f));
 
+    // Create new arbitrary X axis
+    glm::vec3 curr_rotation_axis = rot_y * m_RotationAxis;
+
     // Calculate new pos by first rotating point around origin and then move it in respect to m_Target
-    glm::vec3 new_pos = rot_y * glm::vec3(0.0f, 0.0f, m_Radius);
-    new_pos = glm::rotate(new_pos, m_XRotation, Object().Root().Right());
+    glm::vec3 new_pos = rot_y * glm::vec3(m_Radius, 0.0f, 0.0f);
+    new_pos = glm::rotate(new_pos, m_XRotation, curr_rotation_axis);
     new_pos = new_pos + m_TargetTransform->Position();
 
     // Calculate rotation between needed to rotate object into m_Target
     // To prevent rotation around the local Z axis calculation were divided into horizontal and vertical
     glm::vec3 diff = m_TargetTransform->Position() - new_pos;
-    glm::quat front_rot_hor = m_RotationBeetwen(m_Front, glm::vec3(diff.x, 0.0f, diff.z));
+    glm::quat front_rot_hor = m_RotationBeetwen(glm::vec3(m_Front.x, 0.0f, m_Front.z), glm::vec3(diff.x, 0.0f, diff.z));
     glm::quat front_rot_ver = m_RotationBeetwen(front_rot_hor * m_Front, diff);
 
     // Apply

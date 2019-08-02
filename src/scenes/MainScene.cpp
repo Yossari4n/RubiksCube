@@ -30,6 +30,6 @@ void MainScene::CreateScene() {
                                             1.0f,
                                             0.0014f,
                                             0.000007f);
-        camera->CreateComponent<ThirdPersonController>(rubiks_cube, 15.0f);
+        camera->CreateComponent<ThirdPersonController>(rubiks_cube, glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 15.0f);
     }
 }
