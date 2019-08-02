@@ -21,17 +21,14 @@ Cubie::~Cubie() {
 }
 
 void Cubie::Draw(const ShaderProgram& shader) const {
-    if (true || m_ID == 19 || m_ID == 20 || m_ID == 21 || m_ID == 10 || m_ID == 11 || m_ID == 12 || (m_ID > 0 && m_ID < 10)) {
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Position);
+    model = model * glm::toMat4(m_Rotation);
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Position);
-        model = model * glm::toMat4(m_Rotation);
+    shader.Uniform("model", model);
 
-        shader.Uniform("model", model);
-
-        glBindVertexArray(m_VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 396);
-        glBindVertexArray(0);
-    }
+    glBindVertexArray(m_VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 396);
+    glBindVertexArray(0);
 }
 
 void Cubie::RotateAround(float angle, glm::vec3 axis) {

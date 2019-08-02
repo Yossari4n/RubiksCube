@@ -19,24 +19,40 @@ class RubiksCube : public IComponent {
     using Cube_t = std::vector<Matrix_t>;
 
 public:
+    enum class EFace {
+        FRONT,
+        BACK,
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    };
+
+    enum ERotation {
+        CLOCKWISE = -1,
+        COUNTER_CLOCKWISE = 1
+    };
+
     RubiksCube();
 
     void Initialize() override;
     void Update() override;
     void Destroy() override;
 
-    void RotateFront(int direction);
-    void RotateBack(int direction);
-    void RotateLeft(int direction);
-    void RotateRight(int direction);
-    void RotateUp(int direction);
-    void RotateDown(int direction);
+    void Rotate(EFace face, ERotation rotation);
 
-    void Print();
+    void RotateFront(ERotation rotation);
+    void RotateBack(ERotation rotation);
+    void RotateLeft(ERotation rotation);
+    void RotateRight(ERotation rotation);
+    void RotateUp(ERotation rotation);
+    void RotateDown(ERotation rotation);
+
     int gcd(int a, int b);
 
 private:
     void RotateFace(const size_t face[8][3], float angle, glm::vec3 axis);
+    void Print();
 
     Cube_t m_Cube;
 };

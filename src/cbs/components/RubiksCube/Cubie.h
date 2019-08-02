@@ -33,6 +33,7 @@ public:
     EColor YColor(int direction);
     EColor ZColoe(int direction);
 
+    // TODO delete before ship or leave it but fix it to proper form
     int m_ID;
 
 private:
