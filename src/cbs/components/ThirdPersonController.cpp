@@ -2,6 +2,7 @@
 
 ThirdPersonController::ThirdPersonController(class Object* target, float radius, float mouse_sensitivity)
     : m_Target(target)
+    , m_TargetTransform(nullptr)
     , m_Radius(radius)
     , m_MouseSensitivity(mouse_sensitivity)
     , m_Front(1.0f, 0.0f, 0.0f)

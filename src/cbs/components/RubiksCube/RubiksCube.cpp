@@ -145,7 +145,7 @@ void RubiksCube::RotateFront(int direction) {
     };
 
     std::cout << "Rotating front:\n";
-    RotateFace(front, -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+    RotateFace(front, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
 void RubiksCube::RotateBack(int direction) {
@@ -177,7 +177,7 @@ void RubiksCube::RotateLeft(int direction) {
     };
 
     std::cout << "Rotating left:\n";
-    RotateFace(left, -90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    RotateFace(left, 90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 void RubiksCube::RotateRight(int direction) {
@@ -193,7 +193,7 @@ void RubiksCube::RotateRight(int direction) {
     };
 
     std::cout << "Rotation right:\n";
-    RotateFace(right, -90.0f, glm::vec3(0.0f, 0.0f, -1.0f));
+    RotateFace(right, 90.0f, glm::vec3(0.0f, 0.0f, -1.0f));
 }
 
 void RubiksCube::RotateUp(int direction) {
@@ -209,7 +209,7 @@ void RubiksCube::RotateUp(int direction) {
     };
 
     std::cout << "Rotatino up:\n";
-    RotateFace(top, -90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    RotateFace(top, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void RubiksCube::RotateDown(int direction) {
@@ -225,7 +225,7 @@ void RubiksCube::RotateDown(int direction) {
     };
 
     std::cout << "Rotating down:\n";
-    RotateFace(bottom, -90.0f, glm::vec3(0.0f, -1.0f, 0.0f));
+    RotateFace(bottom, 90.0f, glm::vec3(0.0f, -1.0f, 0.0f));
 }
 
 int RubiksCube::gcd(int a, int b) {

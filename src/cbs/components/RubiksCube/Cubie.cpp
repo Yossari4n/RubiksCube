@@ -21,7 +21,7 @@ Cubie::~Cubie() {
 }
 
 void Cubie::Draw(const ShaderProgram& shader) const {
-    if (true || m_ID == 19 || m_ID == 20 || m_ID == 21 || m_ID == 10 || m_ID == 11 || m_ID == 12 || m_ID == 1 || m_ID == 2 || m_ID == 3) {
+    if (true || m_ID == 19 || m_ID == 20 || m_ID == 21 || m_ID == 10 || m_ID == 11 || m_ID == 12 || (m_ID > 0 && m_ID < 10)) {
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Position);
         model = model * glm::toMat4(m_Rotation);
