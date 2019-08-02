@@ -59,9 +59,6 @@ int main() {
     glfwSetCursorPosCallback(g_Window, mouse_callback);
     glfwSetScrollCallback(g_Window, scroll_callback);
     
-    // Capture the mouse
-    glfwSetInputMode(g_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    
     // Main scene
     MainScene MainScene;
     MainScene.CreateScene();

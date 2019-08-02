@@ -13,21 +13,22 @@
 #include <glm/gtx/rotate_vector.hpp>
 #pragma warning(pop)
 
-#define DEGREES_60 (60.0f * 3.14f / 180.0f)
-#define DEGREES_170 (170.0f * 3.14f / 180.0f)
+constexpr auto DEGREES_60 = (60.0f * 3.14f / 180.0f);
+constexpr auto DEGREES_170 = (170.0f * 3.14f / 180.0f);
 
 class ThirdPersonController : public IComponent {
 public:
     ThirdPersonController(class Object* target = nullptr, float radius = 0.0f, float mouse_sensitivity = 0.1f);
     
+    void Initialize() override;
     void Update() override;
     
-    void Target(class Object* target) { m_Target = &target->Root(); }
     void Radius(float radius);
     float Radius() const  { return m_Radius; }
 
 private:
-    Transform* m_Target;
+    class Object* m_Target;
+    Transform* m_TargetTransform;
     float m_Radius;
     float m_MouseSensitivity;
     
