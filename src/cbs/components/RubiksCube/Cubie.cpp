@@ -15,7 +15,6 @@ Cubie::Cubie(glm::vec3 position, EColor front, EColor left, EColor right, EColor
 }
 
 Cubie::~Cubie() {
-    std::cout << "Shall I be destroyed?\n";
     glDeleteVertexArrays(1, &m_VAO);
     glDeleteBuffers(1, &m_VAO);
 }

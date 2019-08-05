@@ -10,6 +10,7 @@
 
 #include "../../../utilities/Input.h"
 
+#include <iostream>
 #include <vector>
 #include <array>
 
@@ -47,8 +48,6 @@ public:
     void RotateRight(ERotation rotation);
     void RotateUp(ERotation rotation);
     void RotateDown(ERotation rotation);
-
-    int gcd(int a, int b);
 
 private:
     void RotateFace(const size_t face[8][3], float angle, glm::vec3 axis);

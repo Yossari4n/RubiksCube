@@ -1,5 +1,15 @@
 #include "RubiksCube.h"
 
+std::ostream& operator<<(std::ostream& os, RubiksCube::ERotation dir) {
+    if (dir == RubiksCube::ERotation::CLOCKWISE) {
+        os << "Clockwise";
+    } else {
+        os << "Counter-clodkwise";
+    }
+    return os;
+}
+
+
 RubiksCube::RubiksCube() {
     for (int matrix = 0; matrix < 3; matrix++) {
         m_Cube.emplace_back();
@@ -68,6 +78,7 @@ RubiksCube::RubiksCube() {
         (*cubie)->RotateAround(-90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
     }
 
+    // Give id
     int id = 1;
     for (auto matrix = m_Cube.begin(); matrix != m_Cube.end(); matrix++) {
         for (auto row = matrix->begin(); row != matrix->end(); row++) {
@@ -78,6 +89,7 @@ RubiksCube::RubiksCube() {
         }
     }
 
+    // Debug log
     std::cout << "Cube:\n";
     Print();
 }
@@ -94,29 +106,29 @@ void RubiksCube::Initialize() {
 
 void RubiksCube::Update() {
     if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        Rotate(EFace::FRONT, ERotation::COUNTER_CLOCKWISE);
+        RotateFront(ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        Rotate(EFace::FRONT, ERotation::CLOCKWISE);
+        RotateFront(ERotation::CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        Rotate(EFace::BACK, ERotation::COUNTER_CLOCKWISE);
+        RotateBack(ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        Rotate(EFace::BACK, ERotation::CLOCKWISE);
+        RotateBack(ERotation::CLOCKWISE);
     } if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        Rotate(EFace::LEFT, ERotation::COUNTER_CLOCKWISE);
+        RotateLeft(ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        Rotate(EFace::LEFT, ERotation::CLOCKWISE);
+        RotateLeft(ERotation::CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        Rotate(EFace::RIGHT, ERotation::COUNTER_CLOCKWISE);
+        RotateRight(ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        Rotate(EFace::RIGHT, ERotation::CLOCKWISE);
+        RotateRight(ERotation::CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        Rotate(EFace::UP, ERotation::COUNTER_CLOCKWISE);
+        RotateUp(ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        Rotate(EFace::UP, ERotation::CLOCKWISE);
+        RotateUp(ERotation::CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        Rotate(EFace::DOWN, ERotation::COUNTER_CLOCKWISE);
+        RotateDown(ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        Rotate(EFace::DOWN, ERotation::CLOCKWISE);
+        RotateDown(ERotation::CLOCKWISE);
     }
 }
 
@@ -132,9 +144,6 @@ void RubiksCube::Destroy() {
 }
 
 void RubiksCube::Rotate(EFace face, ERotation rotation) {
-    if (face == EFace::FRONT) {
-        RotateFront(rotation);
-    }
 }
 
 void RubiksCube::RotateFront(ERotation rotation) {
@@ -149,7 +158,7 @@ void RubiksCube::RotateFront(ERotation rotation) {
         {0, 1, 0},
     };
 
-    std::cout << "Rotating front:\n";
+    std::cout << "Rotating front " << rotation << ":\n";
     RotateFace(front, 90.0f * rotation, glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
@@ -165,7 +174,7 @@ void RubiksCube::RotateBack(ERotation rotation) {
         {2, 1, 2},
     };
 
-    std::cout << "Rotating right:\n";
+    std::cout << "Rotating right " << rotation << ":\n";
     RotateFace(back, 90.0f * rotation, glm::vec3(-1.0f, 0.0f, 0.0f));
 }
 
@@ -181,7 +190,7 @@ void RubiksCube::RotateLeft(ERotation rotation) {
         {2, 1, 0}
     };
 
-    std::cout << "Rotating left:\n";
+    std::cout << "Rotating left " << rotation << ":\n";
     RotateFace(left, 90.0f * rotation, glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
@@ -197,7 +206,7 @@ void RubiksCube::RotateRight(ERotation rotation) {
         {0, 1, 2}
     };
 
-    std::cout << "Rotating right:\n";
+    std::cout << "Rotating right " << rotation << ":\n";
     RotateFace(right, 90.0f * rotation, glm::vec3(0.0f, 0.0f, -1.0f));
 }
 
@@ -213,23 +222,23 @@ void RubiksCube::RotateUp(ERotation rotation) {
         {1, 0, 0}
     };
 
-    std::cout << "Rotating up:\n";
+    std::cout << "Rotating up " << rotation << ":\n";
     RotateFace(top, 90.0f * rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void RubiksCube::RotateDown(ERotation rotation) {
     const size_t bottom[8][3] = {
-        {0, 2, 2},
-        {0, 2, 1},
-        {0, 2, 0},
-        {1, 2, 0},
-        {2, 2, 0},
-        {2, 2, 1},
+        {1, 2, 2},
         {2, 2, 2},
-        {1, 2, 2}
+        {2, 2, 1},
+        {2, 2, 0},
+        {1, 2, 0},
+        {0, 2, 0},
+        {0, 2, 1},
+        {0, 2, 2}
     };
 
-    std::cout << "Rotating down:\n";
+    std::cout << "Rotating down " << rotation << ":\n";
     RotateFace(bottom, 90.0f * rotation, glm::vec3(0.0f, -1.0f, 0.0f));
 }
 
@@ -242,16 +251,16 @@ void RubiksCube::RotateFace(const size_t face[8][3], float angle, glm::vec3 axis
     }
 
     // GCD left-shift array shift
-    const int gcd = angle < 0.0f ? 6 /* For clockwise rotation shift by 6 is equal to -2 */ : 2 /* For counter clockwise rotation shift by 2 */;
-    const int shift = 2;
     const int size = 8;
+    const int shift = angle < 0.0f ? 6 /* For clockwise rotation right-shift by 2 is equal to left-shift by 6 */ : 2 /* For counter clockwise rotation left-shift by 2 */;
+    const int gcd = 2;
     for (int i = 0; i < gcd; i++) {
         Cubie* tmp = m_Cube[face[i][0]][face[i][1]][face[i][2]];
         int j = i;
 
         while (true) {
             int k = j + shift;
-            if (k >= 8) {
+            if (k >= size) {
                 k = k - size;
             }
             if (k == i) {
