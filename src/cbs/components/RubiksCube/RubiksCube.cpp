@@ -143,9 +143,6 @@ void RubiksCube::Destroy() {
     }
 }
 
-void RubiksCube::Rotate(EFace face, ERotation rotation) {
-}
-
 void RubiksCube::RotateFront(ERotation rotation) {
     const size_t front[8][3] = {
         {0, 0, 0},

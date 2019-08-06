@@ -40,8 +40,6 @@ public:
     void Update() override;
     void Destroy() override;
 
-    void Rotate(EFace face, ERotation rotation);
-
     void RotateFront(ERotation rotation);
     void RotateBack(ERotation rotation);
     void RotateLeft(ERotation rotation);
