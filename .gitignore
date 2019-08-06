@@ -13,3 +13,7 @@ Release
 *.dll
 *.exp
 *.lib
+
+# FreeType
+freetype
+ft2build.h

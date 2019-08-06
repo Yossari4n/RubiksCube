@@ -18,6 +18,7 @@ public:
         PURE_TEXTURE,
         PHONG,
         SKYBOX,
+        TEXT,
         
         COUNT
     };

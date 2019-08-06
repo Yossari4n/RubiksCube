@@ -11,12 +11,12 @@ constexpr glm::vec3 MODEL_SCALE(1.0f / (976.032f * 2.0f), 1.0f / (976.032f * 2.0
 
 void MainScene::CreateScene() {
     FrameRateLimit(0);
-    Skybox("data/skybox/right.png",
-           "data/skybox/left.png",
-           "data/skybox/top.png",
-           "data/skybox/bottom.png",
-           "data/skybox/back.png",
-           "data/skybox/front.png");
+    Skybox("resources/skybox/right.png",
+           "resources/skybox/left.png",
+           "resources/skybox/top.png",
+           "resources/skybox/bottom.png",
+           "resources/skybox/back.png",
+           "resources/skybox/front.png");
 
     auto rubiks_cube = CreateObject("RubiksCube"); {
         auto cube = rubiks_cube->CreateComponent<RubiksCube>();
