@@ -13,7 +13,7 @@ void FirstPersonController::Initialize() {
     // TODO store original rotation from Transform component
     m_LastMousePos = g_Input.MousePosition();
 
-    Object().RegisterUpdateCall(this);
+    RegisterUpdateCall();
 }
 
 void FirstPersonController::Update() {

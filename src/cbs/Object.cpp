@@ -82,7 +82,7 @@ void Object::DestroyComponents() {
     }
 }
 
-void Object::RegisterUpdateCall(IComponent* component) {
+void Object::RegisterUpdateCall(const IComponent* component) {
     auto id = component->ID();
     Components_t::iterator comp = std::find_if(m_Components.begin(),
                                                m_Components.end(),
@@ -95,7 +95,7 @@ void Object::RegisterUpdateCall(IComponent* component) {
     }
 }
 
-void Object::UnregisterUpdateCall(IComponent* component) {
+void Object::UnregisterUpdateCall(const IComponent* component) {
     auto id = component->ID();
     Components_t::iterator comp = std::find_if(m_Components.begin(),
                                                m_Components.end(),

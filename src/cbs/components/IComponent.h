@@ -37,6 +37,8 @@ protected:
     virtual void Update() {};
     virtual void Destroy() {};
 
+    void RegisterUpdateCall() const;
+
 private:
     class Object* m_Object;
     std::uint8_t m_ID;

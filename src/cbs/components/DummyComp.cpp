@@ -12,7 +12,7 @@ DummyComp::~DummyComp() {
 }
 
 void DummyComp::Initialize() {
-    Object().RegisterUpdateCall(this);
+    RegisterUpdateCall();
 }
 
 void DummyComp::Update() {

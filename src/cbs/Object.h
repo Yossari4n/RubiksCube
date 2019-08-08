@@ -33,8 +33,8 @@ public:
     void UpdateComponents();
     void DestroyComponents();
 
-    void RegisterUpdateCall(IComponent* component);
-    void UnregisterUpdateCall(IComponent* component);
+    void RegisterUpdateCall(const IComponent* component);
+    void UnregisterUpdateCall(const IComponent* component);
 
     std::uint8_t ID() const { return m_ID; }
 

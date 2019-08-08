@@ -102,6 +102,8 @@ void RubiksCube::Initialize() {
             }
         }
     }
+
+    RegisterUpdateCall();
 }
 
 void RubiksCube::Update() {
@@ -249,8 +251,8 @@ void RubiksCube::RotateFace(const size_t face[8][3], float angle, glm::vec3 axis
 
     // GCD left-shift array shift
     const int size = 8;
-    const int shift = angle < 0.0f ? 6 /* For clockwise rotation right-shift by 2 is equal to left-shift by 6 */ : 2 /* For counter clockwise rotation left-shift by 2 */;
-    const int gcd = 2;
+    const int shift = angle < 0.0f ? 6 : 2; // For clockwise rotation right-shift by 2 is equal to left-shift by 6. For counter clockwise rotation left-shift by 2.
+    const int gcd = 2;                      // gcd(2, 8) = gcd(6, 8) = 2
     for (int i = 0; i < gcd; i++) {
         Cubie* tmp = m_Cube[face[i][0]][face[i][1]][face[i][2]];
         int j = i;
