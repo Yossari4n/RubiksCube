@@ -20,7 +20,7 @@ public:
     virtual ~IComponent() {}
 
     virtual IComponent* Clone() const {
-        std::cout << "Attempted to create copy of Compononent not implementing Clone() function\n";
+        std::cout << "Attempted to create copy of Component not implementing Clone() function\n";
         return nullptr;
     }
 
@@ -36,10 +36,6 @@ protected:
     virtual void Initialize() {};
     virtual void Update() {};
     virtual void Destroy() {};
-
-    void RegisterUpdate() {
-
-    }
 
 private:
     class Object* m_Object;

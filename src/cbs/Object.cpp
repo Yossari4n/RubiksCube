@@ -63,19 +63,11 @@ void Object::InitializeComponents() {
     m_ToInitialize = 0;
 }
 
-void Object::UpdateComponents() {
-    // Update all components from (end - m_ToInitializeNextFrame) to (begin + m_ToDestroy)
-    for (Components_t::size_type i = m_ToInitializeNextFrame; i < m_Components.size() - m_ToInitializeNextFrame - m_ToDestroy; i++) {
-        m_Components[m_Components.size() - 1 - i - m_ToInitializeNextFrame]->Update();
-    }
-    
-    /*
+void Object::UpdateComponents() {    
     // Update all components from (begin + m_ToDestroy + m_ToUpdate) to (begin + m_ToDestroy)
     for (Components_t::size_type i = 0; i < m_ToUpdate; i++) {
-        std::cout << m_ToDestroy + m_ToUpdate - i << ' ';
         m_Components[m_ToDestroy + m_ToUpdate - i]->Update();
     }
-    */
 }
 
 void Object::DestroyComponents() {
@@ -91,27 +83,31 @@ void Object::DestroyComponents() {
 }
 
 void Object::RegisterUpdateCall(IComponent* component) {
-    /*auto id = component->ID();
-    auto comp = std::find_if(m_Components.begin(),
-                             m_Components.end(),
-                             [=](IComponent* comp) {
-                                 if (comp->ID() == id) {
-                                     comp->Destroy();
-                                     return true;
-                                 }
-                                 return false;
-                             });
+    auto id = component->ID();
+    Components_t::iterator comp = std::find_if(m_Components.begin(),
+                                               m_Components.end(),
+                                               [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
 
     assert(comp != m_Components.end());
-
-    if (std::distance(comp, m_Components.begin() + m_ToDestroy) > static_cast<ptrdiff_t>(m_ToUpdate)) {
+    if (std::distance(m_Components.begin() + m_ToDestroy, comp) > static_cast<ptrdiff_t>(m_ToUpdate)) {
         m_ToUpdate = m_ToUpdate + 1;
         std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate, comp);
-    }*/
+    }
 }
 
 void Object::UnregisterUpdateCall(IComponent* component) {
+    auto id = component->ID();
+    Components_t::iterator comp = std::find_if(m_Components.begin(),
+                                               m_Components.end(),
+                                               [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
 
+    assert(comp != m_Components.end());
+    std::cout << std::distance(m_Components.begin() + m_ToDestroy, comp) << '\n';
+    if (std::distance(m_Components.begin() + m_ToDestroy, comp) <= static_cast<ptrdiff_t>(m_ToUpdate)) {
+        
+        std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate, comp);
+        m_ToUpdate = m_ToUpdate - 1;
+    }
 }
 
 IScene& Object::Scene() const {

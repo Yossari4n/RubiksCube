@@ -12,11 +12,12 @@ DummyComp::~DummyComp() {
 }
 
 void DummyComp::Initialize() {
+    Object().RegisterUpdateCall(this);
 }
 
 void DummyComp::Update() {
-    if (g_Input.GetKeyState(GLFW_MOUSE_BUTTON_1) == Input::KeyState::PRESSED) {
-        m_MessageOut.Send(m_Message);
+    if (g_Input.GetKeyState(GLFW_KEY_SPACE) == Input::KeyState::PRESSED) {
+        Object().UnregisterUpdateCall(this);
     }
     
     if (g_Input.GetKeyState(GLFW_KEY_ESCAPE)) {

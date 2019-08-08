@@ -13,6 +13,8 @@ ThirdPersonController::ThirdPersonController(class Object* target, glm::vec3 fro
 
 void ThirdPersonController::Initialize() {
     m_TargetTransform = &m_Target->Root();
+
+    Object().RegisterUpdateCall(this);
 }
 
 void ThirdPersonController::Update() {

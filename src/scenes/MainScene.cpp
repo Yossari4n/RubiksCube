@@ -20,7 +20,6 @@ void MainScene::CreateScene() {
 
     auto rubiks_cube = CreateObject("RubiksCube"); {
         rubiks_cube->CreateComponent<RubiksCube>();
-        auto cube = rubiks_cube->GetComponent<RubiksCube>(2);
     }
 
     auto camera = CreateObject("Camera"); {
@@ -32,5 +31,6 @@ void MainScene::CreateScene() {
                                             0.0014f,
                                             0.000007f);
         camera->CreateComponent<ThirdPersonController>(rubiks_cube, glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 15.0f);
+        camera->CreateComponent<DummyComp>();
     }
 }

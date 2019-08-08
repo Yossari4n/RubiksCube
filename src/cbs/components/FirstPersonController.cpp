@@ -12,9 +12,11 @@ FirstPersonController::FirstPersonController(float movement_speed_fast, float mo
 void FirstPersonController::Initialize() {
     // TODO store original rotation from Transform component
     m_LastMousePos = g_Input.MousePosition();
+
+    Object().RegisterUpdateCall(this);
 }
 
-void FirstPersonController::Update() {    
+void FirstPersonController::Update() {
     // Mouse
     float rot_ver = glm::radians(g_Input.MouseOffset().y * m_MouseSensitivity);
     float rot_hor = glm::radians(-g_Input.MouseOffset().x * m_MouseSensitivity);
