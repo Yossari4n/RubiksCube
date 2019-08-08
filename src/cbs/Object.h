@@ -33,6 +33,9 @@ public:
     void UpdateComponents();
     void DestroyComponents();
 
+    void RegisterUpdateCall(IComponent* component);
+    void UnregisterUpdateCall(IComponent* component);
+
     std::uint8_t ID() const { return m_ID; }
 
     const std::string& Name() const { return m_Name; }
@@ -45,7 +48,12 @@ public:
     /**
      * Create component
      *
-     * TODO dock
+     * Creates component of type T with arguments Args and returns pointer of type T.
+     * At the time of calling constructor new Component will not have access to it's Object-owner.
+     * Futhermore component receives it's own ID greater than 0. All Object 
+     * related function class e.g. Transform.Position should happen inside Initialize function.
+     * By default Transform component is marked as Root and has ID of 1.
+     * New components are guarantee to be initialized at the begining of next frame.
      */
     template <class T, typename ...Args>
     T* CreateComponent(Args&&... params) {
@@ -85,21 +93,15 @@ public:
     /**
      * Remove component(s)
      *
-     * TODO dock
+     * Mark component as to destroy and guarantees thier's Destory functions
+     * will be called at the end of current frame. Destruction of object will
+     * happen naturally after that.
+     * Components to destory can be specified either by type or by ID. If type
+     * is specified all components of this type will be destroyed.
+     * Transform component by default cannot to be destroyed manually as it's
+     * lifetime is bounded to Object lifetime.
+     * Attempt to destroy non existing component will not have effect.
      */
-    // TODO test
-    template <class T>
-    void RemoveComponent() {
-        auto comp = std::find_if(m_Components.begin(),
-                                 m_Components.end(),
-                                 [](std::unique_ptr<IComponent>& comp) { return dynamic_cast<T*>(comp.get()) != nullptr; });
-
-        if (comp != m_Components.end()) {
-            MarkToDestroy(comp);
-        }
-    }
-
-    // TODO test
     template <class T>
     void RemoveComponents() {
         std::vector<std::vector<IComponent>::iterator> to_remove;
@@ -110,8 +112,7 @@ public:
             }
         }
     }
-    
-    // TODO test
+
     void RemoveComponent(std::uint8_t id) {
         assert(id > 1);
         
@@ -128,24 +129,10 @@ public:
     /**
      * Get component(s)
      *
-     * TODO dock
+     * Attempts to find components either by ID or by type.
+     * Returns pointer, or vector of pointers if ID has not been specified,
+     * of given type T. If no components found return nullptr or vector of size 0.
      */
-    // TODO test
-    template <class T>
-    T* GetComponent() {
-        T* comp = nullptr;
-
-        auto it = m_Components.begin();
-        while (it != m_Components.end() && comp == nullptr ) {
-            comp = dynamic_cast<T*>(*it);
-            
-            it++;
-        }
- 
-        return comp;
-    }
-
-    // TODO test
     template <class T>
     std::vector<T*> GetComponents() {
         std::vector<T*> comps;
@@ -163,26 +150,25 @@ public:
         return comps;
     }
 
-    // TODO test
     template <class T>
     T* GetComponent(std::uint8_t id) {
-        auto it = std::find_if(m_Components.begin(),
+        Components_t::iterator it = std::find_if(m_Components.begin(),
                                m_Components.end(),
-                               [=](IComponent* comp) {
-                                   if (comp->ID() == id) {
-                                       comp->Destroy();
-                                       return true;
-                                   }
-                                   return false;
-                               });
-        return dynamic_cast<T*>(*it);
+                               [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
+        if (it != m_Components.end()) {
+            return dynamic_cast<T*>(it->get());
+        } else {
+            return nullptr;
+        }
     }
 
 
     /**
      * Connect
      *
-     * TODO doc
+     * Attempts to connect either properties or message pipes between two
+     * owned components. Type compatibility of property or forwarded message
+     * is ensured at the compilation time.
      */
     template <class T>
     void Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
@@ -200,7 +186,9 @@ public:
     /**
      * Disconnect
      *
-     * TODO doc
+     * Attempts to disconnect either properties or message pipes of it's
+     * two owned components. Type compatibility of property or forwarded message
+     * is ensured at the compilation time.
      */
     template <class T>
     void Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
@@ -226,11 +214,14 @@ private:
     Transform m_Root;
 
     std::uint8_t m_NextCompID;
-    // [ToDestroy_1, ..., ToDestroy_i, ToUpdate_1, ..., ToUpdate_j, ToInit_1, ..., ToInit_k]
+
+    // All components owned by Object
     Components_t m_Components;
-    Components_t::size_type m_ToInitialize;
-    Components_t::size_type m_ToInitializeNextFrame;
-    Components_t::size_type m_ToDestroy;
+    // Components are divided into three different parts
+    Components_t::size_type m_ToDestroy;                // Number of components at the begining to be destroyed
+    Components_t::size_type m_ToUpdate;                 // Number of components in the middle to be updated with additional components not marked as to update till the ToInitialize sections
+    Components_t::size_type m_ToInitialize;             // Number of components at the end to be initialized
+    Components_t::size_type m_ToInitializeNextFrame;    // Number of components waiting to be initialized
 };
 
 #endif

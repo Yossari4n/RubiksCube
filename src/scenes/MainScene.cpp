@@ -19,7 +19,8 @@ void MainScene::CreateScene() {
            "resources/skybox/front.png");
 
     auto rubiks_cube = CreateObject("RubiksCube"); {
-        auto cube = rubiks_cube->CreateComponent<RubiksCube>();
+        rubiks_cube->CreateComponent<RubiksCube>();
+        auto cube = rubiks_cube->GetComponent<RubiksCube>(2);
     }
 
     auto camera = CreateObject("Camera"); {
