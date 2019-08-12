@@ -6,7 +6,6 @@
 IScene::IScene()
     : m_ObjectManager(*this)
     , m_DrawManager()
-    , m_GUIManager()
     , m_Running(true)
     , m_FrameRateLimit(0.0f) {
 }
@@ -91,14 +90,6 @@ Object* IScene::CreateObject(const Object *other, std::string name) {
 
 void IScene::DestroyObject(std::uint8_t id) {
     m_ObjectManager.DestroyObject(id);
-}
-
-void IScene::RegisterWidget(IWidget* widget) {
-    m_GUIManager.RegisterWidget(widget);
-}
-
-void IScene::UnregisterWidget(IWidget* widget) {
-    m_GUIManager.UnregisterWidget(widget);
 }
 
 float IScene::FrameRate() const {

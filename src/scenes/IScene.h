@@ -3,7 +3,6 @@
 
 #include "../cbs/ObjectManager.h"
 #include "../rendering/DrawManager.h"
-#include "../GUI/GUIManager.h"
 #include "../utilities/Time.h"
 #include "../utilities/Input.h"
 #include "../utilities/Window.h"
@@ -38,13 +37,10 @@ public:
     void DestroyObject(std::uint8_t id);
 
     // GUIManager functions
-    void RegisterWidget(IWidget* widget);
-    void UnregisterWidget(IWidget* widget);
 
 private:
     ObjectManager m_ObjectManager;
     DrawManager m_DrawManager;
-    GUIManager m_GUIManager;
 
     bool m_Running;
     float m_FrameRateLimit;

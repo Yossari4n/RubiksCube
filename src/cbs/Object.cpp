@@ -8,6 +8,7 @@ Object::Object(ObjectManager& owner, std::uint8_t id, std::string name)
     , m_Name(name)
     , m_Owner(owner)
     , m_NextCompID(2)
+    , m_CurrentIndex(0)
     , m_ToInitialize(0)
     , m_ToInitializeNextFrame(0)
     , m_ToUpdate(0)
@@ -23,6 +24,7 @@ Object::Object(const Object& other, std::uint8_t id, std::string name)
     , m_Owner(other.m_Owner)
     , m_Root(other.m_Root)
     , m_NextCompID(other.m_NextCompID)
+    , m_CurrentIndex(other.m_CurrentIndex)
     , m_ToInitialize(other.m_ToInitialize)
     , m_ToInitializeNextFrame(other.m_ToInitializeNextFrame)
     , m_ToUpdate(other.m_ToUpdate)
@@ -55,9 +57,9 @@ void Object::InitializeComponents() {
     m_ToInitialize = m_ToInitializeNextFrame;
     m_ToInitializeNextFrame = 0;
 
-    // Initialize all components from (end - m_ToInitializeNextFrame) to (end - m_ToInitialize - m_ToInitializeNextFrame)
-    for (Components_t::size_type i = 0; i < m_ToInitialize; i++) {
-        m_Components[m_Components.size() - 1 - m_ToInitializeNextFrame - i]->Initialize();
+    // Initialize all components from (end - m_ToInitialize - m_ToInitializeNextFrame) to (end - m_ToInitializeNextFrame)
+    for (int i = 0; i < m_ToInitialize; i++) {
+        m_Components[m_Components.size() - m_ToInitialize - m_ToInitializeNextFrame + i]->Initialize();
     }
 
     m_ToInitialize = 0;
@@ -65,17 +67,17 @@ void Object::InitializeComponents() {
 
 void Object::UpdateComponents() {    
     // Update all components from (begin + m_ToDestroy + m_ToUpdate) to (begin + m_ToDestroy)
-    for (Components_t::size_type i = 0; i < m_ToUpdate; i++) {
-        m_Components[m_ToDestroy + m_ToUpdate - i]->Update();
+    for (int i = 0; i < m_ToUpdate; i++) {
+        m_Components[m_ToDestroy + m_ToUpdate - i - 1]->Update();
     }
 }
 
 void Object::DestroyComponents() {
     // Destroy all components from begining to (begin + m_ToDestroy)
     if (m_ToDestroy > 0) {
-        for (Components_t::size_type i = 0; i < m_ToDestroy; i++) {
-            m_MessageManager.RemoveConnections(m_Components[m_Components.size() - i].get());
-            m_Components[m_Components.size() - 1 - i - m_ToInitializeNextFrame]->Destroy();
+        for (m_CurrentIndex = 0; m_CurrentIndex < m_ToDestroy; m_CurrentIndex++) {
+            m_MessageManager.RemoveConnections(m_Components[m_Components.size() - m_CurrentIndex].get());
+            m_Components[m_Components.size() - 1 - m_CurrentIndex - m_ToInitializeNextFrame]->Destroy();
         }
         m_Components.erase(m_Components.begin(), m_Components.begin() + m_ToDestroy);
         m_ToDestroy = 0;
@@ -89,9 +91,10 @@ void Object::RegisterUpdateCall(const IComponent* component) {
                                                [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
 
     assert(comp != m_Components.end());
-    if (std::distance(m_Components.begin() + m_ToDestroy, comp) > static_cast<ptrdiff_t>(m_ToUpdate)) {
+    if (std::distance(m_Components.begin() + m_ToDestroy, comp) >= static_cast<ptrdiff_t>(m_ToUpdate)) {
+        m_CurrentIndex = m_CurrentIndex - 1;
         m_ToUpdate = m_ToUpdate + 1;
-        std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate, comp);
+        std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate - 1, comp);
     }
 }
 
@@ -104,7 +107,6 @@ void Object::UnregisterUpdateCall(const IComponent* component) {
     assert(comp != m_Components.end());
     std::cout << std::distance(m_Components.begin() + m_ToDestroy, comp) << '\n';
     if (std::distance(m_Components.begin() + m_ToDestroy, comp) <= static_cast<ptrdiff_t>(m_ToUpdate)) {
-        
         std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate, comp);
         m_ToUpdate = m_ToUpdate - 1;
     }

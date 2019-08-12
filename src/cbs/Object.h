@@ -217,6 +217,7 @@ private:
 
     // All components owned by Object
     Components_t m_Components;
+    Components_t::size_type m_CurrentIndex;
     // Components are divided into three different parts
     Components_t::size_type m_ToDestroy;                // Number of components at the begining to be destroyed
     Components_t::size_type m_ToUpdate;                 // Number of components in the middle to be updated with additional components not marked as to update till the ToInitialize sections
