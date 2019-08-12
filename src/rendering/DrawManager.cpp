@@ -13,6 +13,12 @@ DrawManager::DrawManager()
 }
 
 void DrawManager::Initialize() {
+    // imgui initialiation
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(g_Window, true);
+    ImGui_ImplOpenGL3_Init("#version 330 core");
+
     // Create shader programs
     m_ShaderPrograms[ShaderProgram::Type::PURE_COLOR].AttachShaders("src/shaders/PURE_COLOR.vert",
                                                                     "src/shaders/PURE_COLOR.frag");
@@ -29,10 +35,6 @@ void DrawManager::Initialize() {
 
     m_ShaderPrograms[ShaderProgram::Type::SKYBOX].AttachShaders("src/shaders/SKYBOX.vert",
                                                                 "src/shaders/SKYBOX.frag");
-
-
-    m_ShaderPrograms[ShaderProgram::Type::TEXT].AttachShaders("src/shaders/TEXT.vert",
-                                                              "src/shaders/TEXT.frag");
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -87,6 +89,21 @@ void DrawManager::CallDraws() const {
     glClearColor(m_Background.x, m_Background.y, m_Background.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // Start the Dear ImGui frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    // dear imgui test
+    ImGui::Begin("dummy", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
+    ImGui::SetWindowSize(ImVec2(1920, 1080));
+    auto draw_list = ImGui::GetWindowDrawList();
+    ImU32 col = ImColor(ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+    draw_list->AddCircle(ImVec2(100, 100), 5.0f, col);
+    const char text[] = "dear imgui first test";
+    draw_list->AddText(ImVec2(200, 200), col, text);
+    ImGui::End();
+
     glm::mat4 pv = m_Camera->Projection() * m_Camera->ViewMatrix();
 
     // Draw objects
@@ -122,6 +139,11 @@ void DrawManager::CallDraws() const {
 
         glDepthFunc(GL_LESS);
     }
+    
+    // Draw GUI
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+    // End of drawing
     glfwSwapBuffers(g_Window);
 }

@@ -7,4 +7,4 @@
 * GLM
 * Assimp
 * STB
-* FreeType
+* imgui

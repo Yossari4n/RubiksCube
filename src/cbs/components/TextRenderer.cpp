@@ -1,7 +1,6 @@
 #include "TextRenderer.h"
 
-TextRenderer::TextRenderer(const std::string& text)
-    : m_Text(text) {
+TextRenderer::TextRenderer(const std::string& text) {
 }
 
 void TextRenderer::Initialize() {

@@ -13,7 +13,7 @@ Release
 *.dll
 *.exp
 *.lib
+*.ini
 
-# FreeType
-freetype
-ft2build.h
+# Dependencies
+dependencies/imgui/

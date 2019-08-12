@@ -4,14 +4,19 @@
 #include "ShaderProgram.h"
 #include "Cubemap.h"
 
+#pragma warning(push, 0)
+#include <dependencies/imgui/imgui.h>
+#include <dependencies/imgui/imgui_impl_opengl3.h>
+#include <dependencies/imgui/imgui_impl_glfw.h>
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#pragma warning(pop)
+
 #include <vector>
 #include <array>
 #include <assert.h>
 
-#pragma warning(push, 0)
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#pragma warning(pop)
 
 class Camera;
 class IDrawable;
