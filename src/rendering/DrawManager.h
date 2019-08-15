@@ -20,6 +20,7 @@
 
 class Camera;
 class IDrawable;
+class IWidget;
 class ILightSource;
 
 class DrawManager {
@@ -37,6 +38,9 @@ public:
     void RegisterDrawCall(IDrawable* component);
     void UnregisterDrawCall(IDrawable* component);
 
+    void RegisterWidget(IWidget* widget);
+    void UnregisterWidget(IWidget* widget);
+
     void RegisterLightSource(ILightSource* light_source);
     void UnregisterLightSource(ILightSource* light_source);
 
@@ -48,6 +52,7 @@ private:
 
     Camera* m_Camera;
     std::vector<IDrawable*> m_Drawables;
+    std::vector<IWidget*> m_Widgets;
     std::vector<ILightSource*> m_LightSources;
 
     std::array<ShaderProgram, static_cast<size_t>(ShaderProgram::Type::COUNT)> m_ShaderPrograms;

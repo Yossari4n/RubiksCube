@@ -1,6 +1,7 @@
 #include "DrawManager.h"
 
 #include "IDrawable.h"
+#include "IWidget.h"
 #include "ILightSource.h"
 #include "../utilities/Window.h"
 #include "../rendering/Cubemap.h"
@@ -56,17 +57,32 @@ void DrawManager::Background(const glm::vec3& background) {
 }
 
 void DrawManager::RegisterDrawCall(IDrawable* component) {
-    // Ensure that every component is registered at most once
+    // Ensure that each component is registered at most once
     assert(std::find(m_Drawables.begin(), m_Drawables.end(), component) == m_Drawables.end());
 
     m_Drawables.push_back(component);
 }
 
 void DrawManager::UnregisterDrawCall(IDrawable* component) {
-    // Unregistering unregistered component has no effect
+    // Unregistering not registered component has no effect
     auto to_erase = std::find(m_Drawables.begin(), m_Drawables.end(), component);
     if (to_erase != m_Drawables.end()) {
         m_Drawables.erase(to_erase);
+    }
+}
+
+void DrawManager::RegisterWidget(IWidget* widget) {
+    // Ensure that each widget is registered at most once
+    assert(std::find(m_Widgets.begin(), m_Widgets.end(), widget) == m_Widgets.end());
+
+    m_Widgets.push_back(widget);
+}
+
+void DrawManager::UnregisterWidget(IWidget* widget) {
+    // Unregistering not registered widget has no effect
+    auto to_erase = std::find(m_Widgets.begin(), m_Widgets.end(), widget);
+    if (to_erase != m_Widgets.end()) {
+        m_Widgets.erase(to_erase);
     }
 }
 
@@ -88,21 +104,6 @@ void DrawManager::UnregisterLightSource(ILightSource* light_source) {
 void DrawManager::CallDraws() const {
     glClearColor(m_Background.x, m_Background.y, m_Background.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Start the Dear ImGui frame
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    // dear imgui test
-    ImGui::Begin("dummy", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
-    ImGui::SetWindowSize(ImVec2(1920, 1080));
-    auto draw_list = ImGui::GetWindowDrawList();
-    ImU32 col = ImColor(ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-    draw_list->AddCircle(ImVec2(100, 100), 5.0f, col);
-    const char text[] = "dear imgui first test";
-    draw_list->AddText(ImVec2(200, 200), col, text);
-    ImGui::End();
 
     glm::mat4 pv = m_Camera->Projection() * m_Camera->ViewMatrix();
 
@@ -141,6 +142,14 @@ void DrawManager::CallDraws() const {
     }
     
     // Draw GUI
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    for (auto widget = m_Widgets.begin(); widget != m_Widgets.end(); widget++) {
+        (*widget)->Draw();
+    }
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
