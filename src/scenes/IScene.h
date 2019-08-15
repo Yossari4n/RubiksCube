@@ -19,24 +19,24 @@ public:
 
     void Exit();
     void FrameRateLimit(unsigned int frame_rate);
-    float FrameRate() const;
-
-    // DrawManager functions
-    void RegisterDrawCall(IDrawable* drawable);
-    void UnregisterDrawCall(IDrawable* drawable);
-    void RegisterLightSource(ILightSource* light_source);
-    void UnregisterLightSource(ILightSource* light_source);
-    void RegisterCamera(Camera* camera);
-    Camera* MainCamera() const;
-    void Skybox(const std::string& right, const std::string& left, const std::string& top, const std::string& bottom, const std::string& back, const std::string& front);
-    void Background(const glm::vec3& background);
+    float FrameRate() const { return 1.0f / g_Time.DeltaTime(); }
 
     // ObjectManger functions
     Object* CreateObject(std::string name = "");
     Object* CreateObject(const Object* other, std::string name = "");
     void DestroyObject(std::uint8_t id);
 
-    // GUIManager functions
+    // DrawManager functions
+    void RegisterDrawCall(IDrawable* drawable);
+    void UnregisterDrawCall(IDrawable* drawable);
+    void RegisterWidget(IWidget* widget);
+    void UnregisterWidget(IWidget* widget);
+    void RegisterLightSource(ILightSource* light_source);
+    void UnregisterLightSource(ILightSource* light_source);
+    void RegisterCamera(Camera* camera);
+    Camera* MainCamera() const;
+    void Skybox(const std::string& right, const std::string& left, const std::string& top, const std::string& bottom, const std::string& back, const std::string& front);
+    void Background(const glm::vec3& background);
 
 private:
     ObjectManager m_ObjectManager;

@@ -6,6 +6,7 @@
 #include "../cbs/components/PointLight.h"
 #include "../cbs/components/DummyComp.h"
 #include "../cbs/components/RubiksCube/RubiksCube.h"
+#include "../cbs/components/TextRenderer.h"
 
 constexpr glm::vec3 MODEL_SCALE(1.0f / (976.032f * 2.0f), 1.0f / (976.032f * 2.0f), 1.0f / (986.312f * 2.0f));
 
@@ -20,6 +21,7 @@ void MainScene::CreateScene() {
 
     auto rubiks_cube = CreateObject("RubiksCube"); {
         rubiks_cube->CreateComponent<RubiksCube>();
+        rubiks_cube->CreateComponent<TextRenderer>("My very long test of many characters", ImVec2(0.0f, 0.75f), IWidget::EAlign::CENTER, IWidget::EAlign::NONE);
     }
 
     auto camera = CreateObject("Camera"); {
