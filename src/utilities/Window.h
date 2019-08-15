@@ -8,6 +8,8 @@
 #include <string>
 
 class Window {
+    friend void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
 public:
     void Initialize(unsigned int width, unsigned int heigth, const std::string& title);
     

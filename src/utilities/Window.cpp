@@ -10,5 +10,7 @@ void Window::Initialize(unsigned int width, unsigned int height, const std::stri
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     (void*)window;
+    g_Window.m_Width = width;
+    g_Window.m_Height = height;
     glViewport(0, 0, width, height);
 }
