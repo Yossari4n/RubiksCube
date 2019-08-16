@@ -60,12 +60,11 @@ int main() {
     glfwSetScrollCallback(g_Window, scroll_callback);
     
     // Main scene
-    MainScene MainScene;
-    MainScene.CreateScene();
-    
-    MainScene.PreRun();
-    MainScene.Run();
-    MainScene.PostRun();
+    MainScene main_scene;
+    main_scene.PreRun();
+    main_scene.CreateScene();
+    main_scene.Run();
+    main_scene.PostRun();
     
     // End of application
     glfwSetWindowShouldClose(g_Window, true);

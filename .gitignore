@@ -16,4 +16,4 @@ Release
 *.ini
 
 # Dependencies
-dependencies/imgui/
+dependencies/

@@ -6,18 +6,19 @@
 IScene::IScene()
     : m_ObjectManager(*this)
     , m_DrawManager()
-    , m_Running(true)
+    , m_Running(false)
     , m_FrameRateLimit(0.0f) {
+    
 }
 
 void IScene::PreRun() {
     m_Running = true;
-    
     m_DrawManager.Initialize();
-    m_ObjectManager.InitializeObjects();
 }
 
 void IScene::Run() {
+    m_ObjectManager.InitializeObjects();
+
     // Initialize Time manager as close to game loop as possible
     // to avoid misrepresented delta time
     g_Time.Initialize();

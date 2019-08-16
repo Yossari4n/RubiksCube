@@ -14,11 +14,15 @@ DrawManager::DrawManager()
 }
 
 void DrawManager::Initialize() {
-    // imgui initialiation
+    // Dear imgui initialiation
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(g_Window, true);
     ImGui_ImplOpenGL3_Init("#version 330 core");
+
+    // Load default font
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->AddFontDefault();
 
     // Create shader programs
     m_ShaderPrograms[ShaderProgram::Type::PURE_COLOR].AttachShaders("src/shaders/PURE_COLOR.vert",
@@ -152,6 +156,7 @@ void DrawManager::CallDraws() const {
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui::EndFrame();
 
     // End of drawing
     glfwSwapBuffers(g_Window);
