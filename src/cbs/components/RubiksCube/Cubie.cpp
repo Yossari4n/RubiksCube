@@ -34,11 +34,14 @@ void Cubie::RotateAround(float angle, glm::vec3 axis) {
     angle = glm::radians(angle);
 
     m_Position = glm::rotate(m_Position, angle, axis);
-    m_Position.x = std::round(m_Position.x);
-    m_Position.y = std::round(m_Position.y);
-    m_Position.z = std::round(m_Position.z);
-
     m_Rotation = glm::quat(axis * angle) * m_Rotation;
+}
+
+void Cubie::RotationAround(float angle, glm::vec3 axis) {
+    angle = glm::radians(angle);
+
+    m_Position = glm::rotate(m_Position, angle, axis);
+    m_Rotation = glm::quat(axis * angle);
 }
 
 Cubie::EColor Cubie::XColor(int direction) {
@@ -49,7 +52,7 @@ Cubie::EColor Cubie::YColor(int direction) {
     return BLACK;
 }
 
-Cubie::EColor Cubie::ZColoe(int direction) {
+Cubie::EColor Cubie::ZColor(int direction) {
     return BLACK;
 }
 

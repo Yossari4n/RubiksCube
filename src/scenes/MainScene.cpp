@@ -9,7 +9,7 @@
 #include "../cbs/components/TextRenderer.h"
 
 void MainScene::CreateScene() {
-    FrameRateLimit(0);
+    FrameRateLimit(60);
     Skybox("resources/skybox/right.png",
            "resources/skybox/left.png",
            "resources/skybox/top.png",
