@@ -6,15 +6,15 @@
 #include "../IComponent.h"
 #include "../../Object.h"
 #include "../../../scenes/IScene.h"
-#include "../../message_system/PropertyOut.h"
+#include "../../message_system/MessageOut.h"
 
 #include "../../../utilities/Input.h"
 #include "../../../utilities/Time.h"
 
-#include <iostream>
+#include <string>
 #include <vector>
 #include <array>
-#include <queue>
+#include <deque>
 
 class RubiksCube : public IComponent {
     using Row_t    = std::vector<Cubie*>;
@@ -29,9 +29,11 @@ class RubiksCube : public IComponent {
 
     class Task {
     public:
-        Task(RubiksCube& owner, const Face& face, float angle);
+        Task(RubiksCube& owner, const Face& face, float angle, std::string signature);
 
         bool Finished() const { return m_Finished; }
+        std::string Signature() const { return m_Signature; }
+
         void RotateOverTime(float delta);
 
     private:
@@ -41,6 +43,8 @@ class RubiksCube : public IComponent {
         float m_TargetAngle;
         float m_Progress;
         bool m_Finished;
+
+        const std::string m_Signature;
     };
 
 public:
@@ -55,12 +59,14 @@ public:
     void Update() override;
     void Destroy() override;
 
+    MessageOut<std::string> TasksSignaturesOut { this };
+
 private:
     void RotateMeshes(const Face& face, float angle);
     void RotateData(const Face& face, ERotation rotation);
 
     Cube_t m_Cube;
-    std::queue<Task> m_Tasks;
+    std::deque<Task> m_Tasks;
 
     static Face s_Front, s_Back, s_Left, s_Right, s_Up, s_Down;
 };

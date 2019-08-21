@@ -18,10 +18,11 @@ void MainScene::CreateScene() {
            "resources/skybox/front.png");
 
     auto rubiks_cube = CreateObject("RubiksCube"); {
-        rubiks_cube->CreateComponent<RubiksCube>();
-        auto text_renderer = rubiks_cube->CreateComponent<TextRenderer>("My very long test of many characters", ImVec2(0.0f, 0.75f), IWidget::EAlign::CENTER, IWidget::EAlign::NONE);
+        auto cube = rubiks_cube->CreateComponent<RubiksCube>();
+        auto text_renderer = rubiks_cube->CreateComponent<TextRenderer>("", ImVec2(0.0f, 0.75f), IWidget::EAlign::CENTER, IWidget::EAlign::NONE);
         text_renderer->ChangeFont("resources/fonts/times.ttf", 100.0f);
         text_renderer->ChangeColor(ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+        rubiks_cube->Connect(cube->TasksSignaturesOut, text_renderer->ChangeTextIn);
     }
 
     auto camera = CreateObject("Camera"); {

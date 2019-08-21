@@ -2,7 +2,6 @@
 
 Cubie::Cubie(glm::vec3 position, EColor front, EColor left, EColor right, EColor top, EColor bottom)
     : IDrawable(ShaderProgram::Type::PURE_COLOR)
-    , m_ID(0)
     , m_FrontFace(front)
     , m_LeftFace(left)
     , m_RightFace(right)

@@ -30,12 +30,6 @@ public:
 
     void RotateAround(float angle, glm::vec3 axis);
     void RotationAround(float angle, glm::vec3 axis);
-    EColor XColor(int direction);
-    EColor YColor(int direction);
-    EColor ZColor(int direction);
-
-    // TODO delete before ship or leave it but fix it to proper form
-    int m_ID;
 
 private:
     glm::vec3 ColorToVec(Cubie::EColor color) const;
