@@ -21,23 +21,26 @@ class RubiksCube : public IComponent {
     using Matrix_t = std::vector<Row_t>;
     using Cube_t   = std::vector<Matrix_t>;
 
-    using Face_t = size_t[8][3];
+    struct Face {
+        const size_t CubiesAround[8][3];
+        const size_t Center[3];
+        const glm::vec3 Axis;
+    };
 
     class Task {
     public:
-        Task(RubiksCube& owner, const Face_t& face, float angle, const glm::vec3& axis);
+        Task(RubiksCube& owner, const Face& face, float angle);
 
-        bool Finished() const { return abs(m_Progress) > abs(m_TargetAngle); }
+        bool Finished() const { return m_Finished; }
         void RotateOverTime(float delta);
 
     private:
         RubiksCube& m_Owner;
 
-        const Face_t& m_Face;
-        glm::vec3 m_Axis;
+        const Face& m_Face;
         float m_TargetAngle;
-        float m_Current;
         float m_Progress;
+        bool m_Finished;
     };
 
 public:
@@ -53,13 +56,13 @@ public:
     void Destroy() override;
 
 private:
-    void RotateMeshes(const Face_t& face, float angle, glm::vec3 axis);
-    void RotateData(const Face_t& face, ERotation rotation);
+    void RotateMeshes(const Face& face, float angle);
+    void RotateData(const Face& face, ERotation rotation);
 
     Cube_t m_Cube;
     std::queue<Task> m_Tasks;
 
-    static Face_t s_Front, s_Back, s_Left, s_Right, s_Up, s_Down;
+    static Face s_Front, s_Back, s_Left, s_Right, s_Up, s_Down;
 };
 
 #endif

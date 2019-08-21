@@ -11,29 +11,38 @@ std::ostream& operator<<(std::ostream& os, RubiksCube::ERotation dir) {
 
 
 #pragma region Faces
-RubiksCube::Face_t RubiksCube::s_Front = {
-    {0, 0, 0},
-    {0, 0, 1},
-    {0, 0, 2},
-    {0, 1, 2},
-    {0, 2, 2},
-    {0, 2, 1},
-    {0, 2, 0},
-    {0, 1, 0},
+RubiksCube::Face RubiksCube::s_Front = {
+    {
+        { 0, 0, 0 },
+        { 0, 0, 1 },
+        { 0, 0, 2 },
+        { 0, 1, 2 },
+        { 0, 2, 2 },
+        { 0, 2, 1 },
+        { 0, 2, 0 },
+        { 0, 1, 0 }
+    },
+    { 0, 1, 1 },
+    { glm::vec3(1.0f, 0.0f, 0.0f) }
 };
 
-RubiksCube::Face_t RubiksCube::s_Back = {
-    { 2, 0, 2 },
-    { 2, 0, 1 },
-    { 2, 0, 0 },
-    { 2, 1, 0 },
-    { 2, 2, 0 },
-    { 2, 2, 1 },
-    { 2, 2, 2 },
-    { 2, 1, 2 },
+RubiksCube::Face RubiksCube::s_Back = {
+    {
+        { 2, 0, 2 },
+        { 2, 0, 1 },
+        { 2, 0, 0 },
+        { 2, 1, 0 },
+        { 2, 2, 0 },
+        { 2, 2, 1 },
+        { 2, 2, 2 },
+        { 2, 1, 2 }
+    },
+    { 2, 1, 1 },
+    { glm::vec3(-1.0f, 0.0f, 0.0f) }
 };
 
-RubiksCube::Face_t RubiksCube::s_Left = {
+RubiksCube::Face RubiksCube::s_Left = {
+    {
         {2, 0, 0},
         {1, 0, 0},
         {0, 0, 0},
@@ -42,9 +51,13 @@ RubiksCube::Face_t RubiksCube::s_Left = {
         {1, 2, 0},
         {2, 2, 0},
         {2, 1, 0}
+    },
+    { 1, 1, 0 },
+    { glm::vec3(0.0f, 0.0f, 1.0f) }
 };
 
-RubiksCube::Face_t RubiksCube::s_Right = {
+RubiksCube::Face RubiksCube::s_Right = {
+    {
         {0, 0, 2},
         {1, 0, 2},
         {2, 0, 2},
@@ -53,9 +66,13 @@ RubiksCube::Face_t RubiksCube::s_Right = {
         {1, 2, 2},
         {0, 2, 2},
         {0, 1, 2}
+    },
+    { 1, 1, 2 },
+    { glm::vec3(0.0f, 0.0f, -1.0f) }
 };
 
-RubiksCube::Face_t RubiksCube::s_Up = {
+RubiksCube::Face RubiksCube::s_Up = {
+    {
         {2, 0, 0},
         {2, 0, 1},
         {2, 0, 2},
@@ -64,9 +81,13 @@ RubiksCube::Face_t RubiksCube::s_Up = {
         {0, 0, 1},
         {0, 0, 0},
         {1, 0, 0}
+    },
+    { 1, 0, 1 },
+    { glm::vec3(0.0f, 1.0f, 0.0f) }
 };
 
-RubiksCube::Face_t RubiksCube::s_Down = {
+RubiksCube::Face RubiksCube::s_Down = {
+    {
         {1, 2, 2},
         {2, 2, 2},
         {2, 2, 1},
@@ -75,6 +96,9 @@ RubiksCube::Face_t RubiksCube::s_Down = {
         {0, 2, 0},
         {0, 2, 1},
         {0, 2, 2}
+    },
+    { 1, 2, 1 },
+    { glm::vec3(0.0f, -1.0f, 0.0f) }
 };
 #pragma endregion
 
@@ -164,29 +188,29 @@ void RubiksCube::Initialize() {
 
 void RubiksCube::Update() {
     if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Front, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_Tasks.emplace(*this, s_Front, 90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Front, -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_Tasks.emplace(*this, s_Front, -90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Back, 90.0f, glm::vec3(-1.0f, 0.0f, 0.0f));
+        m_Tasks.emplace(*this, s_Back, 90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Back, -90.0f, glm::vec3(-1.0f, 0.0f, 0.0f));
+        m_Tasks.emplace(*this, s_Back, -90.0f);
     } if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Left, 90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+        m_Tasks.emplace(*this, s_Left, 90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Left, -90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+        m_Tasks.emplace(*this, s_Left, -90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Right, 90.0f, glm::vec3(0.0f, 0.0f, -1.0f));
+        m_Tasks.emplace(*this, s_Right, 90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Right, -90.0f, glm::vec3(0.0f, 0.0f, -1.0f));
+        m_Tasks.emplace(*this, s_Right, -90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Up, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_Tasks.emplace(*this, s_Up, 90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Up, -90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        m_Tasks.emplace(*this, s_Up, -90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Down, 90.0f, glm::vec3(0.0f, -1.0f, 0.0f));
+        m_Tasks.emplace(*this, s_Down, 90.0f);
     } else if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace(*this, s_Down, -90.0f, glm::vec3(0.0f, -1.0f, 0.0f));
+        m_Tasks.emplace(*this, s_Down, -90.0f);
     }
 
     if (!m_Tasks.empty()) {
@@ -209,19 +233,20 @@ void RubiksCube::Destroy() {
     }
 }
 
-void RubiksCube::RotateMeshes(const Face_t& face, float angle, glm::vec3 axis) {
+void RubiksCube::RotateMeshes(const Face& face, float angle) {
     for (int i = 0; i < 8; i++) {
-        m_Cube[face[i][0]][face[i][1]][face[i][2]]->RotateAround(angle, axis);
+        m_Cube[face.CubiesAround[i][0]][face.CubiesAround[i][1]][face.CubiesAround[i][2]]->RotateAround(angle, face.Axis);
     }
+    m_Cube[face.Center[0]][face.Center[1]][face.Center[2]]->RotateAround(angle, face.Axis);
 }
 
-void RubiksCube::RotateData(const Face_t& face, RubiksCube::ERotation rotation) {
+void RubiksCube::RotateData(const Face& face, RubiksCube::ERotation rotation) {
     // GCD left-shift array shift
     const int size = 8;
     const int shift = rotation == ERotation::CLOCKWISE ? 6 : 2; // For clockwise rotation right-shift by 2 is equal to left-shift by 6. For counter clockwise rotation left-shift by 2.
     const int gcd = 2;                                          // gcd(2, 8) = gcd(6, 8) = 2
     for (int i = 0; i < gcd; i++) {
-        Cubie* tmp = m_Cube[face[i][0]][face[i][1]][face[i][2]];
+        Cubie* tmp = m_Cube[face.CubiesAround[i][0]][face.CubiesAround[i][1]][face.CubiesAround[i][2]];
         int j = i;
 
         while (true) {
@@ -233,38 +258,36 @@ void RubiksCube::RotateData(const Face_t& face, RubiksCube::ERotation rotation) 
                 break;
             }
 
-            m_Cube[face[j][0]][face[j][1]][face[j][2]] = m_Cube[face[k][0]][face[k][1]][face[k][2]];
+            m_Cube[face.CubiesAround[j][0]][face.CubiesAround[j][1]][face.CubiesAround[j][2]] = m_Cube[face.CubiesAround[k][0]][face.CubiesAround[k][1]][face.CubiesAround[k][2]];
             j = k;
         }
-        m_Cube[face[j][0]][face[j][1]][face[j][2]] = tmp;
+        m_Cube[face.CubiesAround[j][0]][face.CubiesAround[j][1]][face.CubiesAround[j][2]] = tmp;
     }
 }
 
-RubiksCube::Task::Task(RubiksCube& owner, const RubiksCube::Face_t& face, float target, const glm::vec3& axis)
+RubiksCube::Task::Task(RubiksCube& owner, const RubiksCube::Face& face, float target)
     : m_Owner(owner)
     , m_Face(face)
     , m_TargetAngle(target)
-    , m_Axis(axis)
     , m_Progress(0.0f)
-    , m_Current(0.0f) {
+    , m_Finished(false) {
 }
 
 void RubiksCube::Task::RotateOverTime(float delta) {
     // Task already finished
-    if (abs(m_Progress) > abs(m_TargetAngle)) {
+    if (m_Finished) {
         return;
     }
-
-    if (abs(m_Progress + delta * m_TargetAngle) > abs(m_TargetAngle)) {
+    
+    const float new_angle = delta * m_TargetAngle;
+    if (abs(m_Progress + new_angle) > abs(m_TargetAngle)) {
         // On task finished
-        m_Owner.RotateMeshes(m_Face, m_TargetAngle - m_Progress, m_Axis);
+        m_Owner.RotateMeshes(m_Face, m_TargetAngle - m_Progress);
         m_Owner.RotateData(m_Face, m_TargetAngle < 0.0f ? ERotation::CLOCKWISE : ERotation::COUNTER_CLOCKWISE);
-        m_Progress = m_Progress + delta * m_TargetAngle;
+        m_Finished = true;
     } else {
         // Continue on task
-        m_Progress = m_Progress + delta * m_TargetAngle;
-        m_Owner.RotateMeshes(m_Face, delta * m_TargetAngle, m_Axis);
+        m_Progress = m_Progress + new_angle;
+        m_Owner.RotateMeshes(m_Face, new_angle);
     }
-
-    std::cout << m_Progress << '\n';
 }
