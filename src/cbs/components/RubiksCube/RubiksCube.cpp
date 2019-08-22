@@ -176,6 +176,7 @@ void RubiksCube::Initialize() {
 }
 
 void RubiksCube::Update() {
+    // Collect next move 
     if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
         m_Tasks.emplace_back(*this, s_Front, 90.0f, "F'");
     } else if (g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
@@ -202,18 +203,19 @@ void RubiksCube::Update() {
         m_Tasks.emplace_back(*this, s_Down, -90.0f, "D");
     }
 
+    // Update deque of tasks
     if (!m_Tasks.empty()) {
-        std::string message;
-        for (auto it = m_Tasks.begin(); it != m_Tasks.end(); it++) {
-            message += it->Signature() + ' ';
-        }
-        TasksSignaturesOut.Send(message);
-
         if (!m_Tasks.front().Finished()) {
             m_Tasks.front().RotateOverTime(g_Time.FixedDeltaTime());
         } else {
             m_Tasks.pop_front();
         }
+
+        std::string message = "";
+        for (auto it = m_Tasks.begin(); it != m_Tasks.end(); it++) {
+            message += ' ' + it->Signature();
+        }
+        TasksSignaturesOut.Send(message);
     }
 }
 

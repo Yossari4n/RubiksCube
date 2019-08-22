@@ -43,18 +43,6 @@ void Cubie::RotationAround(float angle, glm::vec3 axis) {
     m_Rotation = glm::quat(axis * angle);
 }
 
-Cubie::EColor Cubie::XColor(int direction) {
-    return BLACK;
-}
-
-Cubie::EColor Cubie::YColor(int direction) {
-    return BLACK;
-}
-
-Cubie::EColor Cubie::ZColor(int direction) {
-    return BLACK;
-}
-
 glm::vec3 Cubie::ColorToVec(Cubie::EColor color) const {
     float b = static_cast<float>(color & 0xFF);
     float g = static_cast<float>((color >> 8) & 0xFF);
