@@ -176,31 +176,34 @@ void RubiksCube::Initialize() {
 }
 
 void RubiksCube::Update() {
+    const float rotation_speed = 2.0f;
+    const unsigned int randomize_moves = 30;
+
     // Collect next move 
     if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Front, 90.0f, "F'");
+        m_Tasks.emplace_back(*this, s_Front, 90.0f, "F'", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Front, -90.0f, "F");
+        m_Tasks.emplace_back(*this, s_Front, -90.0f, "F", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Back, 90.0f, "B'");
+        m_Tasks.emplace_back(*this, s_Back, 90.0f, "B'", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Back, -90.0f, "B");
+        m_Tasks.emplace_back(*this, s_Back, -90.0f, "B", rotation_speed);
     } if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Left, 90.0f, "L'");
+        m_Tasks.emplace_back(*this, s_Left, 90.0f, "L'", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Left, -90.0f, "L");
+        m_Tasks.emplace_back(*this, s_Left, -90.0f, "L", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Right, 90.0f, "R'");
+        m_Tasks.emplace_back(*this, s_Right, 90.0f, "R'", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Right, -90.0f, "R");
+        m_Tasks.emplace_back(*this, s_Right, -90.0f, "R", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Up, 90.0f, "U'");
+        m_Tasks.emplace_back(*this, s_Up, 90.0f, "U'", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Up, -90.0f, "U");
+        m_Tasks.emplace_back(*this, s_Up, -90.0f, "U", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Down, 90.0f, "D'");
+        m_Tasks.emplace_back(*this, s_Down, 90.0f, "D'", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Down, -90.0f, "D");
+        m_Tasks.emplace_back(*this, s_Down, -90.0f, "D", rotation_speed);
     }
 
     // Update deque of tasks
@@ -226,6 +229,56 @@ void RubiksCube::Destroy() {
                 Object().Scene().UnregisterDrawCall(*cube);
                 delete *cube;
             }
+        }
+    }
+}
+
+void RubiksCube::Randomize(unsigned int moves) {
+    const float rotation_speed = 3.0f;
+
+    if (m_Tasks.size() > 0) {
+        // Finish current task
+        m_Tasks.front().RotateOverTime(1.0f);
+        
+        m_Tasks.clear();
+    }
+
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(0, 5);
+    for (unsigned int i = 0; i < moves; i++) {
+        int rn = distribution(generator);
+
+        // 50% chances for clockwise and 50% chances for counter-clockwise rotation
+        float angle = 90.0f;
+        if (rn % 2 == 0) {
+            angle = -90.0f;
+        }
+
+        // Each face has equal chance to be choosen
+        switch (rn) {
+        case 0:
+            m_Tasks.emplace_back(*this, s_Front, angle, "", rotation_speed);
+            break;
+
+        case 1:
+            m_Tasks.emplace_back(*this, s_Back, angle, "", rotation_speed);
+            break;
+
+        case 2:
+            m_Tasks.emplace_back(*this, s_Up, angle, "", rotation_speed);
+            break;
+
+        case 3:
+            m_Tasks.emplace_back(*this, s_Down, angle, "", rotation_speed);
+            break;
+
+        case 4:
+            m_Tasks.emplace_back(*this, s_Left, angle, "", rotation_speed);
+            break;
+
+        case 5:
+            m_Tasks.emplace_back(*this, s_Right, angle, "", rotation_speed);
+            break;
         }
     }
 }
@@ -262,13 +315,14 @@ void RubiksCube::RotateData(const Face& face, RubiksCube::ERotation rotation) {
     }
 }
 
-RubiksCube::Task::Task(RubiksCube& owner, const RubiksCube::Face& face, float target, std::string signature)
+RubiksCube::Task::Task(RubiksCube& owner, const RubiksCube::Face& face, float target, const std::string& signature, float rotation_speed)
     : m_Owner(owner)
     , m_Face(face)
     , m_TargetAngle(target)
     , m_Progress(0.0f)
     , m_Finished(false)
-    , m_Signature(signature) {
+    , m_Signature(signature)
+    , m_RotationSpeed(rotation_speed) {
 }
 
 void RubiksCube::Task::RotateOverTime(float delta) {
@@ -277,7 +331,7 @@ void RubiksCube::Task::RotateOverTime(float delta) {
         return;
     }
     
-    const float new_angle = delta * m_TargetAngle;
+    const float new_angle = m_RotationSpeed * delta * m_TargetAngle;
     if (abs(m_Progress + new_angle) > abs(m_TargetAngle)) {
         // On task finished
         m_Owner.RotateMeshes(m_Face, m_TargetAngle - m_Progress);

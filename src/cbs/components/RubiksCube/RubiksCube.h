@@ -15,6 +15,7 @@
 #include <vector>
 #include <array>
 #include <deque>
+#include <random>
 
 class RubiksCube : public IComponent {
     using Row_t    = std::vector<Cubie*>;
@@ -29,7 +30,7 @@ class RubiksCube : public IComponent {
 
     class Task {
     public:
-        Task(RubiksCube& owner, const Face& face, float angle, std::string signature);
+        Task(RubiksCube& owner, const Face& face, float angle, const std::string& signature, float rotation_speed = 1.0f);
 
         bool Finished() const { return m_Finished; }
         std::string Signature() const { return m_Signature; }
@@ -38,6 +39,8 @@ class RubiksCube : public IComponent {
 
     private:
         RubiksCube& m_Owner;
+
+        float m_RotationSpeed;
 
         const Face& m_Face;
         float m_TargetAngle;
@@ -58,6 +61,8 @@ public:
     void Initialize() override;
     void Update() override;
     void Destroy() override;
+
+    void Randomize(unsigned int moves);
 
     MessageOut<std::string> TasksSignaturesOut { this };
 
