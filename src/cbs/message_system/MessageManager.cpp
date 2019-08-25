@@ -1,32 +1,5 @@
 #include "MessageManager.h"
 
-void MessageManager::UnsafeConnect(IPropertyOut* subject, IPropertyIn* observer) {
-    m_PropertyConnections.emplace_back(subject, observer);
-}
-
-void MessageManager::UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observer) {
-    m_PropertyConnections.erase(std::remove_if(m_PropertyConnections.begin(),
-                                               m_PropertyConnections.end(),
-                                               [=](std::pair<IPropertyOut*, IPropertyIn*>& pair) { 
-                                                   if (pair.first == subject && pair.second == observer) {
-                                                       pair.second->Reset();
-                                                       return true;
-                                                   }
-                                                   return false; }));
-}
-
-void MessageManager::UnsafeConnect(IMessageOut* sender, IMessageIn* receiver) {
-    sender->m_MessageManager = this;
-    receiver->m_MessageManager = this;
-    m_MessageConnections[sender].push_back(receiver);
-}
-
-void MessageManager::UnsafeDisconnect(IMessageOut* sender, IMessageIn* receiver) {
-    m_MessageConnections[sender].erase(std::remove(m_MessageConnections[sender].begin(), 
-                                                   m_MessageConnections[sender].end(), 
-                                                   receiver));
-}
-
 void MessageManager::ForwardMessage(IMessageOut* sender, void* message) {
     for (auto it = m_MessageConnections[sender].cbegin(); it != m_MessageConnections[sender].cend(); ++it) {
         (*it)->Receive(message);

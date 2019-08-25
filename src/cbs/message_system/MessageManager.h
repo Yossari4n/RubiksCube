@@ -38,7 +38,7 @@ public:
     /**
      * Type safe managment
      * 
-     * TODO docs
+     * Connects and disconnects pipe-out and pipe-in with additional compile-time type check.
      */
     template <class T>
     void Connect(PropertyOut<T>& subject, PropertyIn<T>& observer);
@@ -57,17 +57,6 @@ public:
     void RemoveConnections(IComponent* component);
 
 private:
-    /**
-     * Type unsafe managment
-     *
-     * TODO docs
-     */
-    void UnsafeConnect(IPropertyOut* subject, IPropertyIn* observer);
-    void UnsafeDisconnect(IPropertyOut* subject, IPropertyIn* observer);
-
-    void UnsafeConnect(IMessageOut* sender, IMessageIn* receiver);
-    void UnsafeDisconnect(IMessageOut* sender, IMessageIn* receiver);
-
     PropertyConnections_t m_PropertyConnections;
     MessageConnections_t m_MessageConnections;
 };
@@ -140,25 +129,37 @@ void MessageManager::Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
     if (observer.m_Source == nullptr) {
         observer.m_Source = &subject;
 
-        UnsafeConnect(&subject, &observer);
+        m_PropertyConnections.emplace_back(subject, observer);
     } else {
+        // TODO DebugLog
         std::cout << "PropertyIn of type " << typeid(T).name() << " already has connection\n";
     }
 }
 
 template <class T>
 void MessageManager::Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
-    UnsafeDisconnect(&subject, &observer);
+    m_PropertyConnections.erase(std::remove_if(m_PropertyConnections.begin(),
+                                               m_PropertyConnections.end(),
+                                               [=](std::pair<IPropertyOut*, IPropertyIn*>& pair) { 
+                                                   if (pair.first == subject && pair.second == observer) {
+                                                       pair.second->Reset();
+                                                       return true;
+                                                   }
+                                                   return false; }));
 }
 
 template <class M, class O, void(O::*F)(M)>
 void MessageManager::Connect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver) {
-    UnsafeConnect(&sender, &receiver);
+    sender.m_MessageManager = this;
+    receiver.m_MessageManager = this;
+    m_MessageConnections[&sender].push_back(&receiver);
 }
 
 template <class M, class O, void (O::*F)(M)>
 void MessageManager::Disconnect(MessageOut<M> sender, MessageIn<M, O, F>& receiver) {
-    UnsafeDisconnect(&sender, &receiver);
+    m_MessageConnections[sender].erase(std::remove(m_MessageConnections[sender].begin(), 
+                                                   m_MessageConnections[sender].end(), 
+                                                   receiver));
 }
 
 #endif
