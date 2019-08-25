@@ -5,8 +5,8 @@
 *.xcodeproj
 
 # Visual Studio
-Debug
-Release
+Debug/
+Release/
 *.vcxproj*
 
 # External Libraries
@@ -17,3 +17,6 @@ Release
 
 # Dependencies
 dependencies/
+
+# Exceptions
+!*/imconfig.h
