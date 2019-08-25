@@ -1,6 +1,6 @@
 #include "TextRenderer.h"
 
-TextRenderer::TextRenderer(const std::string& text, ImVec2 offset, EAlign horizontal, EAlign vertical)
+TextRenderer::TextRenderer(const std::string& text, glm::vec2 offset, EAlign horizontal, EAlign vertical)
     : m_Text(text)
     , m_Horizontal(horizontal)
     , m_Vertical(vertical) 
@@ -24,10 +24,10 @@ void TextRenderer::Draw() const {
     ImGui::Begin("dummy", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::PushFont(m_Font);
 
-    const ImVec2 margin = ImGui::GetWindowContentRegionMin();       // Might not be correct
-    const ImVec2 text_size = ImGui::CalcTextSize(m_Text.c_str());
+    const glm::vec2 margin = ImGui::GetWindowContentRegionMin();       // Might not be correct
+    const glm::vec2 text_size = ImGui::CalcTextSize(m_Text.c_str());
 
-    ImVec2 pos(0.0f, 0.0f);
+    glm::vec2 pos(0.0f, 0.0f);
     pos.x = pos.x + m_Offset.x * g_Window.Width();
     pos.y = pos.y + m_Offset.y * g_Window.Height();
     IWidget::Align(&pos.x, -margin.x / 2, g_Window.Width() - margin.x / 2 - text_size.x, m_Horizontal);
@@ -50,7 +50,6 @@ void TextRenderer::ChangeText(std::string text) {
     m_Text = text;
 }
 
-
-void TextRenderer::ChangeColor(ImVec4 color) {
+void TextRenderer::ChangeColor(glm::vec4 color) {
     m_Color = color;
 }

@@ -19,4 +19,4 @@ Release/
 dependencies/
 
 # Exceptions
-!*/imconfig.h
+!dependencies/imgui/imconfig.h 
