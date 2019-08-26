@@ -6,7 +6,7 @@
 template <class O, void(O::* F)()>
 class TriggerIn : public ITriggerIn {
 public:
-    MessageIn(O* owner)
+    TriggerIn(O* owner)
         : ITriggerIn(owner)
         , m_Component(owner) {}
 
@@ -17,6 +17,5 @@ public:
 private:
     O* m_Component;
 };
-
 
 #endif

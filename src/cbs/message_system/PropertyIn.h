@@ -11,8 +11,7 @@ class PropertyIn : public IPropertyIn {
 public:
     PropertyIn(IComponent* owner)
         : IPropertyIn(owner)
-        , m_Source(nullptr) {
-    }
+        , m_Source(nullptr) {}
 
     PropertyIn(PropertyIn&& other) = default;
 

@@ -10,25 +10,20 @@ class PropertyOut : public IPropertyOut {
 public:
     PropertyOut(IComponent* owner)
         : IPropertyOut(owner)
-        , m_Value() {
-    }
+        , m_Value() {}
     
     PropertyOut(IComponent* owner, const T& value)
         : IPropertyOut(owner)
-        , m_Value(value) {
-    }
+        , m_Value(value) {}
 
     template <class ...Args>
     PropertyOut(IComponent* owner, Args&& ... params)
         : IPropertyOut(owner)
-        , m_Value(params...) {
-
-    }
+        , m_Value(params...) {}
 
     PropertyOut(IComponent* owner, const PropertyOut<T>& other)
         : IPropertyOut(owner)
-        , m_Value(other.m_Value) {
-    }
+        , m_Value(other.m_Value) {}
 
     PropertyOut(PropertyOut&& other) = default;
 

@@ -36,4 +36,10 @@ void MainScene::CreateScene() {
         camera->CreateComponent<ThirdPersonController>(rubiks_cube, glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 15.0f);
         camera->CreateComponent<DummyComp>();
     }
+
+    auto dummy = CreateObject("Dummy"); {
+        auto d1 = dummy->CreateComponent<DummyComp>();
+        auto d2 = dummy->CreateComponent<DummyComp>();
+        dummy->Connect(d1->m_TriggerOut, d2->m_TriggerIn);
+    }
 }

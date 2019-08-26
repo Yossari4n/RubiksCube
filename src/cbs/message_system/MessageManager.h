@@ -2,7 +2,6 @@
 #define MessageManager_h
 
 #include "../components/IComponent.h"
-#include "TriggerOut.h"
 
 #include <algorithm>
 #include <vector>
@@ -31,6 +30,10 @@ template <class M, class O, void(O::*F)(M)>
 class MessageIn;
 
 
+class ITriggerOut;
+
+class TriggerOut;
+
 class ITriggerIn;
 
 template <class O, void(O::*F)()>
@@ -40,7 +43,7 @@ class TriggerIn;
 class MessageManager {
     using PropertyConnections_t = std::vector<std::pair<IPropertyOut*, IPropertyIn*>>;
     using MessageConnections_t = std::unordered_map<IMessageOut*, std::vector<IMessageIn*>>;
-    using TriggerConnections_t = std::unordered_map<TriggerOut*, std::vector<ITriggerIn*>>;
+    using TriggerConnections_t = std::unordered_map<ITriggerOut*, std::vector<ITriggerIn*>>;
 
 public:
     /**
@@ -60,14 +63,14 @@ public:
     template <class M, class O, void (O::*F)(M)>
     void Disconnect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver);
 
-    template <class O, void(O::* F)()>
-    void Connect(TriggerOut& sender, ITriggerIn& receiver);
+    template <class O, void (O::* F)(void)>
+    void Connect(TriggerOut& sender, TriggerIn<O, F>& receiver);
 
-    template <class O, void(O::* F)()>
-    void Disconnect(TriggerOut& sender, ITriggerIn& receiver);
+    template <class O, void (O::* F)(void)>
+    void Disconnect(TriggerOut& sender, TriggerIn<O, F>& receiver);
 
     void ForwardMessage(IMessageOut* sender, void* message);
-    void ForwardTrigger(TriggerOut* sender);
+    void ForwardTrigger(ITriggerOut* sender);
 
     void RemoveConnections(IComponent* component);
 
@@ -153,6 +156,23 @@ private:
  *  Trigger  *
  *************/
 
+class ITriggerOut {
+    friend class MessageManager;
+
+public:
+    ITriggerOut(IComponent* owner)
+        : m_MessageManager(nullptr)
+        , m_Owner(owner) {}
+
+    IComponent* Owner() const { return m_Owner; }
+
+protected:
+    MessageManager* m_MessageManager;
+
+private:
+    IComponent* m_Owner;
+};
+
 class ITriggerIn {
     friend class MessageManager;
 
@@ -168,6 +188,7 @@ private:
     IComponent* m_Owner;
 };
 #pragma endregion
+#include "TriggerOut.h"
 
 template <class T>
 void MessageManager::Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
@@ -207,13 +228,13 @@ void MessageManager::Disconnect(MessageOut<M>& sender, MessageIn<M, O, F>& recei
 }
 
 template <class O, void(O::* F)()>
-void MessageManager::Connect(TriggerOut& sender, ITriggerIn& receiver) {
+void MessageManager::Connect(TriggerOut& sender, TriggerIn<O, F>& receiver) {
     sender.m_MessageManager = this;
     m_TriggerConnections[&sender].push_back(&receiver);
 }
 
 template <class O, void(O::* F)()>
-void MessageManager::Disconnect(TriggerOut& sender, ITriggerIn& receiver) {
+void MessageManager::Disconnect(TriggerOut& sender, TriggerIn<O, F>& receiver) {
     m_TriggerConnections[&sender].erase(std::remove(m_TriggerConnections[&sender].begin(),
                                                     m_TriggerConnections[&sender].end(),
                                                     receiver));

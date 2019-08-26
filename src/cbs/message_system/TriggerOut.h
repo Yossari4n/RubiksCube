@@ -1,17 +1,18 @@
 #ifndef TriggerOut_h
 #define TriggerOut_h
 
-class MessageManager;
-
-class TriggerOut {
-    friend class MessageManager;
-public:
-
-private:
-    MessageManager* m_MessageManager;
-    IComponent* m_Owner;
-};
-
 #include "MessageManager.h"
+
+class TriggerOut : public ITriggerOut {
+public:
+    TriggerOut(IComponent* owner)
+        : ITriggerOut(owner) {}
+    
+    void Trigger() {
+        if (m_MessageManager != nullptr) {
+            m_MessageManager->ForwardTrigger(this);
+        }
+    }
+};
 
 #endif

@@ -182,6 +182,12 @@ public:
         m_MessageManager.Connect(sender, receiver);
     }
 
+    template <class O, void(O::*F)(void)>
+    void Connect(TriggerOut& sender, TriggerIn<O, F>& receiver) {
+        assert(sender.Owner()->Object().ID() == receiver.Owner()->Object().ID());
+        m_MessageManager.Connect(sender, receiver);
+    }
+
 
     /**
      * Disconnect
@@ -202,12 +208,18 @@ public:
         m_MessageManager.Disconnect(sender, receiver);
     }
 
+    template <class O, void (O::*F)(void)>
+    void Disconnect(TriggerOut& sender, TriggerIn<O, F>& receiver) {
+        assert(sender.Owner()->Object().ID() == receiver.Owner()->Object().ID());
+        m_MessageManager.Disconnect(sender, receiver);
+    }
+
 private:
     void MarkToDestroy(Components_t::iterator it);
 
     std::uint8_t m_ID;
     std::string m_Name;
-    
+
     ObjectManager& m_Owner;
     MessageManager m_MessageManager;
 

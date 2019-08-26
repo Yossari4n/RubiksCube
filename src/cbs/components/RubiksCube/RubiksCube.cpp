@@ -110,7 +110,7 @@ RubiksCube::RubiksCube() {
             m_Cube[matrix][row].reserve(3);
         }
     }
-    
+
     // Front face
     // First row
     m_Cube[0][0].emplace_back(new Cubie(glm::vec3(1.0f, 1.0f, 1.0f), Cubie::EColor::BLUE, Cubie::EColor::RED, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
@@ -145,7 +145,7 @@ RubiksCube::RubiksCube() {
             (*cubie)->RotateAround(180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
         }
     }
-    
+
     // Middle face
     // First row
     m_Cube[1][0].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::WHITE, Cubie::EColor::RED))->RotateAround(90.0f, glm::vec3(0.0f, 0.0f, 1.0f));;

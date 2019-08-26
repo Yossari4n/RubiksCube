@@ -6,7 +6,7 @@ void MessageManager::ForwardMessage(IMessageOut* sender, void* message) {
     }
 }
 
-void MessageManager::ForwardTrigger(TriggerOut* sender) {
+void MessageManager::ForwardTrigger(ITriggerOut* sender) {
     for (auto it = m_TriggerConnections[sender].begin(); it != m_TriggerConnections[sender].end(); it++) {
         (*it)->Receive();
     }
