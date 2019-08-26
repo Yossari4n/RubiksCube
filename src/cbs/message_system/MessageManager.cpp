@@ -26,7 +26,8 @@ void MessageManager::RemoveConnections(IComponent* component) {
                                                    } else if (conn.first->m_Owner->ID() == comp_id) {
                                                        return true;
                                                    }
-                                                   return false; }));
+                                                   return false; }),
+                                m_PropertyConnections.end());
 
     // TODO doc
     for (auto it = m_MessageConnections.begin(); it != m_MessageConnections.end(); ) {
@@ -35,7 +36,8 @@ void MessageManager::RemoveConnections(IComponent* component) {
         } else {
             it->second.erase(std::remove_if(it->second.begin(),
                                             it->second.end(),
-                                            [=](auto receiver) { return receiver->m_Owner->ID() == comp_id; }));
+                                            [=](auto receiver) { return receiver->m_Owner->ID() == comp_id; }),
+                             it->second.end());
             it++;
         }
     }
@@ -47,7 +49,8 @@ void MessageManager::RemoveConnections(IComponent* component) {
         } else {
             it->second.erase(std::remove_if(it->second.begin(),
                                             it->second.end(),
-                                            [=](auto receiver) { return receiver->m_Owner->ID() == comp_id; }));
+                                            [=](auto receiver) { return receiver->m_Owner->ID() == comp_id; }),
+                             it->second.end());
             it++;
         }
     }

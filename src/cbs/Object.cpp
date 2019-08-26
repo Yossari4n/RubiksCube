@@ -76,7 +76,7 @@ void Object::DestroyComponents() {
     // Destroy all components from begining to (begin + m_ToDestroy)
     if (m_ToDestroy > 0) {
         for (m_CurrentIndex = 0; m_CurrentIndex < m_ToDestroy; m_CurrentIndex++) {
-            m_MessageManager.RemoveConnections(m_Components[m_Components.size() - m_CurrentIndex].get());
+            m_MessageManager.RemoveConnections(m_Components[m_Components.size() - 1 - m_CurrentIndex].get());
             m_Components[m_Components.size() - 1 - m_CurrentIndex - m_ToInitializeNextFrame]->Destroy();
         }
         m_Components.erase(m_Components.begin(), m_Components.begin() + m_ToDestroy);
@@ -105,10 +105,9 @@ void Object::UnregisterUpdateCall(const IComponent* component) {
                                                [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
 
     assert(comp != m_Components.end());
-    std::cout << std::distance(m_Components.begin() + m_ToDestroy, comp) << '\n';
     if (std::distance(m_Components.begin() + m_ToDestroy, comp) <= static_cast<ptrdiff_t>(m_ToUpdate)) {
-        std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate, comp);
         m_ToUpdate = m_ToUpdate - 1;
+        std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate, comp);
     }
 }
 
@@ -118,7 +117,9 @@ IScene& Object::Scene() const {
 
 void Object::MarkToDestroy(Components_t::iterator it) {
     // Check if component hasn't been already marked
-    if (std::distance(it, m_Components.begin()) > static_cast<ptrdiff_t>(m_ToDestroy)) {
+    if (std::distance(m_Components.begin(), it) > static_cast<ptrdiff_t>(m_ToDestroy)) {
+        UnregisterUpdateCall(it->get());
+
         m_ToDestroy = m_ToDestroy + 1;
         std::iter_swap(m_Components.begin() + m_ToDestroy, it);
     }
