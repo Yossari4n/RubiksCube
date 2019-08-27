@@ -10,7 +10,7 @@
 #include "../../scenes/IScene.h"
 #include "../../rendering/ILightSource.h"
 
-class PointLight : public IComponent, public ILightSource {
+class PointLight : public Component, public ILightSource {
 public:
     PointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float constant, float linear, float quadratic);
     

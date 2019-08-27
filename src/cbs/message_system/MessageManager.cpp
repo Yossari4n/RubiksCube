@@ -13,7 +13,7 @@ void MessageManager::ForwardTrigger(ITriggerOut* sender) {
 }
 
 // TODO more tests
-void MessageManager::RemoveConnections(IComponent* component) {
+void MessageManager::RemoveConnections(Component* component) {
     std::uint8_t comp_id = component->ID();
 
     // TODO doc

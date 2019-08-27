@@ -6,14 +6,14 @@
 #include <vector>
 #include <string>
 
-class IScene;
+class Scene;
 
 class ObjectManager {
     using Objects_t = std::vector<std::unique_ptr<Object>>;
 
 public:
-    ObjectManager(IScene& owner);
-    
+    explicit ObjectManager(class Scene& owner);
+
     void ProcessFrame();
 
     void InitializeObjects();
@@ -23,12 +23,12 @@ public:
     Object* CreateObject(std::string name = "");
     void DestroyObject(std::uint8_t id);
     
-    IScene& Scene() const { return m_Scene; }
+    Scene& Scene() const { return m_Scene; }
     
 private:
     void MarkToDestroy(Objects_t::iterator it);
 
-    IScene& m_Scene;
+    class Scene& m_Scene;
 
     std::uint8_t m_NextObjectID;
     Objects_t m_Objects;

@@ -22,16 +22,18 @@ public:
         
         COUNT
     };
-    
+
     enum Trait : unsigned char {
         NONE = 0,
         LIGHT_RECEIVER = 1 << 0
     };
-    
+
     ShaderProgram();
     // Delete copy semanatics to prevent silent deletion of shader program
     ShaderProgram(const ShaderProgram&) = delete;
     ShaderProgram& operator=(const ShaderProgram&) = delete;
+    ShaderProgram(ShaderProgram&&) = default;
+    ShaderProgram& operator=(ShaderProgram&&) = default;
     ~ShaderProgram();
     
     void AttachShaders(const char *vertex_path, const char *fragment_path, const char *geometry_path = nullptr);
@@ -63,6 +65,6 @@ private:
     Trait m_Traits;
 };
 
-ShaderProgram::Trait operator | (ShaderProgram::Trait lhs, ShaderProgram::Trait rhs);
+ShaderProgram::Trait operator| (ShaderProgram::Trait lhs, ShaderProgram::Trait rhs);
 
 #endif

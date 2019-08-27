@@ -18,10 +18,10 @@
 #include <algorithm>
 
 class ObjectManager;
-class IScene;
+class Scene;
 
 class Object {
-    using Components_t = std::vector<std::unique_ptr<IComponent>>;
+    using Components_t = std::vector<std::unique_ptr<Component>>;
 
 public:
     Object(ObjectManager& scene, std::uint8_t id, std::string name = "object");
@@ -32,15 +32,15 @@ public:
     void UpdateComponents();
     void DestroyComponents();
 
-    void RegisterUpdateCall(const IComponent* component);
-    void UnregisterUpdateCall(const IComponent* component);
+    void RegisterUpdateCall(const Component* component);
+    void UnregisterUpdateCall(const Component* component);
 
     std::uint8_t ID() const { return m_ID; }
 
     const std::string& Name() const { return m_Name; }
     void Name(const std::string& name) { m_Name = name; }
 
-    IScene& Scene() const;
+    Scene& Scene() const;
     Transform& Root() { return m_Root; }
 
 
@@ -56,12 +56,12 @@ public:
      */
     template <class T, typename ...Args>
     T* CreateComponent(Args&&... params) {
-        // Create new IComponent
-        IComponent* comp = new T(params...);
+        // Create new Component
+        Component* comp = new T(params...);
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
         
-        // Add new IComponent at the end of vecotr to be initialized in the next frame
+        // Add new Component at the end of vecotr to be initialized in the next frame
         m_Components.emplace_back(comp);
         m_ToInitializeNextFrame = m_ToInitializeNextFrame + 1;
 
@@ -73,12 +73,12 @@ public:
 
     template <class T>
     T* CreateComponent(T* other) {
-        // Create new IComponent by invoking copy constructor
-        IComponent* comp = new T(*other);
+        // Create new Component by invoking copy constructor
+        Component* comp = new T(*other);
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
         
-        // Add new IComponent at the end of vecotr to be initialized in the next frame
+        // Add new Component at the end of vecotr to be initialized in the next frame
         m_Components.emplace_back(comp);
         m_ToInitialize = m_ToInitialize + 1;
 
@@ -103,7 +103,7 @@ public:
      */
     template <class T>
     void RemoveComponents() {
-        std::vector<std::vector<IComponent>::iterator> to_remove;
+        std::vector<std::vector<Component>::iterator> to_remove;
 
         for (auto& comp : m_Components) {
             if (dynamic_cast<T*>(comp->get()) != nullptr) {
@@ -117,7 +117,7 @@ public:
         
         auto comp = std::find_if(m_Components.begin(),
                                  m_Components.end(),
-                                 [=](std::unique_ptr<IComponent>& comp) { return comp->ID() == id; });
+                                 [=](std::unique_ptr<Component>& comp) { return comp->ID() == id; });
 
         if (comp != m_Components.end()) {
             MarkToDestroy(comp);
@@ -153,7 +153,7 @@ public:
     T* GetComponent(std::uint8_t id) {
         Components_t::iterator it = std::find_if(m_Components.begin(),
                                m_Components.end(),
-                               [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
+                               [=](std::unique_ptr<Component>& curr) { return curr->ID() == id; });
         if (it != m_Components.end()) {
             return dynamic_cast<T*>(it->get());
         } else {

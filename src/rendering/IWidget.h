@@ -10,6 +10,13 @@ public:
         END
     };
 
+    IWidget() = default;
+    virtual ~IWidget() = default;
+    IWidget(const IWidget&) = delete;
+    IWidget& operator=(const IWidget&) = delete;
+    IWidget(IWidget&&) = delete;
+    IWidget& operator=(IWidget&&) = delete;
+
     virtual void Draw() const = 0;
 
 protected:

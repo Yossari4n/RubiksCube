@@ -15,7 +15,7 @@
 
 constexpr auto ROTATION_LIMIT = (75.0f * 3.14f / 180.0f);
 
-class ThirdPersonController : public IComponent {
+class ThirdPersonController : public Component {
 public:
     ThirdPersonController(class Object* target, glm::vec3 front, glm::vec3 right, float radius = 0.0f, float mouse_sensitivity = 0.1f);
     

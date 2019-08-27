@@ -13,7 +13,7 @@
 #include <glm/gtx/quaternion.hpp>
 #pragma warning(pop)
 
-class Transform : public IComponent {
+class Transform : public Component {
 public:
     enum class Space {
         LOCAL,

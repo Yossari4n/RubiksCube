@@ -2,7 +2,7 @@
 
 #include "../scenes/IScene.h"
 
-ObjectManager::ObjectManager(IScene& owner)
+ObjectManager::ObjectManager(class Scene& owner)
     : m_Scene(owner)
     , m_NextObjectID(0)
     , m_ToInitialize(0)

@@ -6,7 +6,7 @@
 template <class M>
 class MessageOut : public IMessageOut {
 public:
-    MessageOut(IComponent* owner)
+    MessageOut(Component* owner)
         : IMessageOut(owner) {}
 
     void Send(M message) {

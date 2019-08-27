@@ -3,7 +3,7 @@
 
 #include "IScene.h"
 
-class MainScene : public IScene {
+class MainScene : public Scene {
 public:
     void CreateScene() override;
 

@@ -1,6 +1,6 @@
 #include "ShaderProgram.h"
 
-ShaderProgram::Trait operator | (ShaderProgram::Trait lhs, ShaderProgram::Trait rhs) {
+ShaderProgram::Trait operator| (ShaderProgram::Trait lhs, ShaderProgram::Trait rhs) {
     return static_cast<ShaderProgram::Trait>(static_cast<unsigned int>(lhs) | static_cast<unsigned int>(rhs));
 }
 
@@ -22,9 +22,9 @@ void ShaderProgram::AttachShaders(const char *vertex_path, const char *fragment_
     unsigned int vertex_shader = AttachShader(vertex_path, GL_VERTEX_SHADER);
     unsigned int fragment_shader = AttachShader(fragment_path, GL_FRAGMENT_SHADER);
     unsigned int geometry_shader = geometry_path != nullptr ? AttachShader(geometry_path, GL_GEOMETRY_SHADER) : -1;
-    
+
     LinkProgram();
-    
+
     // Free memory
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
@@ -100,6 +100,7 @@ unsigned int ShaderProgram::AttachShader(const char *path, GLenum shader_type) {
         
         shader_code = shader_stream.str();
     } catch(const std::ifstream::failure &e) {
+        //TODO DebugLog
         std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ " << path << '\n' << e.what() << "\n\n";
     }
     
@@ -114,6 +115,7 @@ unsigned int ShaderProgram::AttachShader(const char *path, GLenum shader_type) {
     GLchar info_log[1024];
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
+        //TODO DebugLog
         glGetShaderInfoLog(shader, 1024, NULL, info_log);
         std::cout << "ERROR::SHADER_COMPILATION_ERROR " << path << '\n' << info_log << "\n\n";
     }
@@ -131,6 +133,7 @@ void ShaderProgram::LinkProgram() {
     char info_log[1024];
     glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
     if (!success) {
+        //TODO DebugLog
         glGetProgramInfoLog(m_ID, 1024, nullptr, info_log);
         std::cout << "ERROR::LINKING_SHADERS_ERROR\n" << info_log << "\n\n";
     }

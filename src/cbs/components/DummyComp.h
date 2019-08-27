@@ -16,7 +16,7 @@
 #include <iostream>
 #include <string>
 
-class DummyComp : public IComponent {
+class DummyComp : public Component {
 public:
     DummyComp();
     ~DummyComp();

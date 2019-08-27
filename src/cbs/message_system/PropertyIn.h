@@ -9,7 +9,7 @@ class PropertyIn : public IPropertyIn {
     friend class MessageManager;
 
 public:
-    PropertyIn(IComponent* owner)
+    PropertyIn(Component* owner)
         : IPropertyIn(owner)
         , m_Source(nullptr) {}
 

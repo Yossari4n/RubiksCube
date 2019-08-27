@@ -25,7 +25,7 @@ class ILightSource;
 
 class DrawManager {
 public:
-    DrawManager();
+    DrawManager() = default;
 
     void Initialize();
 
@@ -47,10 +47,10 @@ public:
     void CallDraws() const;
 
 private:
-    glm::vec3 m_Background;
-    std::unique_ptr<Cubemap> m_Skybox;
+    glm::vec3 m_Background{ 0.0f };
+    std::unique_ptr<Cubemap> m_Skybox{ nullptr };
 
-    Camera* m_Camera;
+    Camera* m_Camera{ nullptr };
     std::vector<IDrawable*> m_Drawables;
     std::vector<IWidget*> m_Widgets;
     std::vector<ILightSource*> m_LightSources;

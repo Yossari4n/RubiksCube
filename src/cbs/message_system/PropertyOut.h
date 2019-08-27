@@ -8,20 +8,20 @@ class PropertyOut : public IPropertyOut {
     friend class MessageManager;
 
 public:
-    PropertyOut(IComponent* owner)
+    PropertyOut(Component* owner)
         : IPropertyOut(owner)
         , m_Value() {}
     
-    PropertyOut(IComponent* owner, const T& value)
+    PropertyOut(Component* owner, const T& value)
         : IPropertyOut(owner)
         , m_Value(value) {}
 
     template <class ...Args>
-    PropertyOut(IComponent* owner, Args&& ... params)
+    PropertyOut(Component* owner, Args&& ... params)
         : IPropertyOut(owner)
         , m_Value(params...) {}
 
-    PropertyOut(IComponent* owner, const PropertyOut<T>& other)
+    PropertyOut(Component* owner, const PropertyOut<T>& other)
         : IPropertyOut(owner)
         , m_Value(other.m_Value) {}
 

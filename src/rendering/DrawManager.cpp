@@ -7,12 +7,6 @@
 #include "../rendering/Cubemap.h"
 #include "../cbs/components/Camera.h"
 
-DrawManager::DrawManager()
-    : m_Skybox(nullptr)
-    , m_Camera(nullptr)
-    , m_Background(0.0f, 0.0f, 0.0f) {
-}
-
 void DrawManager::Initialize() {
     // Dear imgui initialiation
     ImGui::CreateContext();

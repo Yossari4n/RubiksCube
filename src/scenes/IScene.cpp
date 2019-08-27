@@ -3,20 +3,18 @@
 #include "../rendering/IDrawable.h"
 #include "../rendering/ILightSource.h"
 
-IScene::IScene()
+Scene::Scene()
     : m_ObjectManager(*this)
-    , m_DrawManager()
     , m_Running(false)
     , m_FrameRateLimit(0.0f) {
-    
 }
 
-void IScene::PreRun() {
+void Scene::PreRun() {
     m_Running = true;
     m_DrawManager.Initialize();
 }
 
-void IScene::Run() {
+void Scene::Run() {
     m_ObjectManager.InitializeObjects();
 
     // Initialize Time manager as close to game loop as possible
@@ -41,62 +39,62 @@ void IScene::Run() {
     }
 }
 
-void IScene::PostRun() {
+void Scene::PostRun() {
     m_ObjectManager.DestroyObjects();
 }
 
-void IScene::Exit() {
+void Scene::Exit() {
     m_Running = false;
 }
 
-void IScene::FrameRateLimit(unsigned int frame_rate) {
+void Scene::FrameRateLimit(unsigned int frame_rate) {
     m_FrameRateLimit = frame_rate != 0 ? 1.0f / (float)frame_rate : 0.0f;
 }
 
-Object* IScene::CreateObject(std::string name) {
+Object* Scene::CreateObject(std::string name) {
     return m_ObjectManager.CreateObject(name);
 }
 
-void IScene::DestroyObject(std::uint8_t id) {
+void Scene::DestroyObject(std::uint8_t id) {
     m_ObjectManager.DestroyObject(id);
 }
 
-void IScene::RegisterDrawCall(IDrawable* drawable) {
+void Scene::RegisterDrawCall(IDrawable* drawable) {
     m_DrawManager.RegisterDrawCall(drawable);
 }
 
-void IScene::UnregisterDrawCall(IDrawable* drawable) {
+void Scene::UnregisterDrawCall(IDrawable* drawable) {
     m_DrawManager.UnregisterDrawCall(drawable);
 }
 
-void IScene::RegisterWidget(IWidget* widget) {
+void Scene::RegisterWidget(IWidget* widget) {
     m_DrawManager.RegisterWidget(widget);
 }
 
-void IScene::UnregisterWidget(IWidget* widget) {
+void Scene::UnregisterWidget(IWidget* widget) {
     m_DrawManager.UnregisterWidget(widget);
 }
 
-void IScene::RegisterLightSource(ILightSource* light_source) {
+void Scene::RegisterLightSource(ILightSource* light_source) {
     m_DrawManager.RegisterLightSource(light_source);
 }
 
-void IScene::UnregisterLightSource(ILightSource* light_source) {
+void Scene::UnregisterLightSource(ILightSource* light_source) {
     m_DrawManager.UnregisterLightSource(light_source);
 }
 
-void IScene::RegisterCamera(Camera* camera) {
+void Scene::RegisterCamera(Camera* camera) {
     m_DrawManager.RegisterCamera(camera);
 }
 
-Camera* IScene::MainCamera() const {
+Camera* Scene::MainCamera() const {
     return m_DrawManager.MainCamera();
 }
 
-void IScene::Skybox(const std::string& right, const std::string& left, const std::string& top, const std::string& bottom, const std::string& back, const std::string& front) {
+void Scene::Skybox(const std::string& right, const std::string& left, const std::string& top, const std::string& bottom, const std::string& back, const std::string& front) {
     m_DrawManager.Skybox(right, left, top, bottom, back, front);
 }
 
-void IScene::Background(const glm::vec3& background) {
+void Scene::Background(const glm::vec3& background) {
     m_DrawManager.Background(background);
 }

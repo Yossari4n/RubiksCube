@@ -72,7 +72,7 @@ public:
     void ForwardMessage(IMessageOut* sender, void* message);
     void ForwardTrigger(ITriggerOut* sender);
 
-    void RemoveConnections(IComponent* component);
+    void RemoveConnections(Component* component);
 
 private:
     PropertyConnections_t m_PropertyConnections;
@@ -89,29 +89,29 @@ class IPropertyOut {
     friend class MessageManager;
 
 public:
-    IPropertyOut(IComponent* owner)
+    IPropertyOut(Component* owner)
         : m_Owner(owner) {}
 
-    IComponent* Owner() const { return m_Owner; }
+    Component* Owner() const { return m_Owner; }
 
 private:
-    IComponent* m_Owner;
+    Component* m_Owner;
 };
 
 class IPropertyIn {
     friend class MessageManager;
 
 public:
-    IPropertyIn(IComponent* owner)
+    IPropertyIn(Component* owner)
         : m_Owner(owner) {}
 
-    IComponent* Owner() const { return m_Owner; }
+    Component* Owner() const { return m_Owner; }
 
 protected:
     virtual void Reset() = 0;
 
 private:
-    IComponent* m_Owner;
+    Component* m_Owner;
 };
 
 
@@ -123,32 +123,32 @@ class IMessageOut {
     friend class MessageManager;
 
 public:
-    IMessageOut(IComponent* owner)
+    IMessageOut(Component* owner)
         : m_MessageManager(nullptr)
         , m_Owner(owner) {}
 
-    IComponent* Owner() const { return m_Owner; }
+    Component* Owner() const { return m_Owner; }
 
 protected:
     MessageManager* m_MessageManager;
 
 private:
-    IComponent* m_Owner;
+    Component* m_Owner;
 };
 
 class IMessageIn {
     friend class MessageManager;
 
 public:
-    IMessageIn(IComponent* owner)
+    IMessageIn(Component* owner)
         :  m_Owner(owner) {}
 
     virtual void Receive(void* message) = 0;
 
-    IComponent* Owner() const { return m_Owner; }
+    Component* Owner() const { return m_Owner; }
 
 private:
-    IComponent* m_Owner;
+    Component* m_Owner;
 };
 
 
@@ -160,32 +160,32 @@ class ITriggerOut {
     friend class MessageManager;
 
 public:
-    ITriggerOut(IComponent* owner)
+    ITriggerOut(Component* owner)
         : m_MessageManager(nullptr)
         , m_Owner(owner) {}
 
-    IComponent* Owner() const { return m_Owner; }
+    Component* Owner() const { return m_Owner; }
 
 protected:
     MessageManager* m_MessageManager;
 
 private:
-    IComponent* m_Owner;
+    Component* m_Owner;
 };
 
 class ITriggerIn {
     friend class MessageManager;
 
 public:
-    ITriggerIn(IComponent* owner)
+    ITriggerIn(Component* owner)
         : m_Owner(owner) {}
 
     virtual void Receive() = 0;
 
-    IComponent* Owner() const { return m_Owner; }
+    Component* Owner() const { return m_Owner; }
 
 private:
-    IComponent* m_Owner;
+    Component* m_Owner;
 };
 #pragma endregion
 #include "TriggerOut.h"

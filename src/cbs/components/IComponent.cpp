@@ -2,6 +2,6 @@
 
 #include "../Object.h"
 
-void IComponent::RegisterUpdateCall() const {
+void Component::RegisterUpdateCall() const {
     m_Object->RegisterUpdateCall(this);
 }

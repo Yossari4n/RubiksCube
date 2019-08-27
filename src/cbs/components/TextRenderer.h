@@ -9,7 +9,7 @@
 
 #include <string>
 
-class TextRenderer : public IComponent, public IWidget {
+class TextRenderer : public Component, public IWidget {
 public:
     TextRenderer(const std::string& text = "", glm::vec2 offset = glm::vec2(0.0f, 0.0f), EAlign vertical = EAlign::NONE, EAlign horizontal = EAlign::NONE);
 

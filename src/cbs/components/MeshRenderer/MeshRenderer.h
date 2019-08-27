@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 
-class MeshRenderer : public IComponent, public IDrawable {
+class MeshRenderer : public Component, public IDrawable {
 public:
     MeshRenderer(const std::string& path, ShaderProgram::Type type);
 

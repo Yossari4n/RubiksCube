@@ -5,7 +5,7 @@
 
 class TriggerOut : public ITriggerOut {
 public:
-    TriggerOut(IComponent* owner)
+    TriggerOut(Component* owner)
         : ITriggerOut(owner) {}
     
     void Trigger() {

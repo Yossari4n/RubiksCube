@@ -13,7 +13,7 @@ Object::Object(ObjectManager& owner, std::uint8_t id, std::string name)
     , m_ToInitializeNextFrame(0)
     , m_ToUpdate(0)
     , m_ToDestroy(0) {
-    IComponent* root = &m_Root;
+    Component* root = &m_Root;
     root->m_Object = this;
     root->m_ID = 1;
 }
@@ -56,14 +56,15 @@ void Object::DestroyComponents() {
     }
 }
 
-void Object::RegisterUpdateCall(const IComponent* component) {
-    auto id = component->ID();
-    assert(id == m_ID);
+void Object::RegisterUpdateCall(const Component* component) {
+    assert(component->Object().ID() == m_ID);
 
+    auto id = component->ID();
     Components_t::iterator comp = std::find_if(m_Components.begin(),
                                                m_Components.end(),
-                                               [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
+                                               [=](std::unique_ptr<Component>& curr) { return curr->ID() == id; });
 
+    assert(comp != m_Components.end());
     if (std::distance(m_Components.begin() + m_ToDestroy, comp) >= static_cast<ptrdiff_t>(m_ToUpdate)) {
         m_CurrentIndex = m_CurrentIndex - 1;
         m_ToUpdate = m_ToUpdate + 1;
@@ -71,21 +72,22 @@ void Object::RegisterUpdateCall(const IComponent* component) {
     }
 }
 
-void Object::UnregisterUpdateCall(const IComponent* component) {
-    auto id = component->ID();
-    assert(id == m_ID);
+void Object::UnregisterUpdateCall(const Component* component) {
+    assert(component->Object().ID() == m_ID);
 
+    auto id = component->ID();
     Components_t::iterator comp = std::find_if(m_Components.begin(),
                                                m_Components.end(),
-                                               [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
+                                               [=](std::unique_ptr<Component>& curr) { return curr->ID() == id; });
 
+    assert(comp != m_Components.end());
     if (std::distance(m_Components.begin() + m_ToDestroy, comp) <= static_cast<ptrdiff_t>(m_ToUpdate)) {
         m_ToUpdate = m_ToUpdate - 1;
         std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate, comp);
     }
 }
 
-IScene& Object::Scene() const {
+Scene& Object::Scene() const {
     return m_Owner.Scene();
 }
 

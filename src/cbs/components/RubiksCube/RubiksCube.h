@@ -17,7 +17,7 @@
 #include <deque>
 #include <random>
 
-class RubiksCube : public IComponent {
+class RubiksCube : public Component {
     using Row_t    = std::vector<Cubie*>;
     using Matrix_t = std::vector<Row_t>;
     using Cube_t   = std::vector<Matrix_t>;

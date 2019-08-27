@@ -6,12 +6,17 @@
 class IDrawable {
 public:
     IDrawable(ShaderProgram::Type shader_type);
+    virtual ~IDrawable() = default;
+    IDrawable(const IDrawable&) = delete;
+    IDrawable& operator=(const IDrawable&) = delete;
+    IDrawable(IDrawable&&) = delete;
+    IDrawable* operator=(IDrawable&&) = delete;
 
     virtual void Draw(const ShaderProgram &shader) const = 0;
-    
+
     ShaderProgram::Type ShaderType() const { return m_ShaderType; }
     void ShaderType(ShaderProgram::Type type) { m_ShaderType = type; }
-    
+
 protected:
     ShaderProgram::Type m_ShaderType;
 };

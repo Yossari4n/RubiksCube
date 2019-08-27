@@ -18,7 +18,7 @@
 #include <iostream>
 #include <string>
 
-class Camera : public IComponent {
+class Camera : public Component {
 public:
     Camera(glm::mat4 perspective);
     Camera(float fovy, float aspect, float near, float far);
