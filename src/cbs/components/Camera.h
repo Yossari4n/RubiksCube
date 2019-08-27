@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IComponent.h"
+#include "Component.h"
 #include "../Object.h"
-#include "../../scenes/IScene.h"
+#include "../../scenes/Scene.h"
 #include "../../utilities/Time.h"
 #include "../../utilities/Input.h"
 #include "../../rendering/Cubemap.h"

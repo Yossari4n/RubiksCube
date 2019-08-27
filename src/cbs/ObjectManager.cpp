@@ -1,6 +1,6 @@
 #include "ObjectManager.h"
 
-#include "../scenes/IScene.h"
+#include "../scenes/Scene.h"
 
 ObjectManager::ObjectManager(class Scene& owner)
     : m_Scene(owner)

@@ -19,7 +19,7 @@
 
 
 class Camera;
-class IDrawable;
+class Drawable;
 class IWidget;
 class ILightSource;
 
@@ -35,8 +35,8 @@ public:
     void Skybox(const std::string& right, const std::string& left, const std::string& top, const std::string& bottom, const std::string& back, const std::string& front);
     void Background(const glm::vec3& background);
 
-    void RegisterDrawCall(IDrawable* component);
-    void UnregisterDrawCall(IDrawable* component);
+    void RegisterDrawCall(Drawable* component);
+    void UnregisterDrawCall(Drawable* component);
 
     void RegisterWidget(IWidget* widget);
     void UnregisterWidget(IWidget* widget);
@@ -51,7 +51,7 @@ private:
     std::unique_ptr<Cubemap> m_Skybox{ nullptr };
 
     Camera* m_Camera{ nullptr };
-    std::vector<IDrawable*> m_Drawables;
+    std::vector<Drawable*> m_Drawables;
     std::vector<IWidget*> m_Widgets;
     std::vector<ILightSource*> m_LightSources;
 

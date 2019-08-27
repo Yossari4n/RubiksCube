@@ -22,7 +22,7 @@ struct Vertex {
 };
 
 struct Texture {
-    unsigned int ID = 0;
+    GLuint ID = 0;
     std::string Type;
     std::string Path;
 };
@@ -32,6 +32,8 @@ public:
     Mesh(const std::vector<Vertex> &verticies, const std::vector<unsigned int> &indicies, const std::vector<Texture> &textures);
     Mesh(const Mesh &other);
     Mesh& operator=(const Mesh& other);
+    Mesh(Mesh&&) = default;
+    Mesh& operator=(Mesh&&) = default;
     ~Mesh();
     
     void Draw(const ShaderProgram &shader) const;
@@ -48,9 +50,9 @@ private:
     std::vector<Vertex> m_Vertices;
     std::vector<unsigned int> m_Indices;
     std::vector<Texture> m_Textures;
-    unsigned int m_VAO;
-    unsigned int m_VBO;
-    unsigned int m_EBO;
+    GLuint m_VAO;
+    GLuint m_VBO;
+    GLuint m_EBO;
 };
 
 #endif

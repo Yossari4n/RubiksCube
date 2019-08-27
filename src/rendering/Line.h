@@ -1,9 +1,9 @@
 #ifndef Line_h
 #define Line_h
 
-#include "../rendering/IDrawable.h"
+#include "../rendering/Drawable.h"
 
-class Line : public IDrawable {
+class Line : public Drawable {
 public:
     Line(glm::vec3 start, glm::vec3 end, glm::vec3 color);
     Line(const Line& other);
@@ -24,8 +24,8 @@ private:
     glm::vec3 m_End;
     glm::vec3 m_Color;
     
-    unsigned int m_VAO;
-    unsigned int m_VBO;
+    GLuint m_VAO;
+    GLuint m_VBO;
     
     void SetupLine();
 };

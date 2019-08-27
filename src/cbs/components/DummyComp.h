@@ -1,9 +1,9 @@
 #ifndef DummyComp_h
 #define DummyComp_h
 
-#include "IComponent.h"
+#include "Component.h"
 #include "../Object.h"
-#include "../../scenes/IScene.h"
+#include "../../scenes/Scene.h"
 #include "../message_system/MessageOut.h"
 #include "../message_system/MessageIn.h"
 #include "../message_system/PropertyOut.h"

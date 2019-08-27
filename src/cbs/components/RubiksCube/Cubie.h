@@ -1,7 +1,7 @@
 #ifndef Cubie_h
 #define Cubie_h
 
-#include "../../../rendering/IDrawable.h"
+#include "../../../rendering/Drawable.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #pragma warning(push, 0)
@@ -11,7 +11,7 @@
 #include <glm/gtx/quaternion.hpp>
 #pragma warning(pop)
 
-class Cubie : public IDrawable {
+class Cubie : public Drawable {
 public:
     enum EColor {
         BLACK = 0x000000,
@@ -46,8 +46,8 @@ private:
     glm::quat m_Rotation;
     glm::mat4 m_Model;
 
-    unsigned int m_VAO;
-    unsigned int m_VBO;
+    GLuint m_VAO;
+    GLuint m_VBO;
 };
 
 #endif

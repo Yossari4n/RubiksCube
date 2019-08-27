@@ -4,11 +4,11 @@
 #pragma warning(disable: 26495)
 
 #include "Mesh.h"
-#include "../IComponent.h"
+#include "../Component.h"
 #include "../../Object.h"
 #include "../../message_system/PropertyIn.h"
-#include "../../../scenes/IScene.h"
-#include "../../../rendering/IDrawable.h"
+#include "../../../scenes/Scene.h"
+#include "../../../rendering/Drawable.h"
 
 #pragma warning(push, 0)
 #include <glad/glad.h>
@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 
-class MeshRenderer : public Component, public IDrawable {
+class MeshRenderer : public Component, public Drawable {
 public:
     MeshRenderer(const std::string& path, ShaderProgram::Type type);
 

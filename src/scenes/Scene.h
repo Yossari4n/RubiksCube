@@ -9,7 +9,7 @@
 
 class Scene {
 public:
-    Scene();
+    Scene() = default;
     virtual ~Scene() = default;
     Scene(const Scene&) = delete;
     Scene& operator=(const Scene&) = delete;
@@ -31,8 +31,8 @@ public:
     void DestroyObject(std::uint8_t id);
 
     // DrawManager functions
-    void RegisterDrawCall(IDrawable* drawable);
-    void UnregisterDrawCall(IDrawable* drawable);
+    void RegisterDrawCall(Drawable* drawable);
+    void UnregisterDrawCall(Drawable* drawable);
     void RegisterWidget(IWidget* widget);
     void UnregisterWidget(IWidget* widget);
     void RegisterLightSource(ILightSource* light_source);
@@ -43,11 +43,11 @@ public:
     void Background(const glm::vec3& background);
 
 private:
-    ObjectManager m_ObjectManager;
-    DrawManager m_DrawManager;
+    ObjectManager m_ObjectManager{ *this };
+    DrawManager m_DrawManager{ };
 
-    bool m_Running;
-    float m_FrameRateLimit;
+    bool m_Running{ false };
+    float m_FrameRateLimit{ 0.0f };
 };
 
 #endif

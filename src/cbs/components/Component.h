@@ -1,5 +1,5 @@
-#ifndef IComponent_h
-#define IComponent_h
+#ifndef Component_h
+#define Component_h
 
 #include <iostream>
 #include <exception>

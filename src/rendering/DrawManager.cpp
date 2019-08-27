@@ -1,6 +1,6 @@
 #include "DrawManager.h"
 
-#include "IDrawable.h"
+#include "Drawable.h"
 #include "IWidget.h"
 #include "ILightSource.h"
 #include "../utilities/Window.h"
@@ -54,14 +54,14 @@ void DrawManager::Background(const glm::vec3& background) {
     m_Background = background;
 }
 
-void DrawManager::RegisterDrawCall(IDrawable* component) {
+void DrawManager::RegisterDrawCall(Drawable* component) {
     // Ensure that each component is registered at most once
     assert(std::find(m_Drawables.begin(), m_Drawables.end(), component) == m_Drawables.end());
 
     m_Drawables.push_back(component);
 }
 
-void DrawManager::UnregisterDrawCall(IDrawable* component) {
+void DrawManager::UnregisterDrawCall(Drawable* component) {
     // Unregistering not registered component has no effect
     auto to_erase = std::find(m_Drawables.begin(), m_Drawables.end(), component);
     if (to_erase != m_Drawables.end()) {

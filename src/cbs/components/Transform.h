@@ -1,7 +1,7 @@
 #ifndef Transform_h
 #define Transform_h
 
-#include "IComponent.h"
+#include "Component.h"
 #include "../message_system/PropertyOut.h"
 #include "../message_system/PropertyIn.h"
 

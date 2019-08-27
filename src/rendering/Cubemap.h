@@ -1,7 +1,7 @@
 #ifndef Cubemap_h
 #define Cubemap_h
 
-#include "../rendering/IDrawable.h"
+#include "../rendering/Drawable.h"
 
 #pragma warning(push, 0)
 #include <stb/stb_image.h>
@@ -9,7 +9,7 @@
 
 #include <string>
 
-class Cubemap : public IDrawable {
+class Cubemap : public Drawable {
 public:
     Cubemap(const std::string& right, const std::string& left, const std::string& top, const std::string& bottom, const std::string& back, const std::string& front, ShaderProgram::Type type);
     

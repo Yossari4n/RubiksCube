@@ -3,9 +3,9 @@
 
 #include "Cubie.h"
 
-#include "../IComponent.h"
+#include "../Component.h"
 #include "../../Object.h"
-#include "../../../scenes/IScene.h"
+#include "../../../scenes/Scene.h"
 #include "../../message_system/MessageOut.h"
 
 #include "../../../utilities/Input.h"

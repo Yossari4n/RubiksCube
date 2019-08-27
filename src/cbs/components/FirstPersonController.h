@@ -1,10 +1,10 @@
 #ifndef FirstPersonController_h
 #define FirstPersonController_h
 
-#include "IComponent.h"
+#include "Component.h"
 #include "../Object.h"
 #include "../message_system/PropertyIn.h"
-#include "../../scenes/IScene.h"
+#include "../../scenes/Scene.h"
 
 #include "../../utilities/Time.h"
 #include "../../utilities/Input.h"

@@ -1,7 +1,7 @@
 #include "Cubie.h"
 
 Cubie::Cubie(glm::vec3 position, EColor front, EColor left, EColor right, EColor top, EColor bottom)
-    : IDrawable(ShaderProgram::Type::PURE_COLOR)
+    : Drawable(ShaderProgram::Type::PURE_COLOR)
     , m_FrontFace(front)
     , m_LeftFace(left)
     , m_RightFace(right)
@@ -51,7 +51,7 @@ glm::vec3 Cubie::ColorToVec(Cubie::EColor color) const {
 }
 
 void Cubie::SetupCubie(glm::vec3 front, glm::vec3 left, glm::vec3 right, glm::vec3 top, glm::vec3 bottom) {
-    float vertices[] = {
+    GLfloat vertices[] = {
         // position           // color
         // Right wall
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f,  0.0f,
@@ -149,11 +149,11 @@ void Cubie::SetupCubie(glm::vec3 front, glm::vec3 left, glm::vec3 right, glm::ve
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
     glEnableVertexAttribArray(0);
 
     // Color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);

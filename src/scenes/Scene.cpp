@@ -1,13 +1,7 @@
-#include "IScene.h"
+#include "Scene.h"
 
-#include "../rendering/IDrawable.h"
+#include "../rendering/Drawable.h"
 #include "../rendering/ILightSource.h"
-
-Scene::Scene()
-    : m_ObjectManager(*this)
-    , m_Running(false)
-    , m_FrameRateLimit(0.0f) {
-}
 
 void Scene::PreRun() {
     m_Running = true;
@@ -59,11 +53,11 @@ void Scene::DestroyObject(std::uint8_t id) {
     m_ObjectManager.DestroyObject(id);
 }
 
-void Scene::RegisterDrawCall(IDrawable* drawable) {
+void Scene::RegisterDrawCall(Drawable* drawable) {
     m_DrawManager.RegisterDrawCall(drawable);
 }
 
-void Scene::UnregisterDrawCall(IDrawable* drawable) {
+void Scene::UnregisterDrawCall(Drawable* drawable) {
     m_DrawManager.UnregisterDrawCall(drawable);
 }
 

@@ -1,9 +1,9 @@
 #ifndef ThirdPersonController_h
 #define ThirdPersonController_h
 
-#include "IComponent.h"
+#include "Component.h"
 #include "../Object.h"
-#include "../../scenes/IScene.h"
+#include "../../scenes/Scene.h"
 #include "../message_system/PropertyIn.h"
 
 #include "../../utilities/Time.h"

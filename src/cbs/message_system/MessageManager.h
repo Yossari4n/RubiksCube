@@ -1,7 +1,7 @@
 #ifndef MessageManager_h
 #define MessageManager_h
 
-#include "../components/IComponent.h"
+#include "../components/Component.h"
 
 #include <algorithm>
 #include <vector>

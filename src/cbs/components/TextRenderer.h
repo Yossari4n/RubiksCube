@@ -1,10 +1,10 @@
 #ifndef TextRenderer_h
 #define TextRenderer_h
 
-#include "IComponent.h"
+#include "Component.h"
 #include "../../rendering/IWidget.h"
 #include "../Object.h"
-#include "../../scenes/IScene.h"
+#include "../../scenes/Scene.h"
 #include "../message_system/MessageIn.h"
 
 #include <string>

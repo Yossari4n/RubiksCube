@@ -1,7 +1,7 @@
 #include "Object.h"
 
 #include "ObjectManager.h"
-#include "../scenes/IScene.h"
+#include "../scenes/Scene.h"
 
 Object::Object(ObjectManager& owner, std::uint8_t id, std::string name)
     : m_ID(id)

@@ -1,7 +1,7 @@
 #include "Line.h"
 
 Line::Line(glm::vec3 start, glm::vec3 end, glm::vec3 color)
-    : IDrawable(ShaderProgram::Type::PURE_COLOR)
+    : Drawable(ShaderProgram::Type::PURE_COLOR)
     , m_Start(start)
     , m_End(end)
     , m_Color(color) {
@@ -9,7 +9,7 @@ Line::Line(glm::vec3 start, glm::vec3 end, glm::vec3 color)
 }
 
 Line::Line(const Line& other)
-    : IDrawable(ShaderProgram::Type::PURE_COLOR)
+    : Drawable(ShaderProgram::Type::PURE_COLOR)
     , m_Start(other.m_Start)
     , m_End(other.m_End)
     , m_Color(other.m_Color) {
@@ -46,7 +46,7 @@ void Line::Draw(const ShaderProgram &shader) const {
 }
 
 void Line::SetupLine() {
-    float vertices[] = { m_Start.x, m_Start.y, m_Start.z, m_End.x, m_End.y, m_End.z };
+    GLfloat vertices[] = { m_Start.x, m_Start.y, m_Start.z, m_End.x, m_End.y, m_End.z };
     
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);
@@ -57,7 +57,7 @@ void Line::SetupLine() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // Position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *)0);
     glEnableVertexAttribArray(0);
 
     glBindVertexArray(0);
