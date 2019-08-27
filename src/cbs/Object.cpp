@@ -58,11 +58,12 @@ void Object::DestroyComponents() {
 
 void Object::RegisterUpdateCall(const IComponent* component) {
     auto id = component->ID();
+    assert(id == m_ID);
+
     Components_t::iterator comp = std::find_if(m_Components.begin(),
                                                m_Components.end(),
                                                [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
 
-    assert(comp != m_Components.end());
     if (std::distance(m_Components.begin() + m_ToDestroy, comp) >= static_cast<ptrdiff_t>(m_ToUpdate)) {
         m_CurrentIndex = m_CurrentIndex - 1;
         m_ToUpdate = m_ToUpdate + 1;
@@ -72,11 +73,12 @@ void Object::RegisterUpdateCall(const IComponent* component) {
 
 void Object::UnregisterUpdateCall(const IComponent* component) {
     auto id = component->ID();
+    assert(id == m_ID);
+
     Components_t::iterator comp = std::find_if(m_Components.begin(),
                                                m_Components.end(),
                                                [=](std::unique_ptr<IComponent>& curr) { return curr->ID() == id; });
 
-    assert(comp != m_Components.end());
     if (std::distance(m_Components.begin() + m_ToDestroy, comp) <= static_cast<ptrdiff_t>(m_ToUpdate)) {
         m_ToUpdate = m_ToUpdate - 1;
         std::iter_swap(m_Components.begin() + m_ToDestroy + m_ToUpdate, comp);

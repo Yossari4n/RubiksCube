@@ -2,7 +2,7 @@
 #define IComponent_h
 
 #include <iostream>
-#include <cassert>
+#include <assert>
 #include <exception>
 
 class Object;
