@@ -57,10 +57,6 @@ Object* IScene::CreateObject(std::string name) {
     return m_ObjectManager.CreateObject(name);
 }
 
-Object* IScene::CreateObject(const Object* other, std::string name) {
-    return m_ObjectManager.CreateObject(other, name);
-}
-
 void IScene::DestroyObject(std::uint8_t id) {
     m_ObjectManager.DestroyObject(id);
 }

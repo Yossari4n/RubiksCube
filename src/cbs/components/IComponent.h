@@ -19,11 +19,6 @@ public:
     }
     virtual ~IComponent() {}
 
-    virtual IComponent* Clone() const {
-        std::cout << "Attempted to create copy of Component not implementing Clone() function\n";
-        return nullptr;
-    }
-
     std::uint8_t ID() const {
         return m_ID;
     }

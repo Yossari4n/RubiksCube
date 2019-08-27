@@ -25,8 +25,7 @@ class Object {
 
 public:
     Object(ObjectManager& scene, std::uint8_t id, std::string name = "object");
-    Object(const Object& other, std::uint8_t id, std::string name = "");
-    
+
     void ProcessFrame();
 
     void InitializeComponents();
@@ -221,6 +220,7 @@ private:
     std::string m_Name;
 
     ObjectManager& m_Owner;
+
     MessageManager m_MessageManager;
 
     Transform m_Root;

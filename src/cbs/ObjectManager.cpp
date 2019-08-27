@@ -51,16 +51,6 @@ Object* ObjectManager::CreateObject(std::string name) {
     return m_Objects.at(m_Objects.size() - 1).get();
 }
 
-Object* ObjectManager::CreateObject(const Object* other, std::string name) {
-    m_Objects.push_back(std::make_unique<Object>(*other, m_NextObjectID, name));
-
-    m_ToInitializeNextFrame = m_ToInitializeNextFrame + 1;
-
-    m_NextObjectID = m_NextObjectID + 1;
-    
-    return m_Objects.at(m_Objects.size() - 1).get();
-}
-
 void ObjectManager::DestroyObject(std::uint8_t id) {
     auto object = std::find_if(m_Objects.begin(),
                                m_Objects.end(),

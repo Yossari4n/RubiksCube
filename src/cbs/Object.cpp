@@ -18,34 +18,6 @@ Object::Object(ObjectManager& owner, std::uint8_t id, std::string name)
     root->m_ID = 1;
 }
 
-Object::Object(const Object& other, std::uint8_t id, std::string name)
-    : m_ID(id)
-    , m_Name(name.empty() ? other.Name() + "_copy" : name)
-    , m_Owner(other.m_Owner)
-    , m_Root(other.m_Root)
-    , m_NextCompID(other.m_NextCompID)
-    , m_CurrentIndex(other.m_CurrentIndex)
-    , m_ToInitialize(other.m_ToInitialize)
-    , m_ToInitializeNextFrame(other.m_ToInitializeNextFrame)
-    , m_ToUpdate(other.m_ToUpdate)
-    , m_ToDestroy(other.m_ToDestroy) {
-
-    // Copy root component
-    IComponent* root = &m_Root;
-    root->m_Object = this;
-
-    // Copy components
-    for (auto& comp : other.m_Components) {
-        m_Components.emplace_back(comp->Clone());
-        m_Components[m_Components.size() - 1]->m_Object = this;
-        m_Components[m_Components.size() - 1]->m_ID = comp->m_ID;
-        m_Components[m_Components.size() - 1]->Initialize();
-    }
-
-    // Copy connections between components
-    // TODO
-}
-
 void Object::ProcessFrame() {
     InitializeComponents();
     UpdateComponents();
@@ -118,6 +90,7 @@ IScene& Object::Scene() const {
 void Object::MarkToDestroy(Components_t::iterator it) {
     // Check if component hasn't been already marked
     if (std::distance(m_Components.begin(), it) > static_cast<ptrdiff_t>(m_ToDestroy)) {
+        // Unregister update call if needed
         UnregisterUpdateCall(it->get());
 
         m_ToDestroy = m_ToDestroy + 1;
