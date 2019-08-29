@@ -21,7 +21,6 @@ public:
     };
 
     Transform();
-    Transform(const Transform& other);
 
     void Initialize() override;
 
@@ -44,9 +43,9 @@ public:
     glm::vec3 Up() { return RotationOut.Value() * glm::vec3(0.0f, 1.0f, 0.0f); }
     glm::vec3 Right() { return RotationOut.Value() * glm::vec3(0.0f, 0.0f, 1.0f); }
 
-    PropertyIn<Transform&> Parent{ this };
-    // TODO find new names to remove redundant "Out" in names
-    PropertyOut<Transform&> TransformOut{ this, *this };
+    PropertyIn<Transform> Parent{ this };
+
+    PropertyOut<Transform*> TransformOut{ this, this };
 
     PropertyOut<glm::mat4> ModelOut{ this, 1.0f };
     PropertyOut<glm::vec3> PositionOut{ this, 0.0f };

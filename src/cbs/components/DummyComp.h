@@ -18,9 +18,6 @@
 
 class DummyComp : public Component {
 public:
-    DummyComp();
-    ~DummyComp();
-
     void Initialize() override;
     void Update() override;
     void Destroy() override;
@@ -28,20 +25,19 @@ public:
     void OnMessage(std::string msg);
     void OnTrigger();
 
-    MessageOut<std::string> m_MessageOut { this };
+    MessageOut<std::string> m_MessageOut{ this };
 
-    MessageIn<std::string, DummyComp, &DummyComp::OnMessage> m_MessageIn { this };
+    MessageIn<std::string, DummyComp, &DummyComp::OnMessage> m_MessageIn{ this };
 
-    PropertyOut<float> m_PropertyOut { this, 0.0f };
+    PropertyOut<float> m_PropertyOut{ this, 0.0f };
 
-    PropertyIn<float> m_PropertyIn { this };
+    PropertyIn<float> m_PropertyIn{ this };
 
-    TriggerOut m_TriggerOut { this };
+    TriggerOut m_TriggerOut{ this };
 
     TriggerIn<DummyComp, &DummyComp::OnTrigger> m_TriggerIn{ this };
 
-private:
-    std::string m_Message;
+    PropertyIn<Transform*> m_TrasformIn{ this };
 };
 
 #endif

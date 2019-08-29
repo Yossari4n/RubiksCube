@@ -70,6 +70,9 @@ private:
     void RotateMeshes(const Face& face, float angle);
     void RotateData(const Face& face, ERotation rotation);
 
+    // Just for now, 1 = up, 2 = down, 3 = left, 4 = right
+    void RotateCube(int direction);
+
     Cube_t m_Cube;
     std::deque<Task> m_Tasks;
 

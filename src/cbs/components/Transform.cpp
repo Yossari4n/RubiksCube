@@ -6,14 +6,6 @@ Transform::Transform() {
     UpdateModel();
 }
 
-Transform::Transform(const Transform& other)
-    : PositionOut(this, other.PositionOut)
-    , RotationOut(this, other.RotationOut)
-    , ScaleOut(this, other.ScaleOut)
-    , ModelOut(this, other.ModelOut) {
-    UpdateModel();
-}
-
 void Transform::Initialize() {
     UpdateModel();
 }
@@ -28,7 +20,7 @@ const glm::vec3& Transform::Position() const {
 
 void Transform::Position(const glm::vec3& position) {
     PositionOut = position;
-    
+
     UpdateModel();
 }
 

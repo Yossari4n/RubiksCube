@@ -1,12 +1,13 @@
 #include "Cubie.h"
 
-Cubie::Cubie(glm::vec3 position, EColor front, EColor left, EColor right, EColor top, EColor bottom)
+Cubie::Cubie(const glm::mat4* parent, glm::vec3 position, EColor front, EColor left, EColor right, EColor top, EColor bottom)
     : Drawable(ShaderProgram::Type::PURE_COLOR)
     , m_FrontFace(front)
     , m_LeftFace(left)
     , m_RightFace(right)
     , m_TopFace(top)
     , m_BottomFace(bottom)
+    , m_ParentModel(parent)
     , m_Position(position)
     , m_Rotation(glm::vec3(0.0f))
     , m_Model(1.0f) {
@@ -19,7 +20,7 @@ Cubie::~Cubie() {
 }
 
 void Cubie::Draw(const ShaderProgram& shader) const {
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Position);
+    glm::mat4 model = glm::translate(*m_ParentModel, m_Position);
     model = model * glm::toMat4(m_Rotation);
 
     shader.Uniform("model", model);

@@ -35,15 +35,15 @@ public:
     Mesh(Mesh&&) = default;
     Mesh& operator=(Mesh&&) = default;
     ~Mesh();
-    
+
     void Draw(const ShaderProgram &shader) const;
-    
+
     const std::vector<Vertex>& Vertices() const { return m_Vertices; }
-    
+
     const std::vector<unsigned int>& Indicies() const { return m_Indices; }
-    
+
     const std::vector<Texture>& Textures() const { return m_Textures; }
-    
+
 private:
     void SetupMesh();
 

@@ -1,17 +1,11 @@
 #include "DummyComp.h"
 
-DummyComp::DummyComp()
-    : m_Message("Message test") {
-}
-
-DummyComp::~DummyComp() {
-}
-
 void DummyComp::Initialize() {
     RegisterUpdateCall();
 }
 
 void DummyComp::Update() {
+
     if (g_Input.GetKeyState(GLFW_KEY_SPACE) == Input::KeyState::PRESSED) {
         m_TriggerOut.Trigger();
     }

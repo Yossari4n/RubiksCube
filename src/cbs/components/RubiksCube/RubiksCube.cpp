@@ -11,7 +11,7 @@ std::ostream& operator<<(std::ostream& os, RubiksCube::ERotation dir) {
 
 
 #pragma region Faces
-RubiksCube::Face RubiksCube::s_Front = {
+RubiksCube::Face RubiksCube::s_Front {
     {
         { 0, 0, 0 },
         { 0, 0, 1 },
@@ -26,7 +26,7 @@ RubiksCube::Face RubiksCube::s_Front = {
     { glm::vec3(1.0f, 0.0f, 0.0f) }
 };
 
-RubiksCube::Face RubiksCube::s_Back = {
+RubiksCube::Face RubiksCube::s_Back {
     {
         { 2, 0, 2 },
         { 2, 0, 1 },
@@ -41,7 +41,7 @@ RubiksCube::Face RubiksCube::s_Back = {
     { glm::vec3(-1.0f, 0.0f, 0.0f) }
 };
 
-RubiksCube::Face RubiksCube::s_Left = {
+RubiksCube::Face RubiksCube::s_Left {
     {
         {2, 0, 0},
         {1, 0, 0},
@@ -56,7 +56,7 @@ RubiksCube::Face RubiksCube::s_Left = {
     { glm::vec3(0.0f, 0.0f, 1.0f) }
 };
 
-RubiksCube::Face RubiksCube::s_Right = {
+RubiksCube::Face RubiksCube::s_Right {
     {
         {0, 0, 2},
         {1, 0, 2},
@@ -71,7 +71,7 @@ RubiksCube::Face RubiksCube::s_Right = {
     { glm::vec3(0.0f, 0.0f, -1.0f) }
 };
 
-RubiksCube::Face RubiksCube::s_Up = {
+RubiksCube::Face RubiksCube::s_Up {
     {
         {2, 0, 0},
         {2, 0, 1},
@@ -86,7 +86,7 @@ RubiksCube::Face RubiksCube::s_Up = {
     { glm::vec3(0.0f, 1.0f, 0.0f) }
 };
 
-RubiksCube::Face RubiksCube::s_Down = {
+RubiksCube::Face RubiksCube::s_Down {
     {
         {1, 2, 2},
         {2, 2, 2},
@@ -110,36 +110,40 @@ RubiksCube::RubiksCube() {
             m_Cube[matrix][row].reserve(3);
         }
     }
+}
+
+void RubiksCube::Initialize() {
+    const glm::mat4* root_model = &Object().Root().ModelOut.Value();
 
     // Front face
     // First row
-    m_Cube[0][0].emplace_back(new Cubie(glm::vec3(1.0f, 1.0f, 1.0f), Cubie::EColor::BLUE, Cubie::EColor::RED, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
-    m_Cube[0][0].emplace_back(new Cubie(glm::vec3(1.0f, 1.0f, 0.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
-    m_Cube[0][0].emplace_back(new Cubie(glm::vec3(1.0f, 1.0f, -1.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::ORANGE, Cubie::EColor::WHITE));
+    m_Cube[0][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 1.0f, 1.0f), Cubie::EColor::BLUE, Cubie::EColor::RED, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
+    m_Cube[0][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 1.0f, 0.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
+    m_Cube[0][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 1.0f, -1.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::ORANGE, Cubie::EColor::WHITE));
     // Second row
-    m_Cube[0][1].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::BLUE, Cubie::EColor::RED));
-    m_Cube[0][1].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::BLUE));
-    m_Cube[0][1].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, -1.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::ORANGE));
+    m_Cube[0][1].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::BLUE, Cubie::EColor::RED));
+    m_Cube[0][1].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::BLUE));
+    m_Cube[0][1].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, -1.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::ORANGE));
     // Third row
-    m_Cube[0][2].emplace_back(new Cubie(glm::vec3(1.0f, -1.0f, 1.0f), Cubie::EColor::BLUE, Cubie::EColor::RED, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
-    m_Cube[0][2].emplace_back(new Cubie(glm::vec3(1.0f, -1.0f, 0.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
-    m_Cube[0][2].emplace_back(new Cubie(glm::vec3(1.0f, -1.0f, -1.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::ORANGE, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
+    m_Cube[0][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, -1.0f, 1.0f), Cubie::EColor::BLUE, Cubie::EColor::RED, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
+    m_Cube[0][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, -1.0f, 0.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
+    m_Cube[0][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, -1.0f, -1.0f), Cubie::EColor::BLUE, Cubie::EColor::BLACK, Cubie::EColor::ORANGE, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
 
     // Back face
     // First row
-    m_Cube[2][0].emplace_back(new Cubie(glm::vec3(1.0f, 1.0f, -1.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::RED, Cubie::EColor::WHITE));
-    m_Cube[2][0].emplace_back(new Cubie(glm::vec3(1.0f, 1.0f, 0.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
-    m_Cube[2][0].emplace_back(new Cubie(glm::vec3(1.0f, 1.0f, 1.0f), Cubie::EColor::GREEN, Cubie::EColor::ORANGE, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
+    m_Cube[2][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 1.0f, -1.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::RED, Cubie::EColor::WHITE));
+    m_Cube[2][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 1.0f, 0.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
+    m_Cube[2][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 1.0f, 1.0f), Cubie::EColor::GREEN, Cubie::EColor::ORANGE, Cubie::EColor::BLACK, Cubie::EColor::WHITE));
 
     // Second row
-    m_Cube[2][1].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, -1.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::RED));
-    m_Cube[2][1].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::GREEN));
-    m_Cube[2][1].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::GREEN, Cubie::EColor::ORANGE));
+    m_Cube[2][1].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, -1.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::RED));
+    m_Cube[2][1].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::GREEN));
+    m_Cube[2][1].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::GREEN, Cubie::EColor::ORANGE));
 
     // Third row
-    m_Cube[2][2].emplace_back(new Cubie(glm::vec3(1.0f, -1.0f, -1.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::RED, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
-    m_Cube[2][2].emplace_back(new Cubie(glm::vec3(1.0f, -1.0f, 0.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
-    m_Cube[2][2].emplace_back(new Cubie(glm::vec3(1.0f, -1.0f, 1.0f), Cubie::EColor::GREEN, Cubie::EColor::ORANGE, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
+    m_Cube[2][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, -1.0f, -1.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::RED, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
+    m_Cube[2][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, -1.0f, 0.0f), Cubie::EColor::GREEN, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
+    m_Cube[2][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, -1.0f, 1.0f), Cubie::EColor::GREEN, Cubie::EColor::ORANGE, Cubie::EColor::BLACK, Cubie::EColor::BLACK, Cubie::EColor::YELLOW));
     for (auto row = m_Cube[2].begin(); row != m_Cube[2].end(); row++) {
         for (auto cubie = row->begin(); cubie != row->end(); cubie++) {
             (*cubie)->RotateAround(180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -148,22 +152,22 @@ RubiksCube::RubiksCube() {
 
     // Middle face
     // First row
-    m_Cube[1][0].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::WHITE, Cubie::EColor::RED))->RotateAround(90.0f, glm::vec3(0.0f, 0.0f, 1.0f));;
-    m_Cube[1][0].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::WHITE))->RotateAround(90.0f, glm::vec3(0.0f, 0.0f, 1.0f));;
-    m_Cube[1][0].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, -1.0f), Cubie::EColor::WHITE, Cubie::EColor::BLACK, Cubie::EColor::ORANGE))->RotateAround(90.0f, glm::vec3(0.0f, 0.0f, 1.0f));;
+    m_Cube[1][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::WHITE, Cubie::EColor::RED))->RotateAround(90.0f, glm::vec3(0.0f, 0.0f, 1.0f));;
+    m_Cube[1][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::WHITE))->RotateAround(90.0f, glm::vec3(0.0f, 0.0f, 1.0f));;
+    m_Cube[1][0].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, -1.0f), Cubie::EColor::WHITE, Cubie::EColor::BLACK, Cubie::EColor::ORANGE))->RotateAround(90.0f, glm::vec3(0.0f, 0.0f, 1.0f));;
 
     // Second row
-    m_Cube[1][1].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::RED))->RotateAround(-90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-    m_Cube[1][1].emplace_back(new Cubie(glm::vec3(0.0f, 0.0f, 0.0f), Cubie::EColor::BLACK)); // Hidden cubie in the center
-    m_Cube[1][1].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::ORANGE))->RotateAround(90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    m_Cube[1][1].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::RED))->RotateAround(-90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    m_Cube[1][1].emplace_back(new Cubie(root_model, glm::vec3(0.0f, 0.0f, 0.0f), Cubie::EColor::BLACK)); // Hidden cubie in the center
+    m_Cube[1][1].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::ORANGE))->RotateAround(90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
     // Third row
-    m_Cube[1][2].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::YELLOW, Cubie::EColor::RED))->RotateAround(-90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-    m_Cube[1][2].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::YELLOW))->RotateAround(-90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-    m_Cube[1][2].emplace_back(new Cubie(glm::vec3(1.0f, 0.0f, -1.0f), Cubie::EColor::YELLOW, Cubie::EColor::BLACK, Cubie::EColor::ORANGE))->RotateAround(-90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-}
+    m_Cube[1][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 1.0f), Cubie::EColor::YELLOW, Cubie::EColor::RED))->RotateAround(-90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    m_Cube[1][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, 0.0f), Cubie::EColor::YELLOW))->RotateAround(-90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    m_Cube[1][2].emplace_back(new Cubie(root_model, glm::vec3(1.0f, 0.0f, -1.0f), Cubie::EColor::YELLOW, Cubie::EColor::BLACK, Cubie::EColor::ORANGE))->RotateAround(-90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
-void RubiksCube::Initialize() {
+
+    // Register draw calls for all cubies
     for (auto matrix = m_Cube.begin(); matrix != m_Cube.end(); matrix++) {
         for (auto row = matrix->begin(); row != matrix->end(); row++) {
             for (auto cube = row->begin(); cube != row->end(); cube++) {
@@ -204,6 +208,14 @@ void RubiksCube::Update() {
         m_Tasks.emplace_back(*this, s_Down, 90.0f, "D'", rotation_speed);
     } else if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
         m_Tasks.emplace_back(*this, s_Down, -90.0f, "D", rotation_speed);
+    } else if (g_Input.GetKeyState(GLFW_KEY_UP) == Input::KeyState::PRESSED) {
+        RotateCube(1);
+    } else if (g_Input.GetKeyState(GLFW_KEY_DOWN) == Input::KeyState::PRESSED) {
+        RotateCube(2);
+    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT) == Input::KeyState::PRESSED) {
+        RotateCube(3);
+    } else if (g_Input.GetKeyState(GLFW_KEY_RIGHT) == Input::KeyState::PRESSED) {
+        RotateCube(4);
     }
 
     // Update deque of tasks
@@ -314,6 +326,22 @@ void RubiksCube::RotateData(const Face& face, RubiksCube::ERotation rotation) {
         m_Cube[face.CubiesAround[j][0]][face.CubiesAround[j][1]][face.CubiesAround[j][2]] = tmp;
     }
 }
+
+void RubiksCube::RotateCube(int direction) {
+    if (direction == 1) {
+        Object().Root().Rotate(glm::vec3(0.0f, 0.0f, glm::radians(90.0f)));
+
+        // left.cubies = front.cubies; front.cubies = right.cubies; etc
+    } else if (direction == 2) {
+        Object().Root().Rotate(glm::vec3(0.0f, 0.0f, glm::radians(-90.0f)));
+    } else if (direction == 3) {
+        Object().Root().Rotate(glm::vec3(0.0f, glm::radians(-90.0f), 0.0f));
+    } else if (direction == 4) {
+        Object().Root().Rotate(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
+    }
+}
+
+
 
 RubiksCube::Task::Task(RubiksCube& owner, const RubiksCube::Face& face, float target, const std::string& signature, float rotation_speed)
     : m_Owner(owner)

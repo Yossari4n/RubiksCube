@@ -13,10 +13,8 @@ public:
         : IPropertyIn(owner)
         , m_Source(nullptr) {}
 
-    PropertyIn(PropertyIn&& other) = default;
-
-    T& Value() const { return *m_Source; }
-    operator const T&() const { return *m_Source; }
+    const T& Value() const { return m_Source->Value(); }
+    operator const T&() const { return m_Source->Value(); }
 
     bool Connected() const { return m_Source != nullptr; }
 
@@ -25,7 +23,7 @@ private:
         m_Source = nullptr;
     }
 
-    PropertyOut<T>* m_Source;
+    const PropertyOut<T>* m_Source;
 };
 
 #endif

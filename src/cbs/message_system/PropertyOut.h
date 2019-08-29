@@ -11,21 +11,11 @@ public:
     PropertyOut(Component* owner)
         : IPropertyOut(owner)
         , m_Value() {}
-    
-    PropertyOut(Component* owner, const T& value)
-        : IPropertyOut(owner)
-        , m_Value(value) {}
 
     template <class ...Args>
     PropertyOut(Component* owner, Args&& ... params)
         : IPropertyOut(owner)
         , m_Value(params...) {}
-
-    PropertyOut(Component* owner, const PropertyOut<T>& other)
-        : IPropertyOut(owner)
-        , m_Value(other.m_Value) {}
-
-    PropertyOut(PropertyOut&& other) = default;
 
     T& operator=(const T& value) {
         m_Value = value;

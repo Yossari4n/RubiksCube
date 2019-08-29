@@ -34,12 +34,12 @@ Mesh::~Mesh() {
 }
 
 void Mesh::Draw(const ShaderProgram &shader) const {
-    for (size_t i = 0; i < m_Textures.size(); i++) {
-        glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + i));
+    for (GLuint i = 0; i < m_Textures.size(); i++) {
+        glActiveTexture(GL_TEXTURE0 + static_cast<GLenum>(i));
         
         std::string name = m_Textures[i].Type;
         
-        glUniform1i(glGetUniformLocation(shader.ID(), (name).c_str()), static_cast<GLint>(i));
+        glUniform1i(glGetUniformLocation(shader.ID(), (name).c_str()), i);
         glBindTexture(GL_TEXTURE_2D, m_Textures[i].ID);
     }
     

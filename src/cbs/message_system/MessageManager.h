@@ -1,11 +1,11 @@
 #ifndef MessageManager_h
 #define MessageManager_h
 
-#include "../components/Component.h"
-
 #include <algorithm>
 #include <vector>
 #include <unordered_map>
+
+class Component;
 
 #pragma region ForwardDeclarations
 class IPropertyOut;
@@ -92,6 +92,13 @@ public:
     IPropertyOut(Component* owner)
         : m_Owner(owner) {}
 
+    IPropertyOut() = delete;
+    IPropertyOut(const IPropertyOut&) = delete;
+    IPropertyOut& operator=(const IPropertyOut&) = delete;
+    IPropertyOut(IPropertyOut&&) = delete;
+    IPropertyOut operator=(IPropertyOut&&) = delete;
+    virtual ~IPropertyOut() = default;
+
     Component* Owner() const { return m_Owner; }
 
 private:
@@ -104,6 +111,13 @@ class IPropertyIn {
 public:
     IPropertyIn(Component* owner)
         : m_Owner(owner) {}
+
+    IPropertyIn() = delete;
+    IPropertyIn(const IPropertyIn&) = delete;
+    IPropertyIn& operator=(const IPropertyIn&) = delete;
+    IPropertyIn(IPropertyIn&&) = delete;
+    IPropertyIn operator=(IPropertyIn&&) = delete;
+    virtual ~IPropertyIn() = default;
 
     Component* Owner() const { return m_Owner; }
 
@@ -127,6 +141,13 @@ public:
         : m_MessageManager(nullptr)
         , m_Owner(owner) {}
 
+    IMessageOut() = delete;
+    IMessageOut(const IMessageOut&) = delete;
+    IMessageOut& operator=(const IMessageOut&) = delete;
+    IMessageOut(IMessageOut&&) = delete;
+    IMessageOut operator=(IMessageOut&&) = delete;
+    virtual ~IMessageOut() = default;
+
     Component* Owner() const { return m_Owner; }
 
 protected:
@@ -142,6 +163,13 @@ class IMessageIn {
 public:
     IMessageIn(Component* owner)
         :  m_Owner(owner) {}
+
+    IMessageIn() = delete;
+    IMessageIn(const IMessageIn&) = delete;
+    IMessageIn& operator=(const IMessageIn&) = delete;
+    IMessageIn(IMessageIn&&) = delete;
+    IMessageIn operator=(IMessageIn&&) = delete;
+    virtual ~IMessageIn() = default;
 
     virtual void Receive(void* message) = 0;
 
@@ -164,6 +192,13 @@ public:
         : m_MessageManager(nullptr)
         , m_Owner(owner) {}
 
+    ITriggerOut() = delete;
+    ITriggerOut(const ITriggerOut&) = delete;
+    ITriggerOut& operator=(const ITriggerOut&) = delete;
+    ITriggerOut(ITriggerOut&&) = delete;
+    ITriggerOut operator=(ITriggerOut&&) = delete;
+    virtual ~ITriggerOut() = default;
+
     Component* Owner() const { return m_Owner; }
 
 protected:
@@ -180,6 +215,13 @@ public:
     ITriggerIn(Component* owner)
         : m_Owner(owner) {}
 
+    ITriggerIn() = delete;
+    ITriggerIn(const ITriggerIn&) = delete;
+    ITriggerIn& operator=(const ITriggerIn&) = delete;
+    ITriggerIn(ITriggerIn&&) = delete;
+    ITriggerIn operator=(ITriggerIn&&) = delete;
+    virtual ~ITriggerIn() = default;
+
     virtual void Receive() = 0;
 
     Component* Owner() const { return m_Owner; }
@@ -195,7 +237,7 @@ void MessageManager::Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
     if (observer.m_Source == nullptr) {
         observer.m_Source = &subject;
 
-        m_PropertyConnections.emplace_back(subject, observer);
+        m_PropertyConnections.emplace_back(&subject, &observer);
     } else {
         // TODO DebugLog
         std::cout << "PropertyIn of type " << typeid(T).name() << " already has connection\n";

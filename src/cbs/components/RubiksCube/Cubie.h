@@ -23,7 +23,7 @@ public:
         ORANGE = 0xFF4500
     };
 
-    Cubie(glm::vec3 position, EColor front, EColor left = BLACK, EColor right = BLACK, EColor top = BLACK, EColor bottom = BLACK);
+    Cubie(const glm::mat4* parent, glm::vec3 position, EColor front, EColor left = BLACK, EColor right = BLACK, EColor top = BLACK, EColor bottom = BLACK);
     ~Cubie();
 
     void Draw(const ShaderProgram& shader) const override;
@@ -42,6 +42,7 @@ private:
     EColor m_TopFace;
     EColor m_BottomFace;
 
+    const glm::mat4* m_ParentModel;
     glm::vec3 m_Position;
     glm::quat m_Rotation;
     glm::mat4 m_Model;

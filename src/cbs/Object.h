@@ -71,23 +71,6 @@ public:
         return dynamic_cast<T*>(comp);
     }
 
-    template <class T>
-    T* CreateComponent(T* other) {
-        // Create new Component by invoking copy constructor
-        Component* comp = new T(*other);
-        comp->m_Object = this;
-        comp->m_ID = m_NextCompID;
-        
-        // Add new Component at the end of vecotr to be initialized in the next frame
-        m_Components.emplace_back(comp);
-        m_ToInitialize = m_ToInitialize + 1;
-
-        m_NextCompID = m_NextCompID + 1;
-
-        // Return pointer of T type
-        return dynamic_cast<T*>(comp);
-    }
-
 
     /**
      * Remove component(s)
