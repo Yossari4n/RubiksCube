@@ -1,14 +1,5 @@
 #include "RubiksCube.h"
-
-std::ostream& operator<<(std::ostream& os, RubiksCube::ERotation dir) {
-    if (dir == RubiksCube::ERotation::CLOCKWISE) {
-        os << "Clockwise";
-    } else {
-        os << "Counter-clodkwise";
-    }
-    return os;
-}
-
+#include "Tasks.h"
 
 #pragma region Faces
 RubiksCube::Face RubiksCube::s_Front {
@@ -23,7 +14,8 @@ RubiksCube::Face RubiksCube::s_Front {
         { 0, 1, 0 }
     },
     { 0, 1, 1 },
-    { glm::vec3(1.0f, 0.0f, 0.0f) }
+    { glm::vec3(1.0f, 0.0f, 0.0f) },
+    { 'F' }
 };
 
 RubiksCube::Face RubiksCube::s_Back {
@@ -38,7 +30,8 @@ RubiksCube::Face RubiksCube::s_Back {
         { 2, 1, 2 }
     },
     { 2, 1, 1 },
-    { glm::vec3(-1.0f, 0.0f, 0.0f) }
+    { glm::vec3(-1.0f, 0.0f, 0.0f) },
+    { 'B' }
 };
 
 RubiksCube::Face RubiksCube::s_Left {
@@ -53,7 +46,8 @@ RubiksCube::Face RubiksCube::s_Left {
         {2, 1, 0}
     },
     { 1, 1, 0 },
-    { glm::vec3(0.0f, 0.0f, 1.0f) }
+    { glm::vec3(0.0f, 0.0f, 1.0f) },
+    { 'L' }
 };
 
 RubiksCube::Face RubiksCube::s_Right {
@@ -68,7 +62,8 @@ RubiksCube::Face RubiksCube::s_Right {
         {0, 1, 2}
     },
     { 1, 1, 2 },
-    { glm::vec3(0.0f, 0.0f, -1.0f) }
+    { glm::vec3(0.0f, 0.0f, -1.0f) },
+    { 'R' }
 };
 
 RubiksCube::Face RubiksCube::s_Up {
@@ -83,7 +78,8 @@ RubiksCube::Face RubiksCube::s_Up {
         {1, 0, 0}
     },
     { 1, 0, 1 },
-    { glm::vec3(0.0f, 1.0f, 0.0f) }
+    { glm::vec3(0.0f, 1.0f, 0.0f) },
+    { 'U' }
 };
 
 RubiksCube::Face RubiksCube::s_Down {
@@ -98,7 +94,8 @@ RubiksCube::Face RubiksCube::s_Down {
         {0, 2, 2}
     },
     { 1, 2, 1 },
-    { glm::vec3(0.0f, -1.0f, 0.0f) }
+    { glm::vec3(0.0f, -1.0f, 0.0f) },
+    { 'D' }
 };
 #pragma endregion
 
@@ -180,55 +177,50 @@ void RubiksCube::Initialize() {
 }
 
 void RubiksCube::Update() {
-    const float rotation_speed = 2.0f;
-    const unsigned int randomize_moves = 30;
+    const float FACE_ROTATION_SPEED = 2.0f;
+    const float CUBE_ROTATION_SPEED = 1.0f;
+    const float RANDOMIZE_SPEED = 4.0f;
+    const unsigned int RANDOM_MOVES = 30;
 
-    // Collect next move 
+    // Collect next task 
     if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Front, 90.0f, "F'", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Front, 90.0f, "F'", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Front, -90.0f, "F", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Front, -90.0f, "F", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Back, 90.0f, "B'", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Back, 90.0f, "B'", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Back, -90.0f, "B", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Back, -90.0f, "B", FACE_ROTATION_SPEED));
     } if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Left, 90.0f, "L'", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Left, 90.0f, "L'", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Left, -90.0f, "L", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Left, -90.0f, "L", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Right, 90.0f, "R'", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Right, 90.0f, "R'", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Right, -90.0f, "R", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Right, -90.0f, "R", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Up, 90.0f, "U'", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Up, 90.0f, "U'", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Up, -90.0f, "U", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Up, -90.0f, "U", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Down, 90.0f, "D'", rotation_speed);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Down, 90.0f, "D'", FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(*this, s_Down, -90.0f, "D", rotation_speed);
-    } else if (g_Input.GetKeyState(GLFW_KEY_UP) == Input::KeyState::PRESSED) {
-        RotateCube(1);
-    } else if (g_Input.GetKeyState(GLFW_KEY_DOWN) == Input::KeyState::PRESSED) {
-        RotateCube(2);
-    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT) == Input::KeyState::PRESSED) {
-        RotateCube(3);
-    } else if (g_Input.GetKeyState(GLFW_KEY_RIGHT) == Input::KeyState::PRESSED) {
-        RotateCube(4);
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Down, -90.0f, "D", FACE_ROTATION_SPEED));
     }
 
     // Update deque of tasks
     if (!m_Tasks.empty()) {
-        if (!m_Tasks.front().Finished()) {
-            m_Tasks.front().RotateOverTime(g_Time.FixedDeltaTime());
+        if (!m_Tasks.front()->Finished()) {
+            m_Tasks.front()->Progress(g_Time.FixedDeltaTime());
         } else {
             m_Tasks.pop_front();
         }
 
-        std::string message = "";
+        std::string message;
+        message.reserve(m_Tasks.size() * 2);
         for (auto it = m_Tasks.begin(); it != m_Tasks.end(); it++) {
-            message += ' ' + it->Signature();
+            message += ' ' + (*it)->Signature();
         }
         TasksSignaturesOut.Send(message);
     }
@@ -250,7 +242,7 @@ void RubiksCube::Randomize(unsigned int moves) {
 
     if (m_Tasks.size() > 0) {
         // Finish current task
-        m_Tasks.front().RotateOverTime(1.0f);
+        m_Tasks.front()->Progress(1.0f);
         
         m_Tasks.clear();
     }
@@ -269,30 +261,38 @@ void RubiksCube::Randomize(unsigned int moves) {
         // Each face has equal chance to be choosen
         switch (rn) {
         case 0:
-            m_Tasks.emplace_back(*this, s_Front, angle, "", rotation_speed);
+            //m_Tasks.emplace_back(*this, s_Front, angle, "", rotation_speed);
             break;
 
         case 1:
-            m_Tasks.emplace_back(*this, s_Back, angle, "", rotation_speed);
+            //m_Tasks.emplace_back(*this, s_Back, angle, "", rotation_speed);
             break;
 
         case 2:
-            m_Tasks.emplace_back(*this, s_Up, angle, "", rotation_speed);
+            //m_Tasks.emplace_back(*this, s_Up, angle, "", rotation_speed);
             break;
 
         case 3:
-            m_Tasks.emplace_back(*this, s_Down, angle, "", rotation_speed);
+            //m_Tasks.emplace_back(*this, s_Down, angle, "", rotation_speed);
             break;
 
         case 4:
-            m_Tasks.emplace_back(*this, s_Left, angle, "", rotation_speed);
+            //m_Tasks.emplace_back(*this, s_Left, angle, "", rotation_speed);
             break;
 
         case 5:
-            m_Tasks.emplace_back(*this, s_Right, angle, "", rotation_speed);
+            //m_Tasks.emplace_back(*this, s_Right, angle, "", rotation_speed);
             break;
         }
     }
+}
+
+void RubiksCube::RotateFace(EFace face, ERotation rotation) {
+    // Add task to queue
+}
+
+void RubiksCube::RotateCube(EDirection direction) {
+    // Add task to queue
 }
 
 void RubiksCube::RotateMeshes(const Face& face, float angle) {
@@ -324,50 +324,5 @@ void RubiksCube::RotateData(const Face& face, RubiksCube::ERotation rotation) {
             j = k;
         }
         m_Cube[face.CubiesAround[j][0]][face.CubiesAround[j][1]][face.CubiesAround[j][2]] = tmp;
-    }
-}
-
-void RubiksCube::RotateCube(int direction) {
-    if (direction == 1) {
-        Object().Root().Rotate(glm::vec3(0.0f, 0.0f, glm::radians(90.0f)));
-
-        // left.cubies = front.cubies; front.cubies = right.cubies; etc
-    } else if (direction == 2) {
-        Object().Root().Rotate(glm::vec3(0.0f, 0.0f, glm::radians(-90.0f)));
-    } else if (direction == 3) {
-        Object().Root().Rotate(glm::vec3(0.0f, glm::radians(-90.0f), 0.0f));
-    } else if (direction == 4) {
-        Object().Root().Rotate(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
-    }
-}
-
-
-
-RubiksCube::Task::Task(RubiksCube& owner, const RubiksCube::Face& face, float target, const std::string& signature, float rotation_speed)
-    : m_Owner(owner)
-    , m_Face(face)
-    , m_TargetAngle(target)
-    , m_Progress(0.0f)
-    , m_Finished(false)
-    , m_Signature(signature)
-    , m_RotationSpeed(rotation_speed) {
-}
-
-void RubiksCube::Task::RotateOverTime(float delta) {
-    // Task already finished
-    if (m_Finished) {
-        return;
-    }
-    
-    const float new_angle = m_RotationSpeed * delta * m_TargetAngle;
-    if (abs(m_Progress + new_angle) > abs(m_TargetAngle)) {
-        // On task finished
-        m_Owner.RotateMeshes(m_Face, m_TargetAngle - m_Progress);
-        m_Owner.RotateData(m_Face, m_TargetAngle < 0.0f ? ERotation::CLOCKWISE : ERotation::COUNTER_CLOCKWISE);
-        m_Finished = true;
-    } else {
-        // Continue on task
-        m_Progress = m_Progress + new_angle;
-        m_Owner.RotateMeshes(m_Face, new_angle);
     }
 }

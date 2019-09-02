@@ -18,6 +18,8 @@
 #include <random>
 
 class RubiksCube : public Component {
+    friend class FaceRotation;
+
     using Row_t    = std::vector<Cubie*>;
     using Matrix_t = std::vector<Row_t>;
     using Cube_t   = std::vector<Matrix_t>;
@@ -26,34 +28,42 @@ class RubiksCube : public Component {
         const size_t CubiesAround[8][3];
         const size_t Center[3];
         const glm::vec3 Axis;
+        const char Siganture;
     };
 
-    class Task {
+    class ITask {
     public:
-        Task(RubiksCube& owner, const Face& face, float angle, const std::string& signature, float rotation_speed = 1.0f);
+        ITask() = default;
+        ITask(const ITask&) = delete;
+        ITask& operator=(const ITask&) = delete;
+        ITask(ITask&&) = delete;
+        ITask& operator=(ITask&&) = delete;
 
-        bool Finished() const { return m_Finished; }
-        std::string Signature() const { return m_Signature; }
-
-        void RotateOverTime(float delta);
-
-    private:
-        RubiksCube& m_Owner;
-
-        float m_RotationSpeed;
-
-        const Face& m_Face;
-        float m_TargetAngle;
-        float m_Progress;
-        bool m_Finished;
-
-        const std::string m_Signature;
+        virtual bool Finished() const = 0;
+        virtual std::string Signature() const = 0;
+        virtual void Progress(float delta) = 0;
     };
 
 public:
     enum class ERotation {
         CLOCKWISE,
         COUNTER_CLOCKWISE
+    };
+
+    enum class EFace {
+        FRONT,
+        BACK,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+
+    enum class EDirection {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
     };
 
     RubiksCube();
@@ -63,18 +73,17 @@ public:
     void Destroy() override;
 
     void Randomize(unsigned int moves);
+    void RotateFace(EFace face, ERotation rotation);
+    void RotateCube(EDirection direction);
 
     MessageOut<std::string> TasksSignaturesOut { this };
 
 private:
     void RotateMeshes(const Face& face, float angle);
     void RotateData(const Face& face, ERotation rotation);
-
-    // Just for now, 1 = up, 2 = down, 3 = left, 4 = right
-    void RotateCube(int direction);
-
+    
     Cube_t m_Cube;
-    std::deque<Task> m_Tasks;
+    std::deque<std::unique_ptr<ITask>> m_Tasks;
 
     static Face s_Front, s_Back, s_Left, s_Right, s_Up, s_Down;
 };
