@@ -90,28 +90,32 @@ private:
     bool m_Finished;
 };
 
+
+
 class CubeRotation : public RubiksCube::ITask {
 public:
-    CubeRotation(RubiksCube& owner, Transform* transform, RubiksCube::EDirection direction, float speed = 1.0f) 
+    CubeRotation(RubiksCube& owner, Transform* transform, RubiksCube::EDirection direction, RubiksCube::ERotation rotation, float speed = 1.0f) 
         : m_Owner(owner)
         , m_Transform(transform)
         , m_Direction(direction)
-        , m_TargetAngle(glm::radians(90.0f))
+        , m_Rotation(rotation)
+        , m_TargetAngle(glm::radians(90.0f) * static_cast<int>(rotation))
         , m_RotationSpeed(speed)
+        , m_Signature()
         , m_Progress(0.0f)
         , m_Finished(false) {
-        if (direction == RubiksCube::EDirection::UP) {
-            m_RotationAxis = glm::vec3(0.0f, 0.0f, 1.0f);
-            m_Signature = "^";
-        } else if (direction == RubiksCube::EDirection::DOWN) {
-            m_RotationAxis = glm::vec3(0.0f, 0.0f, -1.0f);
-            m_Signature = "v";
-        } else if (direction == RubiksCube::EDirection::LEFT) {
-            m_RotationAxis = glm::vec3(0.0f, -1.0f, 0.0f);
-            m_Signature = "<";
+        if (direction == RubiksCube::EDirection::FRONT) {
+            m_RotationAxis = glm::vec3(1.0f, 0.0f, 0.0);
+        } else if (direction == RubiksCube::EDirection::UP) {
+            m_RotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
         } else if (direction == RubiksCube::EDirection::RIGHT) {
-            m_RotationAxis = glm::vec3(0.0f, 1.0f, 0.0);
-            m_Signature = ">";
+            // Since cube's front is aligned with X axis, it's right is on the negative Z axis
+            m_RotationAxis = glm::vec3(0.0f, 0.0f, -1.0);
+        }
+
+        m_Signature += static_cast<char>(direction);
+        if (rotation == RubiksCube::ERotation::COUNTER_CLOCKWISE) {
+            m_Signature.append("'");
         }
     }
 
@@ -128,7 +132,7 @@ public:
         if (abs(m_Progress + new_angle) > abs(m_TargetAngle)) {
             // On task finished
             m_Transform->Rotate(m_RotationAxis * new_angle);
-            RotateData(m_Direction);
+            RotateData();
             m_Finished = true;
         } else {
             // Continue on task
@@ -138,23 +142,37 @@ public:
     }
 
 private:
-    void RotateData(RubiksCube::EDirection direction) {
-        if (direction == RubiksCube::EDirection::UP) {
-            SwapFaces(m_Owner.m_Up, m_Owner.m_Back);
-            SwapFaces(m_Owner.m_Up, m_Owner.m_Down);
-            SwapFaces(m_Owner.m_Up, m_Owner.m_Front);
-        } else if (direction == RubiksCube::EDirection::DOWN) {
-            SwapFaces(m_Owner.m_Up, m_Owner.m_Front);
-            SwapFaces(m_Owner.m_Up, m_Owner.m_Down);
-            SwapFaces(m_Owner.m_Up, m_Owner.m_Back);
-        } else if (direction == RubiksCube::EDirection::LEFT) {
-            SwapFaces(m_Owner.m_Front, m_Owner.m_Left);
-            SwapFaces(m_Owner.m_Front, m_Owner.m_Back);
-            SwapFaces(m_Owner.m_Front, m_Owner.m_Right);
-        } else if (direction == RubiksCube::EDirection::RIGHT) {
-            SwapFaces(m_Owner.m_Front, m_Owner.m_Right);
-            SwapFaces(m_Owner.m_Front, m_Owner.m_Back);
-            SwapFaces(m_Owner.m_Front, m_Owner.m_Left);
+    void RotateData() {
+        if (m_Direction == RubiksCube::EDirection::RIGHT) {
+            if (m_Rotation == RubiksCube::ERotation::COUNTER_CLOCKWISE) {
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Front);
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Down);
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Back);
+            } else {
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Back);
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Down);
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Front);
+            }
+        } else if (m_Direction == RubiksCube::EDirection::UP) {
+            if (m_Rotation == RubiksCube::ERotation::COUNTER_CLOCKWISE) {
+                SwapFaces(m_Owner.m_Front, m_Owner.m_Right);
+                SwapFaces(m_Owner.m_Front, m_Owner.m_Back);
+                SwapFaces(m_Owner.m_Front, m_Owner.m_Left);
+            } else {
+                SwapFaces(m_Owner.m_Front, m_Owner.m_Left);
+                SwapFaces(m_Owner.m_Front, m_Owner.m_Back);
+                SwapFaces(m_Owner.m_Front, m_Owner.m_Right);
+            }
+        } else if (m_Direction == RubiksCube::EDirection::FRONT) {
+            if (m_Rotation == RubiksCube::ERotation::COUNTER_CLOCKWISE) {
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Left);
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Down);
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Right);
+            } else {
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Right);
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Down);
+                SwapFaces(m_Owner.m_Up, m_Owner.m_Left);
+            }
         }
     }
 
@@ -167,6 +185,7 @@ private:
     RubiksCube& m_Owner;
     Transform* m_Transform;
     RubiksCube::EDirection m_Direction;
+    RubiksCube::ERotation m_Rotation;
     glm::vec3 m_RotationAxis;
     float m_TargetAngle;
     float m_RotationSpeed;

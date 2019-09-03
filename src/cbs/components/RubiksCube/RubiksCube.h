@@ -52,19 +52,18 @@ public:
     };
 
     enum class EFace {
-        FRONT,
-        BACK,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
+        FRONT = 'F',
+        BACK = 'B',
+        UP = 'U',
+        DOWN = 'D',
+        LEFT = 'L',
+        RIGHT = 'R'
     };
 
     enum class EDirection {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
+        UP = 'Y',
+        RIGHT = 'X',
+        FRONT = 'Z'
     };
 
     RubiksCube();
