@@ -1,105 +1,93 @@
 #include "RubiksCube.h"
 #include "Tasks.h"
 
-#pragma region Faces
-RubiksCube::Face RubiksCube::s_Front {
-    {
-        { 0, 0, 0 },
-        { 0, 0, 1 },
-        { 0, 0, 2 },
-        { 0, 1, 2 },
-        { 0, 2, 2 },
-        { 0, 2, 1 },
-        { 0, 2, 0 },
-        { 0, 1, 0 }
-    },
-    { 0, 1, 1 },
-    { glm::vec3(1.0f, 0.0f, 0.0f) },
-    { 'F' }
-};
 
-RubiksCube::Face RubiksCube::s_Back {
-    {
-        { 2, 0, 2 },
-        { 2, 0, 1 },
-        { 2, 0, 0 },
-        { 2, 1, 0 },
-        { 2, 2, 0 },
-        { 2, 2, 1 },
-        { 2, 2, 2 },
-        { 2, 1, 2 }
-    },
-    { 2, 1, 1 },
-    { glm::vec3(-1.0f, 0.0f, 0.0f) },
-    { 'B' }
-};
+RubiksCube::RubiksCube() 
+    : m_Front {
+        {
+            { 0, 0, 0 },
+            { 0, 0, 1 },
+            { 0, 0, 2 },
+            { 0, 1, 2 },
+            { 0, 2, 2 },
+            { 0, 2, 1 },
+            { 0, 2, 0 },
+            { 0, 1, 0 }
+        },
+        { 0, 1, 1 },
+        { glm::vec3(1.0f, 0.0f, 0.0f) },
+        { 'F' } }
+    , m_Back {
+        {
+            { 2, 0, 2 },
+            { 2, 0, 1 },
+            { 2, 0, 0 },
+            { 2, 1, 0 },
+            { 2, 2, 0 },
+            { 2, 2, 1 },
+            { 2, 2, 2 },
+            { 2, 1, 2 }
+        },
+        { 2, 1, 1 },
+        { glm::vec3(-1.0f, 0.0f, 0.0f) },
+        { 'B' } }
+    , m_Left {
+        {
+            {2, 0, 0},
+            {1, 0, 0},
+            {0, 0, 0},
+            {0, 1, 0},
+            {0, 2, 0},
+            {1, 2, 0},
+            {2, 2, 0},
+            {2, 1, 0}
+        },
+        { 1, 1, 0 },
+        { glm::vec3(0.0f, 0.0f, 1.0f) },
+        { 'L' } }
+    , m_Right {
+        {
+            {0, 0, 2},
+            {1, 0, 2},
+            {2, 0, 2},
+            {2, 1, 2},
+            {2, 2, 2},
+            {1, 2, 2},
+            {0, 2, 2},
+            {0, 1, 2}
+        },
+        { 1, 1, 2 },
+        { glm::vec3(0.0f, 0.0f, -1.0f) },
+        { 'R' } }
+    , m_Up {
+        {
+            {2, 0, 0},
+            {2, 0, 1},
+            {2, 0, 2},
+            {1, 0, 2},
+            {0, 0, 2},
+            {0, 0, 1},
+            {0, 0, 0},
+            {1, 0, 0}
+        },
+        { 1, 0, 1 },
+        { glm::vec3(0.0f, 1.0f, 0.0f) },
+        { 'U' } }
+    , m_Down {
+        {
+            {1, 2, 2},
+            {2, 2, 2},
+            {2, 2, 1},
+            {2, 2, 0},
+            {1, 2, 0},
+            {0, 2, 0},
+            {0, 2, 1},
+            {0, 2, 2}
+        },
+        { 1, 2, 1 },
+        { glm::vec3(0.0f, -1.0f, 0.0f) },
+        { 'D' } } {
 
-RubiksCube::Face RubiksCube::s_Left {
-    {
-        {2, 0, 0},
-        {1, 0, 0},
-        {0, 0, 0},
-        {0, 1, 0},
-        {0, 2, 0},
-        {1, 2, 0},
-        {2, 2, 0},
-        {2, 1, 0}
-    },
-    { 1, 1, 0 },
-    { glm::vec3(0.0f, 0.0f, 1.0f) },
-    { 'L' }
-};
-
-RubiksCube::Face RubiksCube::s_Right {
-    {
-        {0, 0, 2},
-        {1, 0, 2},
-        {2, 0, 2},
-        {2, 1, 2},
-        {2, 2, 2},
-        {1, 2, 2},
-        {0, 2, 2},
-        {0, 1, 2}
-    },
-    { 1, 1, 2 },
-    { glm::vec3(0.0f, 0.0f, -1.0f) },
-    { 'R' }
-};
-
-RubiksCube::Face RubiksCube::s_Up {
-    {
-        {2, 0, 0},
-        {2, 0, 1},
-        {2, 0, 2},
-        {1, 0, 2},
-        {0, 0, 2},
-        {0, 0, 1},
-        {0, 0, 0},
-        {1, 0, 0}
-    },
-    { 1, 0, 1 },
-    { glm::vec3(0.0f, 1.0f, 0.0f) },
-    { 'U' }
-};
-
-RubiksCube::Face RubiksCube::s_Down {
-    {
-        {1, 2, 2},
-        {2, 2, 2},
-        {2, 2, 1},
-        {2, 2, 0},
-        {1, 2, 0},
-        {0, 2, 0},
-        {0, 2, 1},
-        {0, 2, 2}
-    },
-    { 1, 2, 1 },
-    { glm::vec3(0.0f, -1.0f, 0.0f) },
-    { 'D' }
-};
-#pragma endregion
-
-RubiksCube::RubiksCube() {
     for (int matrix = 0; matrix < 3; matrix++) {
         m_Cube.emplace_back();
         for (int row = 0; row < 3; row++) {
@@ -178,35 +166,42 @@ void RubiksCube::Initialize() {
 
 void RubiksCube::Update() {
     const float FACE_ROTATION_SPEED = 2.0f;
-    const float CUBE_ROTATION_SPEED = 1.0f;
-    const float RANDOMIZE_SPEED = 4.0f;
+    const float CUBE_ROTATION_SPEED = 2.0f;
     const unsigned int RANDOM_MOVES = 30;
 
     // Collect next task 
     if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Front, 90.0f, "F'", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Front, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Front, -90.0f, "F", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Front, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Back, 90.0f, "B'", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Back, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Back, -90.0f, "B", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Back, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Left, 90.0f, "L'", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Left, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Left, -90.0f, "L", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Left, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Right, 90.0f, "R'", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Right, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Right, -90.0f, "R", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Right, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Up, 90.0f, "U'", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Up, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Up, -90.0f, "U", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Up, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Down, 90.0f, "D'", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Down, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
     } else if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, s_Down, -90.0f, "D", FACE_ROTATION_SPEED));
+        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Down, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+    } else if (g_Input.GetKeyState(GLFW_KEY_UP) == Input::KeyState::PRESSED) {
+        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::UP, CUBE_ROTATION_SPEED));
+    } else if (g_Input.GetKeyState(GLFW_KEY_DOWN) == Input::KeyState::PRESSED) {
+        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::DOWN, CUBE_ROTATION_SPEED));
+    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT) == Input::KeyState::PRESSED) {
+        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::LEFT, CUBE_ROTATION_SPEED));
+    } else if (g_Input.GetKeyState(GLFW_KEY_RIGHT) == Input::KeyState::PRESSED) {
+        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::RIGHT, CUBE_ROTATION_SPEED));
     }
 
     // Update deque of tasks
@@ -238,7 +233,8 @@ void RubiksCube::Destroy() {
 }
 
 void RubiksCube::Randomize(unsigned int moves) {
-    const float rotation_speed = 3.0f;
+    const float ROTATION_SPEED = 3.0f;
+    const float ANGLE = 90.0f;
 
     if (m_Tasks.size() > 0) {
         // Finish current task
@@ -253,35 +249,32 @@ void RubiksCube::Randomize(unsigned int moves) {
         int rn = distribution(generator);
 
         // 50% chances for clockwise and 50% chances for counter-clockwise rotation
-        float angle = 90.0f;
-        if (rn % 2 == 0) {
-            angle = -90.0f;
-        }
+        ERotation rotation = rn % 2 == 0 ? ERotation::CLOCKWISE : ERotation::COUNTER_CLOCKWISE;
 
         // Each face has equal chance to be choosen
         switch (rn) {
         case 0:
-            //m_Tasks.emplace_back(*this, s_Front, angle, "", rotation_speed);
+            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Front, rotation, ANGLE, ROTATION_SPEED));
             break;
 
         case 1:
-            //m_Tasks.emplace_back(*this, s_Back, angle, "", rotation_speed);
+            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Back, rotation, ANGLE, ROTATION_SPEED));
             break;
 
         case 2:
-            //m_Tasks.emplace_back(*this, s_Up, angle, "", rotation_speed);
+            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Up, rotation, ANGLE, ROTATION_SPEED));
             break;
 
         case 3:
-            //m_Tasks.emplace_back(*this, s_Down, angle, "", rotation_speed);
+            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Down, rotation, ANGLE, ROTATION_SPEED));
             break;
 
         case 4:
-            //m_Tasks.emplace_back(*this, s_Left, angle, "", rotation_speed);
+            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Left, rotation, ANGLE, ROTATION_SPEED));
             break;
 
         case 5:
-            //m_Tasks.emplace_back(*this, s_Right, angle, "", rotation_speed);
+            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Right, rotation, ANGLE, ROTATION_SPEED));
             break;
         }
     }
@@ -295,34 +288,3 @@ void RubiksCube::RotateCube(EDirection direction) {
     // Add task to queue
 }
 
-void RubiksCube::RotateMeshes(const Face& face, float angle) {
-    for (int i = 0; i < 8; i++) {
-        m_Cube[face.CubiesAround[i][0]][face.CubiesAround[i][1]][face.CubiesAround[i][2]]->RotateAround(angle, face.Axis);
-    }
-    m_Cube[face.Center[0]][face.Center[1]][face.Center[2]]->RotateAround(angle, face.Axis);
-}
-
-void RubiksCube::RotateData(const Face& face, RubiksCube::ERotation rotation) {
-    // GCD left-shift array shift
-    const int size = 8;
-    const int shift = rotation == ERotation::CLOCKWISE ? 6 : 2; // For clockwise rotation right-shift by 2 is equal to left-shift by 6. For counter clockwise rotation left-shift by 2.
-    const int gcd = 2;                                          // gcd(2, 8) = gcd(6, 8) = 2
-    for (int i = 0; i < gcd; i++) {
-        Cubie* tmp = m_Cube[face.CubiesAround[i][0]][face.CubiesAround[i][1]][face.CubiesAround[i][2]];
-        int j = i;
-
-        while (true) {
-            int k = j + shift;
-            if (k >= size) {
-                k = k - size;
-            }
-            if (k == i) {
-                break;
-            }
-
-            m_Cube[face.CubiesAround[j][0]][face.CubiesAround[j][1]][face.CubiesAround[j][2]] = m_Cube[face.CubiesAround[k][0]][face.CubiesAround[k][1]][face.CubiesAround[k][2]];
-            j = k;
-        }
-        m_Cube[face.CubiesAround[j][0]][face.CubiesAround[j][1]][face.CubiesAround[j][2]] = tmp;
-    }
-}

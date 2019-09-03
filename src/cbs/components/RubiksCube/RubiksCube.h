@@ -19,16 +19,17 @@
 
 class RubiksCube : public Component {
     friend class FaceRotation;
+    friend class CubeRotation;
 
     using Row_t    = std::vector<Cubie*>;
     using Matrix_t = std::vector<Row_t>;
     using Cube_t   = std::vector<Matrix_t>;
 
     struct Face {
-        const size_t CubiesAround[8][3];
-        const size_t Center[3];
-        const glm::vec3 Axis;
-        const char Siganture;
+        size_t CubiesAround[8][3];
+        size_t Center[3];
+        glm::vec3 Axis;
+        const std::string Siganture;
     };
 
     class ITask {
@@ -46,8 +47,8 @@ class RubiksCube : public Component {
 
 public:
     enum class ERotation {
-        CLOCKWISE,
-        COUNTER_CLOCKWISE
+        CLOCKWISE = -1,
+        COUNTER_CLOCKWISE = 1
     };
 
     enum class EFace {
@@ -79,13 +80,10 @@ public:
     MessageOut<std::string> TasksSignaturesOut { this };
 
 private:
-    void RotateMeshes(const Face& face, float angle);
-    void RotateData(const Face& face, ERotation rotation);
-    
     Cube_t m_Cube;
     std::deque<std::unique_ptr<ITask>> m_Tasks;
 
-    static Face s_Front, s_Back, s_Left, s_Right, s_Up, s_Down;
+    Face m_Front, m_Back, m_Left, m_Right, m_Up, m_Down;
 };
 
 #endif
