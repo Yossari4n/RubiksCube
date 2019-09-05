@@ -170,41 +170,41 @@ void RubiksCube::Update() {
     const unsigned int RANDOM_MOVES = 30;
 
     // Collect next task 
-    if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
+    if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_F)) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Front, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_F) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_F) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Front, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_B)) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Back, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_B) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_B) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Back, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_L)) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Left, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_L) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_L) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Left, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_R)) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Right, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_R) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_R) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Right, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_U)) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Up, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_U) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_U) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Up, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_D)) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Down, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_D) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_D) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Down, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_X) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_X)) {
         m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::RIGHT, ERotation::COUNTER_CLOCKWISE, CUBE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_X) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_X) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::RIGHT, ERotation::CLOCKWISE, CUBE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_Y) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_Y)) {
         m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::UP, ERotation::COUNTER_CLOCKWISE, CUBE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_Y) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_Y) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::UP, ERotation::CLOCKWISE, CUBE_ROTATION_SPEED));
-    }  else if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) == Input::KeyState::HOLD && g_Input.GetKeyState(GLFW_KEY_Z) == Input::KeyState::PRESSED) {
+    }  else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_Z)) {
         m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::FRONT, ERotation::COUNTER_CLOCKWISE, CUBE_ROTATION_SPEED));
-    } else if (g_Input.GetKeyState(GLFW_KEY_Z) == Input::KeyState::PRESSED) {
+    } else if (g_Input.KeyState(GLFW_KEY_Z) == Input::EKeyState::PRESSED) {
         m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::FRONT, ERotation::CLOCKWISE, CUBE_ROTATION_SPEED));
     }
 

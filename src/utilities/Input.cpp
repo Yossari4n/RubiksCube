@@ -15,7 +15,7 @@ Input::Input()
     , m_MouseOffset(0.0f) {
     
     for (int i = 0; i < GLFW_KEY_MENU + 1; ++i) {
-        m_Keys[i] = KeyState::FREE;
+        m_Keys[i] = EKeyState::FREE;
     }
 }
 #pragma warning(default: 26495)
@@ -26,24 +26,21 @@ void Input::Update(GLFWwindow *window) {
     m_AnyKeyReleased = false;
 
     // Mouse buttons
-    for (int i = 0; i < GLFW_MOUSE_BUTTON_MIDDLE; ++i) {
+    for (int i = 0; i < GLFW_MOUSE_BUTTON_8; ++i) {
         if (glfwGetMouseButton(window, i) == GLFW_PRESS) {
-            if (m_Keys[i] == KeyState::FREE || m_Keys[i] == KeyState::RELEASED) {
-                m_Keys[i] = KeyState::PRESSED;
+            if (m_Keys[i] == EKeyState::FREE || m_Keys[i] == EKeyState::RELEASED) {
+                m_Keys[i] = EKeyState::PRESSED;
                 m_AnyKeyPressed = true;
-            }
-            else if (m_Keys[i] == KeyState::PRESSED) {
-                m_Keys[i] = KeyState::HOLD;
+            } else if (m_Keys[i] == EKeyState::PRESSED) {
+                m_Keys[i] = EKeyState::HOLD;
                 m_AnyKeyHold = true;
             }
-        }
-        else {
-            if (m_Keys[i] == KeyState::PRESSED || m_Keys[i] == KeyState::HOLD) {
-                m_Keys[i] = KeyState::RELEASED;
+        } else {
+            if (m_Keys[i] == EKeyState::PRESSED || m_Keys[i] == EKeyState::HOLD) {
+                m_Keys[i] = EKeyState::RELEASED;
                 m_AnyKeyReleased = true;
-            }
-            else {
-                m_Keys[i] = KeyState::FREE;
+            } else {
+                m_Keys[i] = EKeyState::FREE;
             }
         }
     }
@@ -51,23 +48,19 @@ void Input::Update(GLFWwindow *window) {
     // Keyboard buttons
     for (int i = GLFW_KEY_SPACE; i < GLFW_KEY_MENU + 1; ++i) {
         if (glfwGetKey(window, i) == GLFW_PRESS) {
-            if (m_Keys[i] == KeyState::FREE || m_Keys[i] == KeyState::RELEASED) {
-                m_Keys[i] = KeyState::PRESSED;
+            if (m_Keys[i] == EKeyState::FREE || m_Keys[i] == EKeyState::RELEASED) {
+                m_Keys[i] = EKeyState::PRESSED;
                 m_AnyKeyPressed = true;
-            }
-            else if (m_Keys[i] == KeyState::PRESSED) {
-                m_Keys[i] = KeyState::HOLD;
+            } else if (m_Keys[i] == EKeyState::PRESSED) {
+                m_Keys[i] = EKeyState::HOLD;
                 m_AnyKeyHold = true;
             }
-
-        }
-        else {
-            if (m_Keys[i] == KeyState::PRESSED || m_Keys[i] == KeyState::HOLD) {
-                m_Keys[i] = KeyState::RELEASED;
+        } else {
+            if (m_Keys[i] == EKeyState::PRESSED || m_Keys[i] == EKeyState::HOLD) {
+                m_Keys[i] = EKeyState::RELEASED;
                 m_AnyKeyReleased = true;
-            }
-            else {
-                m_Keys[i] = KeyState::FREE;
+            } else {
+                m_Keys[i] = EKeyState::FREE;
             }
         }
     }
@@ -84,7 +77,19 @@ void Input::Update(GLFWwindow *window) {
     m_ScrollChanged = false;
 }
 
-Input::KeyState Input::GetKeyState(int glfw_key_enum) const {
+bool Input::KeyPressed(int glfw_key_enum) const {
+    return m_Keys[glfw_key_enum] == EKeyState::PRESSED;
+}
+
+bool Input::KeyHold(int glfw_key_enum) const {
+    return m_Keys[glfw_key_enum] == EKeyState::HOLD;
+}
+
+bool Input::KeyReleased(int glfw_key_enum) const {
+    return m_Keys[glfw_key_enum] == EKeyState::RELEASED;
+}
+
+Input::EKeyState Input::KeyState(int glfw_key_enum) const {
     return m_Keys[glfw_key_enum];
 }
 

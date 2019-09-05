@@ -36,23 +36,23 @@ void FirstPersonController::Update() {
     Object().Root().RotateRelative(glm::vec3(0.0f, 0.0f, rot_ver));
 
     // Keyboard
-    if (g_Input.GetKeyState(GLFW_KEY_LEFT_SHIFT) || g_Input.GetKeyState(GLFW_KEY_RIGHT_SHIFT)) {
+    if (g_Input.KeyState(GLFW_KEY_LEFT_SHIFT) || g_Input.KeyState(GLFW_KEY_RIGHT_SHIFT)) {
         m_CurrentMovementSpeed = m_MovementSpeedFast;
     } else {
         m_CurrentMovementSpeed = m_MovementSpeedSlow;
     }
 
     glm::vec3 movement(0.0f);
-    if (g_Input.GetKeyState(GLFW_KEY_UP)) {
+    if (g_Input.KeyHold(GLFW_KEY_UP)) {
         movement.x = m_CurrentMovementSpeed * g_Time.DeltaTime();;
     }
-    if (g_Input.GetKeyState(GLFW_KEY_DOWN)) {
+    if (g_Input.KeyHold(GLFW_KEY_DOWN)) {
         movement.x = -m_CurrentMovementSpeed * g_Time.DeltaTime();;
     }
-    if (g_Input.GetKeyState(GLFW_KEY_LEFT)) {
+    if (g_Input.KeyHold(GLFW_KEY_LEFT)) {
         movement.z = -m_CurrentMovementSpeed * g_Time.DeltaTime();;
     }
-    if (g_Input.GetKeyState(GLFW_KEY_RIGHT)) {
+    if (g_Input.KeyHold(GLFW_KEY_RIGHT)) {
         movement.z = m_CurrentMovementSpeed * g_Time.DeltaTime();;
     }
 

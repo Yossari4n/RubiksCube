@@ -6,11 +6,11 @@ void DummyComp::Initialize() {
 
 void DummyComp::Update() {
 
-    if (g_Input.GetKeyState(GLFW_KEY_SPACE) == Input::KeyState::PRESSED) {
+    if (g_Input.KeyPressed(GLFW_KEY_SPACE)) {
         m_TriggerOut.Trigger();
     }
 
-    if (g_Input.GetKeyState(GLFW_KEY_ESCAPE)) {
+    if (g_Input.KeyPressed(GLFW_KEY_ESCAPE)) {
         Object().Scene().Exit();
     }
 }
