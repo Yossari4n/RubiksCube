@@ -1,14 +1,9 @@
 #include "MainScene.h"
 
 #include "../cbs/components/ThirdPersonController.h"
-#include "../cbs/components/FirstPersonController.h"
 #include "../cbs/components/Camera.h"
-#include "../cbs/components/MeshRenderer/MeshRenderer.h"
-#include "../cbs/components/PointLight.h"
-#include "../cbs/components/DummyComp.h"
 #include "../cbs/components/RubiksCube/RubiksCube.h"
 #include "../cbs/components/TextRenderer.h"
-#include "../cbs/components/MeshRenderer/MeshRenderer.h"
 
 void MainScene::CreateScene() {
     FrameRateLimit(60);
@@ -31,19 +26,6 @@ void MainScene::CreateScene() {
 
     auto camera = CreateObject("Camera"); {
         camera->CreateComponent<Camera>(glm::perspective(glm::radians(45.0f), static_cast<float>(g_Window.Width()) / static_cast<float>(g_Window.Height()), 0.1f, 5000.0f));
-        camera->CreateComponent<PointLight>(glm::vec3(0.1f),
-                                            glm::vec3(0.8f),
-                                            glm::vec3(0.5f),
-                                            1.0f,
-                                            0.0014f,
-                                            0.000007f);
         camera->CreateComponent<ThirdPersonController>(rubiks_cube, glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 15.0f);
-    }
-
-    auto dummy = CreateObject("Dummy"); {
-        auto d1 = dummy->CreateComponent<DummyComp>();
-        auto d2 = dummy->CreateComponent<DummyComp>();
-        dummy->Connect(d1->m_TriggerOut, d2->m_TriggerIn);
-        dummy->Connect(dummy->Root().TransformOut, d1->m_TrasformIn);
     }
 }
