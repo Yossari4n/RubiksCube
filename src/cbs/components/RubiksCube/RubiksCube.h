@@ -17,6 +17,10 @@
 #include <deque>
 #include <random>
 
+constexpr float FACE_ROTATION_SPEED = 2.0f;
+constexpr float CUBE_ROTATION_SPEED = 2.0f;
+constexpr unsigned int RANDOM_MOVES = 30;
+
 class RubiksCube : public Component {
     friend class FaceRotation;
     friend class CubeRotation;
@@ -72,13 +76,15 @@ public:
     void Update() override;
     void Destroy() override;
 
-    void Randomize(unsigned int moves);
     void RotateFace(EFace face, ERotation rotation);
-    void RotateCube(EDirection direction);
+    void RotateCube(EDirection direction, ERotation rotation);
+    void Randomize(unsigned int moves);
 
     MessageOut<std::string> TasksSignaturesOut { this };
 
 private:
+    void UpdateTextRenderer();
+
     Cube_t m_Cube;
     std::deque<std::unique_ptr<ITask>> m_Tasks;
 

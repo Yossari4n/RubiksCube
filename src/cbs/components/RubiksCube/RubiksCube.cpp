@@ -165,47 +165,43 @@ void RubiksCube::Initialize() {
 }
 
 void RubiksCube::Update() {
-    const float FACE_ROTATION_SPEED = 2.0f;
-    const float CUBE_ROTATION_SPEED = 2.0f;
-    const unsigned int RANDOM_MOVES = 30;
-
     // Collect next task 
     if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_F)) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Front, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::FRONT, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_F) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Front, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::FRONT, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_B)) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Back, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::BACK, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_B) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Back, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::BACK, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_L)) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Left, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::LEFT, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_L) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Left, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::LEFT, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_R)) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Right, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::RIGHT, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_R) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Right, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::RIGHT, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_U)) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Up, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::UP, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_U) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Up, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::UP, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_D)) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Down, ERotation::COUNTER_CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::DOWN, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_D) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Down, ERotation::CLOCKWISE, 90.0f, FACE_ROTATION_SPEED));
+        RotateFace(EFace::DOWN, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_X)) {
-        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::RIGHT, ERotation::COUNTER_CLOCKWISE, CUBE_ROTATION_SPEED));
+        RotateCube(EDirection::RIGHT, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_X) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::RIGHT, ERotation::CLOCKWISE, CUBE_ROTATION_SPEED));
+        RotateCube(EDirection::RIGHT, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_Y)) {
-        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::UP, ERotation::COUNTER_CLOCKWISE, CUBE_ROTATION_SPEED));
+        RotateCube(EDirection::UP, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_Y) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::UP, ERotation::CLOCKWISE, CUBE_ROTATION_SPEED));
+        RotateCube(EDirection::UP, ERotation::CLOCKWISE);
     }  else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_Z)) {
-        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::FRONT, ERotation::COUNTER_CLOCKWISE, CUBE_ROTATION_SPEED));
+        RotateCube(EDirection::FRONT, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyState(GLFW_KEY_Z) == Input::EKeyState::PRESSED) {
-        m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), EDirection::FRONT, ERotation::CLOCKWISE, CUBE_ROTATION_SPEED));
+        RotateCube(EDirection::FRONT, ERotation::CLOCKWISE);
     }
 
     // Update deque of tasks
@@ -214,14 +210,8 @@ void RubiksCube::Update() {
             m_Tasks.front()->Progress(g_Time.FixedDeltaTime());
         } else {
             m_Tasks.pop_front();
+            UpdateTextRenderer();
         }
-
-        std::string message;
-        message.reserve(m_Tasks.size() * 2);
-        for (auto it = m_Tasks.begin(); it != m_Tasks.end(); it++) {
-            message += ' ' + (*it)->Signature();
-        }
-        TasksSignaturesOut.Send(message);
     }
 }
 
@@ -236,14 +226,43 @@ void RubiksCube::Destroy() {
     }
 }
 
-void RubiksCube::Randomize(unsigned int moves) {
-    const float ROTATION_SPEED = 3.0f;
-    const float ANGLE = 90.0f;
+void RubiksCube::RotateFace(EFace face, ERotation rotation) {
+    Face& face_to_rotate = [&]() -> Face& {
+        switch (face) {
+        case EFace::FRONT:
+            return m_Front;
 
+        case EFace::BACK:
+            return m_Back;
+
+        case EFace::UP:
+            return m_Up;
+
+        case EFace::DOWN:
+            return m_Down;
+
+        case EFace::LEFT:
+            return m_Left;
+
+        default: // case EFace::RIGHT
+            return m_Right;
+        };
+    }();
+
+    m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, face_to_rotate, rotation, 90.0f, FACE_ROTATION_SPEED));
+    UpdateTextRenderer();
+}
+
+void RubiksCube::RotateCube(EDirection direction, ERotation rotation) {
+    m_Tasks.emplace_back(std::make_unique<CubeRotation>(*this, &Object().Root(), direction, rotation, CUBE_ROTATION_SPEED));
+    UpdateTextRenderer();
+}
+
+// TODO make it Task
+void RubiksCube::Randomize(unsigned int moves) {
     if (m_Tasks.size() > 0) {
         // Finish current task
         m_Tasks.front()->Progress(1.0f);
-        
         m_Tasks.clear();
     }
 
@@ -258,37 +277,37 @@ void RubiksCube::Randomize(unsigned int moves) {
         // Each face has equal chance to be choosen
         switch (rn) {
         case 0:
-            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Front, rotation, ANGLE, ROTATION_SPEED));
+            RotateFace(EFace::FRONT, rotation);
             break;
 
         case 1:
-            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Back, rotation, ANGLE, ROTATION_SPEED));
+            RotateFace(EFace::BACK, rotation);
             break;
 
         case 2:
-            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Up, rotation, ANGLE, ROTATION_SPEED));
+            RotateFace(EFace::UP, rotation);
             break;
 
         case 3:
-            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Down, rotation, ANGLE, ROTATION_SPEED));
+            RotateFace(EFace::DOWN, rotation);
             break;
 
         case 4:
-            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Left, rotation, ANGLE, ROTATION_SPEED));
+            RotateFace(EFace::LEFT, rotation);
             break;
 
         case 5:
-            m_Tasks.emplace_back(std::make_unique<FaceRotation>(*this, m_Right, rotation, ANGLE, ROTATION_SPEED));
+            RotateFace(EFace::RIGHT, rotation);
             break;
         }
     }
 }
 
-void RubiksCube::RotateFace(EFace face, ERotation rotation) {
-    // Add task to queue
+void RubiksCube::UpdateTextRenderer() {
+    std::string message;
+    message.reserve(m_Tasks.size() * 2);
+    for (auto it = m_Tasks.begin(); it != m_Tasks.end(); it++) {
+        message += ' ' + (*it)->Signature();
+    }
+    TasksSignaturesOut.Send(message);
 }
-
-void RubiksCube::RotateCube(EDirection direction) {
-    // Add task to queue
-}
-
