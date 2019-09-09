@@ -7,24 +7,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#pragma warning(disable: 26451)
-#pragma warning(disable: 6011)
-#pragma warning(disable: 6262)
-#pragma warning(disable: 6308)
-#pragma warning(disable: 6387)
-#pragma warning(disable: 28182)
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
-#pragma warning(default: 26451)
-#pragma warning(default: 6011)
-#pragma warning(default: 6262)
-#pragma warning(default: 6308)
-#pragma warning(default: 6387)
-#pragma warning(default: 28182)
-#pragma warning(pop)
 
 #include <iostream>
 #include <fstream>
+#pragma warning(pop)
 
 // Global objects
 Time g_Time;
@@ -40,7 +28,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     
     // Create window
-    g_Window.Initialize(1920, 1080, "Rubick's cube");
+    g_Window.Initialize(1920, 1080, "Rubik's cube");
     if (!g_Window) {
         glfwTerminate();
         std::cout << "Failed to create GLFW window\n";

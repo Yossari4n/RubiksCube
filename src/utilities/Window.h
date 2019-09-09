@@ -3,9 +3,9 @@
 
 #pragma warning(push, 0)
 #include <GLFW/glfw3.h>
-#pragma warning(pop)
 
 #include <string>
+#pragma warning(pop)
 
 class Window {
     friend void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -20,10 +20,10 @@ public:
     operator GLFWwindow*() { return m_GLFWHandler; }
     
 private:
-    GLFWwindow* m_GLFWHandler;
-    unsigned int m_Width;
-    unsigned int m_Height;
-    std::string m_Title;
+    GLFWwindow* m_GLFWHandler{ nullptr };
+    unsigned int m_Width{ 0 };
+    unsigned int m_Height{ 0 };
+    std::string m_Title{};
 };
 
 extern Window g_Window;
