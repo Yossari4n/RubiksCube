@@ -26,6 +26,8 @@ Mesh& Mesh::operator=(Mesh&& other) noexcept {
     std::swap(m_VAO, other.m_VAO);
     std::swap(m_VBO, other.m_VBO);
     std::swap(m_EBO, other.m_EBO);
+
+    return *this;
 }
 
 Mesh::~Mesh() {

@@ -30,10 +30,11 @@ struct Texture {
 class Mesh {
 public:
     Mesh(const std::vector<Vertex> &verticies, const std::vector<unsigned int> &indicies, const std::vector<Texture> &textures);
+    Mesh() = delete;
+    Mesh(const Mesh&) = delete;
+    Mesh& operator=(const Mesh&) = delete;
     Mesh(Mesh&& other) noexcept;
     Mesh& operator=(Mesh&& other) noexcept;
-    Mesh(Mesh&&) = default;
-    Mesh& operator=(Mesh&&) = default;
     ~Mesh();
 
     void Draw(const ShaderProgram &shader) const;
