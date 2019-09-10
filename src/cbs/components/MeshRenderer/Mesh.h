@@ -30,8 +30,8 @@ struct Texture {
 class Mesh {
 public:
     Mesh(const std::vector<Vertex> &verticies, const std::vector<unsigned int> &indicies, const std::vector<Texture> &textures);
-    Mesh(const Mesh &other);
-    Mesh& operator=(const Mesh& other);
+    Mesh(Mesh&& other) noexcept;
+    Mesh& operator=(Mesh&& other) noexcept;
     Mesh(Mesh&&) = default;
     Mesh& operator=(Mesh&&) = default;
     ~Mesh();

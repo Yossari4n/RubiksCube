@@ -7,24 +7,25 @@ Mesh::Mesh(const std::vector<Vertex> &verticies, const std::vector<unsigned int>
     SetupMesh();
 }
 
-Mesh::Mesh(const Mesh& other)
-    : m_Vertices(other.m_Vertices)
-    , m_Indices(other.m_Indices)
-    , m_Textures(other.m_Textures) {
-    SetupMesh();
+Mesh::Mesh(Mesh&& other) noexcept
+    : m_Vertices(std::move(other.m_Vertices))
+    , m_Indices(std::move(other.m_Indices))
+    , m_Textures(std::move(other.m_Textures))
+    , m_VAO(other.m_VAO)
+    , m_VBO(other.m_VBO)
+    , m_EBO(other.m_EBO) {
+    other.m_VAO = 0;
+    other.m_VBO = 0;
+    other.m_EBO = 0;
 }
 
-Mesh& Mesh::operator=(const Mesh& other) {
-    if (this == &other) {
-        return *this;
-    }
-    
-    m_Vertices = other.m_Vertices;
-    m_Indices = other.m_Indices;
-    m_Textures = other.m_Textures;
-    SetupMesh();
-    
-    return *this;
+Mesh& Mesh::operator=(Mesh&& other) noexcept {
+    m_Vertices = std::move(other.m_Vertices);
+    m_Indices = std::move(other.m_Indices);
+    m_Textures = std::move(other.m_Textures);
+    std::swap(m_VAO, other.m_VAO);
+    std::swap(m_VBO, other.m_VBO);
+    std::swap(m_EBO, other.m_EBO);
 }
 
 Mesh::~Mesh() {
