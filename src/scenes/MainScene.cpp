@@ -17,11 +17,11 @@ void MainScene::CreateScene() {
     auto rubiks_cube = CreateObject("RubiksCube"); {
         auto cube = rubiks_cube->CreateComponent<RubiksCube>();
 
-        auto text_renderer = rubiks_cube->CreateComponent<TextRenderer>("", ImVec2(0.0f, 0.75f), IWidget::EAlign::CENTER, IWidget::EAlign::NONE);
-        text_renderer->ChangeFont("resources/fonts/times.ttf", 100.0f);
-        text_renderer->ChangeColor(ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+        auto text_renderer = rubiks_cube->CreateComponent<TextRenderer>("resources/fonts/times.ttf", 100.0f);
+        text_renderer->Position(glm::vec2(0.0f, 0.75f), IWidget::EAlign::CENTER, IWidget::EAlign::NONE);
+        text_renderer->Color(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 
-        rubiks_cube->Connect(cube->TasksSignaturesOut, text_renderer->ChangeTextIn);
+        rubiks_cube->Connect(cube->TasksSignaturesOut, text_renderer->TextIn);
     }
 
     auto camera = CreateObject("Camera"); {
