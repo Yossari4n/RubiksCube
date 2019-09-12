@@ -3,7 +3,7 @@
 
 #include "MessageManager.h"
 
-template <class M, class O, void(O::*F)(M)>
+template <class M, class O, void(O::* F)(M)>
 class MessageIn : public IMessageIn {
 public:
     MessageIn(O* owner)
@@ -17,5 +17,6 @@ public:
 private:
     O* m_Component;
 };
+
 
 #endif

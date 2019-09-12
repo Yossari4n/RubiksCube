@@ -26,7 +26,7 @@ class MessageOut;
 
 class IMessageIn;
 
-template <class M, class O, void(O::*F)(M)>
+template <class M, class O, void(O::* F)(M)>
 class MessageIn;
 
 

@@ -19,13 +19,14 @@ public:
     void Draw() const override;
 
     void ChangeFont(std::string path, float size);
-    void ChangeText(std::string text);
-    void ChangeColor(glm::vec4 color);
+
+    void ChangeText(std::string text) { m_Text = text; }
+    void ChangeColor(glm::vec4 color) { m_Color = color; }
 
 public:
     // TODO ChangeFontIn
-    MessageIn<std::string, TextRenderer, &TextRenderer::ChangeText> ChangeTextIn { this };
-    MessageIn<glm::vec4, TextRenderer, &TextRenderer::ChangeColor> ChangeColorIn { this };
+    MessageIn<std::string, TextRenderer, &TextRenderer::ChangeText> ChangeTextIn{ this };
+    MessageIn<glm::vec4, TextRenderer, &TextRenderer::ChangeColor> ChangeColorIn{ this };
 
 private:
     std::string m_Text;

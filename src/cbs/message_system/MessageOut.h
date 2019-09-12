@@ -9,7 +9,7 @@ public:
     MessageOut(Component* owner)
         : IMessageOut(owner) {}
 
-    void Send(M message) {
+    void Send(M& message) {
         if (m_MessageManager != nullptr) {
             m_MessageManager->ForwardMessage(this, &message);
         }

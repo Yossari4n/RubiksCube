@@ -46,10 +46,3 @@ void TextRenderer::ChangeFont(std::string path, float size) {
     io.Fonts->Build();
 }
 
-void TextRenderer::ChangeText(std::string text) {
-    m_Text = text;
-}
-
-void TextRenderer::ChangeColor(glm::vec4 color) {
-    m_Color = color;
-}
