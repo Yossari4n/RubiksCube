@@ -5,3 +5,7 @@
 void Component::RegisterUpdateCall() const {
     m_Object->RegisterUpdateCall(this);
 }
+
+void Component::UnregisterUpdateCall() const {
+    m_Object->UnregisterUpdateCall(this);
+}

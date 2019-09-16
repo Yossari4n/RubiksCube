@@ -258,7 +258,6 @@ void RubiksCube::RotateCube(EDirection direction, ERotation rotation) {
     UpdateTextRenderer();
 }
 
-// TODO make it Task
 void RubiksCube::Randomize(unsigned int moves) {
     if (m_Tasks.size() > 0) {
         // Finish current task
@@ -269,12 +268,12 @@ void RubiksCube::Randomize(unsigned int moves) {
     std::default_random_engine generator;
     std::uniform_int_distribution<int> distribution(0, 5);
     for (unsigned int i = 0; i < moves; i++) {
-        int rn = distribution(generator);
-
         // 50% chances for clockwise and 50% chances for counter-clockwise rotation
+        auto rn = distribution(generator);
         ERotation rotation = rn % 2 == 0 ? ERotation::CLOCKWISE : ERotation::COUNTER_CLOCKWISE;
 
         // Each face has equal chance to be choosen
+        rn = distribution(generator);
         switch (rn) {
         case 0:
             RotateFace(EFace::FRONT, rotation);

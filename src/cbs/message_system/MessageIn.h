@@ -18,5 +18,4 @@ private:
     O* m_Component;
 };
 
-
 #endif

@@ -134,6 +134,7 @@ public:
         Components_t::iterator it = std::find_if(m_Components.begin(),
                                m_Components.end(),
                                [=](std::unique_ptr<Component>& curr) { return curr->ID() == id; });
+
         if (it != m_Components.end()) {
             return dynamic_cast<T*>(it->get());
         } else {
@@ -145,9 +146,8 @@ public:
     /**
      * Connect
      *
-     * Attempts to connect either properties or message pipes between two
-     * owned components. Type compatibility of property or forwarded message
-     * is ensured at the compilation time.
+     * Attempts to connect either properties, message or trigger pipes between two
+     * owned components. Type compatibility is ensured at the compilation time.
      */
     template <class T>
     void Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
@@ -172,8 +172,7 @@ public:
      * Disconnect
      *
      * Attempts to disconnect either properties or message pipes of it's
-     * two owned components. Type compatibility of property or forwarded message
-     * is ensured at the compilation time.
+     * two owned components. Type compatibility is ensured at the compilation time.
      */
     template <class T>
     void Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
@@ -200,14 +199,12 @@ private:
     std::string m_Name;
 
     ObjectManager& m_Owner;
-
     MessageManager m_MessageManager;
-
-    Transform m_Root;
 
     std::uint8_t m_NextCompID;
 
     // All components owned by Object
+    Transform m_Root;
     Components_t m_Components;
     Components_t::size_type m_CurrentIndex;
     // Components are divided into three different parts

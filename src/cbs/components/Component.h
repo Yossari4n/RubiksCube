@@ -28,6 +28,7 @@ protected:
     virtual void Destroy() {};
 
     void RegisterUpdateCall() const;
+    void UnregisterUpdateCall() const;
 
 private:
     class Object* m_Object{ nullptr };
