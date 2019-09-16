@@ -20,7 +20,7 @@ public:
         WORLD
     };
 
-    Transform();
+    Transform(class Object& owner);
 
     void Initialize() override;
 

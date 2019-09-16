@@ -11,7 +11,7 @@
 
 class TextRenderer : public Component, public IWidget {
 public:
-    TextRenderer(const std::string& font_path, float size);
+    TextRenderer(class Object& owner, const std::string& font_path, float size);
 
     void Initialize() override;
     void Destroy() override;

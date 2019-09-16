@@ -1,7 +1,8 @@
 #include "MeshRenderer.h"
 
-MeshRenderer::MeshRenderer(const std::string& path, ShaderProgram::Type type)
-    : Drawable(type) {
+MeshRenderer::MeshRenderer(class Object& owner, const std::string& path, ShaderProgram::Type type)
+    : Component(owner)
+    , Drawable(type) {
     LoadModel(path);
 }
 

@@ -48,17 +48,15 @@ public:
      * Create component
      *
      * Creates component of type T with arguments Args and returns pointer of type T.
-     * At the time of calling constructor new Component will not have access to it's Object-owner.
-     * Futhermore component receives it's own ID greater than 0. All Object 
-     * related function class e.g. Transform.Position should happen inside Initialize function.
+     * Object passes reference to itself as first argument.
+     * Futhermore component receives it's own ID greater than 0.
      * By default Transform component is marked as Root and has ID of 1.
-     * New components are guarantee to be initialized at the begining of next frame.
+     * New components are guarantee to be initialized at the begining of a next frame.
      */
     template <class T, typename ...Args>
     T* CreateComponent(Args&&... params) {
         // Add new Component at the end of vecotr to be initialized in the next frame
-        m_Components.emplace_back(std::make_unique<T>(params...));
-        m_Components.back()->m_Object = this;
+        m_Components.emplace_back(std::make_unique<T>(*this, params...));
         m_Components.back()->m_ID = m_NextCompID;
 
         m_ToInitializeNextFrame = m_ToInitializeNextFrame + 1;

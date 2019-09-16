@@ -2,7 +2,8 @@
 
 #include "../Object.h"
 
-Transform::Transform() {
+Transform::Transform(class Object& owner)
+    : Component(owner) {
     UpdateModel();
 }
 

@@ -20,9 +20,9 @@
 
 class Camera : public Component {
 public:
-    Camera(glm::mat4 perspective);
-    Camera(float fovy, float aspect, float near, float far);
-    Camera(float left, float right, float bottom, float top, float near, float far);
+    Camera(class Object& owner, glm::mat4 perspective);
+    Camera(class Object& owner, float fovy, float aspect, float near, float far);
+    Camera(class Object& owner, float left, float right, float bottom, float top, float near, float far);
     
     void Initialize() override;
     

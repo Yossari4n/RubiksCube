@@ -14,11 +14,9 @@ void MessageManager::ForwardTrigger(ITriggerOut* sender) {
     }
 }
 
-// TODO more tests
 void MessageManager::RemoveConnections(Component* component) {
     std::uint8_t comp_id = component->ID();
 
-    // TODO doc
     m_PropertyConnections.erase(std::remove_if(m_PropertyConnections.begin(),
                                                m_PropertyConnections.end(),
                                                [=](std::pair<IPropertyOut*, IPropertyIn*>& conn) {
@@ -31,7 +29,6 @@ void MessageManager::RemoveConnections(Component* component) {
                                                    return false; }),
                                 m_PropertyConnections.end());
 
-    // TODO doc
     for (auto it = m_MessageConnections.begin(); it != m_MessageConnections.end(); ) {
         if (it->first->m_Owner->ID() == comp_id) {
             m_MessageConnections.erase(it++);
@@ -44,7 +41,6 @@ void MessageManager::RemoveConnections(Component* component) {
         }
     }
 
-    // TODO doc
     for (auto it = m_TriggerConnections.begin(); it != m_TriggerConnections.end(); ) {
         if (it->first->m_Owner->ID() == comp_id) {
             m_TriggerConnections.erase(it++);

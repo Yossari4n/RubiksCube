@@ -28,7 +28,7 @@
 
 class MeshRenderer : public Component, public Drawable {
 public:
-    MeshRenderer(const std::string& path, ShaderProgram::Type type);
+    MeshRenderer(class Object& owner, const std::string& path, ShaderProgram::Type type);
 
     void Initialize() override;
     void Destroy() override;

@@ -12,7 +12,9 @@ class Component {
     friend class Object;
 
 public:
-    Component() = default;
+    Component(class Object& owner);
+
+    Component() = delete;
     Component(const Component&) = delete;
     Component& operator=(const Component&) = delete;
     Component(Component&&) = delete;
@@ -20,7 +22,7 @@ public:
     virtual ~Component() = default;
 
     std::uint8_t ID() const { return m_ID; }
-    Object& Object() const { return *m_Object; }
+    Object& Object() const { return m_Object; }
 
 protected:
     virtual void Initialize() {};
@@ -31,7 +33,7 @@ protected:
     void UnregisterUpdateCall() const;
 
 private:
-    class Object* m_Object{ nullptr };
+    class Object& m_Object;
     std::uint8_t m_ID{ 0 };
 };
 
