@@ -4,10 +4,10 @@
 #include "MessageManager.h"
 
 template <class M>
-class MessageOut : public IMessageOut {
+class MessageOut : public AbstractMessageOut {
 public:
     MessageOut(Component* owner)
-        : IMessageOut(owner) {}
+        : AbstractMessageOut(owner) {}
 
     void Send(M& message) {
         if (m_MessageManager != nullptr) {

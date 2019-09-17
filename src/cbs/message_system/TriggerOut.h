@@ -3,10 +3,10 @@
 
 #include "MessageManager.h"
 
-class TriggerOut : public ITriggerOut {
+class TriggerOut : public AbstractTriggerOut {
 public:
     TriggerOut(Component* owner)
-        : ITriggerOut(owner) {}
+        : AbstractTriggerOut(owner) {}
     
     void Trigger() {
         if (m_MessageManager != nullptr) {

@@ -4,10 +4,10 @@
 #include "MessageManager.h"
 
 template <class O, void(O::* F)()>
-class TriggerIn : public ITriggerIn {
+class TriggerIn : public AbstractTriggerIn {
 public:
     TriggerIn(O* owner)
-        : ITriggerIn(owner)
+        : AbstractTriggerIn(owner)
         , m_Component(owner) {}
 
     void Receive() override {

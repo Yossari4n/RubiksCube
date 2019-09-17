@@ -5,12 +5,12 @@
 #include "PropertyOut.h"
 
 template <class T>
-class PropertyIn : public IPropertyIn {
+class PropertyIn : public AbstractPropertyIn {
     friend class MessageManager;
 
 public:
     PropertyIn(Component* owner)
-        : IPropertyIn(owner)
+        : AbstractPropertyIn(owner)
         , m_Source(nullptr) {}
 
     const T& Value() const { return m_Source->Value(); }

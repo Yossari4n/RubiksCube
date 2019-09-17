@@ -2,13 +2,13 @@
 
 #include "../components/Component.h"
 
-void MessageManager::ForwardMessage(IMessageOut* sender, void* message) {
+void MessageManager::ForwardMessage(AbstractMessageOut* sender, void* message) {
     for (auto it = m_MessageConnections[sender].begin(); it != m_MessageConnections[sender].end(); it++) {
         (*it)->Receive(message);
     }
 }
 
-void MessageManager::ForwardTrigger(ITriggerOut* sender) {
+void MessageManager::ForwardTrigger(AbstractTriggerOut* sender) {
     for (auto it = m_TriggerConnections[sender].begin(); it != m_TriggerConnections[sender].end(); it++) {
         (*it)->Receive();
     }
@@ -19,7 +19,7 @@ void MessageManager::RemoveConnections(Component* component) {
 
     m_PropertyConnections.erase(std::remove_if(m_PropertyConnections.begin(),
                                                m_PropertyConnections.end(),
-                                               [=](std::pair<IPropertyOut*, IPropertyIn*>& conn) {
+                                               [=](std::pair<AbstractPropertyOut*, AbstractPropertyIn*>& conn) {
                                                    if (conn.second->m_Owner->ID() == comp_id) {
                                                        return true;
                                                    } else if (conn.first->m_Owner->ID() == comp_id) {

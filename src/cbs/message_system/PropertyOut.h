@@ -4,17 +4,17 @@
 #include "MessageManager.h"
 
 template <class T>
-class PropertyOut : public IPropertyOut {
+class PropertyOut : public AbstractPropertyOut {
     friend class MessageManager;
 
 public:
     PropertyOut(Component* owner)
-        : IPropertyOut(owner)
+        : AbstractPropertyOut(owner)
         , m_Value() {}
 
     template <class ...Args>
     PropertyOut(Component* owner, Args&& ... params)
-        : IPropertyOut(owner)
+        : AbstractPropertyOut(owner)
         , m_Value(params...) {}
 
     T& operator=(const T& value) {

@@ -4,10 +4,10 @@
 #include "MessageManager.h"
 
 template <class M, class O, void(O::* F)(M)>
-class MessageIn : public IMessageIn {
+class MessageIn : public AbstractMessageIn {
 public:
     MessageIn(O* owner)
-        : IMessageIn(owner)
+        : AbstractMessageIn(owner)
         , m_Component(owner) {}
 
     void Receive(void* message) override {
