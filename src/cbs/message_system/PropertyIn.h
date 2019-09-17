@@ -19,11 +19,9 @@ public:
     bool Connected() const { return m_Source != nullptr; }
 
 private:
-    void Reset() override {
-        m_Source = nullptr;
-    }
+    void RemoveSource() override { m_Source = nullptr; }
 
-    const PropertyOut<T>* m_Source;
+    PropertyOut<T>* m_Source;
 };
 
 #endif

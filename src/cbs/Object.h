@@ -48,10 +48,11 @@ public:
      * Create component
      *
      * Creates component of type T with arguments Args and returns pointer of type T.
-     * Object passes reference to itself as first argument.
-     * Futhermore component receives it's own ID greater than 0.
+     * At the time of calling constructor new Component will not have access to it's Object-owner.
+     * Futhermore component receives it's own ID greater than 0. All Object 
+     * related function class e.g. Transform.Position should happen inside Initialize function.
      * By default Transform component is marked as Root and has ID of 1.
-     * New components are guarantee to be initialized at the begining of a next frame.
+     * New components are guarantee to be initialized at the begining of next frame.
      */
     template <class T, typename ...Args>
     T* CreateComponent(Args&&... params) {

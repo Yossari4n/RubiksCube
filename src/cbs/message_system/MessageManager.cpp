@@ -21,9 +21,9 @@ void MessageManager::RemoveConnections(Component* component) {
                                                m_PropertyConnections.end(),
                                                [=](std::pair<IPropertyOut*, IPropertyIn*>& conn) {
                                                    if (conn.second->m_Owner->ID() == comp_id) {
-                                                       conn.second->Reset();
                                                        return true;
                                                    } else if (conn.first->m_Owner->ID() == comp_id) {
+                                                       conn.second->RemoveSource();
                                                        return true;
                                                    }
                                                    return false; }),

@@ -116,13 +116,13 @@ public:
     IPropertyIn(const IPropertyIn&) = delete;
     IPropertyIn& operator=(const IPropertyIn&) = delete;
     IPropertyIn(IPropertyIn&&) = delete;
-    IPropertyIn operator=(IPropertyIn&&) = delete;
+    IPropertyIn& operator=(IPropertyIn&&) = delete;
     virtual ~IPropertyIn() = default;
 
     Component* Owner() const { return m_Owner; }
 
 protected:
-    virtual void Reset() = 0;
+    virtual void RemoveSource() = 0;
 
 private:
     Component* m_Owner;
@@ -168,7 +168,7 @@ public:
     IMessageIn(const IMessageIn&) = delete;
     IMessageIn& operator=(const IMessageIn&) = delete;
     IMessageIn(IMessageIn&&) = delete;
-    IMessageIn operator=(IMessageIn&&) = delete;
+    IMessageIn& operator=(IMessageIn&&) = delete;
     virtual ~IMessageIn() = default;
 
     virtual void Receive(void* message) = 0;
@@ -196,7 +196,7 @@ public:
     ITriggerOut(const ITriggerOut&) = delete;
     ITriggerOut& operator=(const ITriggerOut&) = delete;
     ITriggerOut(ITriggerOut&&) = delete;
-    ITriggerOut operator=(ITriggerOut&&) = delete;
+    ITriggerOut& operator=(ITriggerOut&&) = delete;
     virtual ~ITriggerOut() = default;
 
     Component* Owner() const { return m_Owner; }
@@ -219,7 +219,7 @@ public:
     ITriggerIn(const ITriggerIn&) = delete;
     ITriggerIn& operator=(const ITriggerIn&) = delete;
     ITriggerIn(ITriggerIn&&) = delete;
-    ITriggerIn operator=(ITriggerIn&&) = delete;
+    ITriggerIn& operator=(ITriggerIn&&) = delete;
     virtual ~ITriggerIn() = default;
 
     virtual void Receive() = 0;
@@ -250,7 +250,7 @@ void MessageManager::Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer
                                                m_PropertyConnections.end(),
                                                [=](std::pair<IPropertyOut*, IPropertyIn*>& pair) { 
                                                    if (pair.first == subject && pair.second == observer) {
-                                                       pair.second->Reset();
+                                                       pair.second->RemoveSource();
                                                        return true;
                                                    }
                                                    return false; }));
