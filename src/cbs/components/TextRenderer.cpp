@@ -5,6 +5,10 @@ TextRenderer::TextRenderer(const std::string& font_path, float size)
     , m_Vertical(EAlign::NONE)
     , m_Offset(0.0f)
     , m_Color(0.0f, 0.0f, 0.0f, 1.0f) {
+
+    RegisterConnection(TextIn);
+    RegisterConnection(ColorIn);
+
     ImGuiIO& io = ImGui::GetIO();
     m_Font = io.Fonts->AddFontFromFileTTF(font_path.c_str(), size);
     io.Fonts->Build();

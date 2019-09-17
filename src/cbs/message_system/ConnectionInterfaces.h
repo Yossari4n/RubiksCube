@@ -3,8 +3,13 @@
 
 #include "MessageManager.h"
 
+/**
+ * ConnectionPipe
+ * 
+ * TODO doc
+ **/
 class ConnectionPipe {
-    friend class MessageManager;
+    friend class Object;
 
 public:
     ConnectionPipe(Component* owner)
@@ -25,10 +30,11 @@ protected:
     MessageManager* m_MessageManager;
 };
 
-/**************
- *  Property  *
- **************/
-
+/**
+ * AbstractProperty
+ *
+ * TODO doc
+ **/
 class AbstractPropertyOut : public ConnectionPipe {
     friend class MessageManager;
 
@@ -63,10 +69,11 @@ protected:
 };
 
 
-/***************
- *   Message   *
- ***************/
-
+/**
+ * AbstractMessager
+ *
+ * TODO doc
+ **/
 class AbstractMessageOut : public ConnectionPipe {
     friend class MessageManager;
 
@@ -101,11 +108,12 @@ protected:
 };
 
 
-/*************
- *  Trigger  *
- *************/
-
-class AbstractTriggerOut : ConnectionPipe {
+/**
+ * AbstractTrigger
+ *
+ * TODO doc
+ **/
+class AbstractTriggerOut : public ConnectionPipe {
     friend class MessageManager;
 
 public:
@@ -120,7 +128,7 @@ public:
     virtual ~AbstractTriggerOut() = default;
 };
 
-class AbstractTriggerIn : ConnectionPipe {
+class AbstractTriggerIn : public ConnectionPipe {
     friend class MessageManager;
 
 public:

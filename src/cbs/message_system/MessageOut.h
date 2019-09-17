@@ -10,9 +10,7 @@ public:
         : AbstractMessageOut(owner) {}
 
     void Send(M& message) {
-        if (m_MessageManager != nullptr) {
-            m_MessageManager->ForwardMessage(this, &message);
-        }
+        m_MessageManager->ForwardMessage(this, &message);
     }
 };
 

@@ -2,6 +2,7 @@
 
 MeshRenderer::MeshRenderer(const std::string& path, ShaderProgram::Type type)
     : Drawable(type) {
+    RegisterConnection(ModelIn);
     LoadModel(path);
 }
 
@@ -14,7 +15,7 @@ void MeshRenderer::Destroy() {
 }
 
 void MeshRenderer::Draw(const ShaderProgram &shader) const {
-    shader.Uniform("model", Model);
+    shader.Uniform("model", ModelIn);
     
     for (const Mesh &mesh: m_Meshes) {
         mesh.Draw(shader);

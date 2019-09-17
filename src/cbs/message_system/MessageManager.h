@@ -89,7 +89,6 @@ void MessageManager::Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
         m_PropertyConnections.emplace_back(&subject, &observer);
     } else {
         // TODO DebugLog
-        std::cout << "PropertyIn of type " << typeid(T).name() << " already has connection\n";
     }
 }
 

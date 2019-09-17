@@ -15,10 +15,7 @@
 
 class Transform : public Component {
 public:
-    enum class Space {
-        LOCAL,
-        WORLD
-    };
+    Transform();
 
     void Initialize() override;
 

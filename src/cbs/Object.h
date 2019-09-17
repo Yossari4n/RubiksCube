@@ -58,8 +58,14 @@ public:
     T* CreateComponent(Args&&... params) {
         // Add new Component at the end of vecotr to be initialized in the next frame
         m_Components.emplace_back(std::make_unique<T>(params...));
-        m_Components.back()->m_Object = this;
-        m_Components.back()->m_ID = m_NextCompID;
+
+        // 
+        auto& comp = m_Components.back();
+        comp->m_Object = this;
+        comp->m_ID = m_NextCompID;
+        for (auto it = comp->m_ConnectionPipes.begin(); it != comp->m_ConnectionPipes.end(); it++) {
+            (*it)->m_MessageManager = &m_MessageManager;
+        }
 
         m_ToInitializeNextFrame = m_ToInitializeNextFrame + 1;
         m_NextCompID = m_NextCompID + 1;

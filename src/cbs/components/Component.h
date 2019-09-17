@@ -2,10 +2,11 @@
 #define Component_h
 
 #include <iostream>
-#include <exception>
+#include <vector>
+#include <algorithm>
 
 class Object;
-class Transform;
+class ConnectionPipe;
 
 class Component {
     friend class Object;
@@ -29,9 +30,13 @@ protected:
     void RegisterUpdateCall() const;
     void UnregisterUpdateCall() const;
 
+    void RegisterConnection(ConnectionPipe& pipe);
+
 private:
     class Object* m_Object{ nullptr };
     std::uint8_t m_ID{ 0 };
+
+    std::vector<ConnectionPipe*> m_ConnectionPipes;
 };
 
 #endif

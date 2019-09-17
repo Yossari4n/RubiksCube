@@ -9,9 +9,7 @@ public:
         : AbstractTriggerOut(owner) {}
     
     void Trigger() {
-        if (m_MessageManager != nullptr) {
-            m_MessageManager->ForwardTrigger(this);
-        }
+        m_MessageManager->ForwardTrigger(this);
     }
 };
 

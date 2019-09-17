@@ -23,6 +23,7 @@
 #include <assimp/postprocess.h>
 #pragma warning(pop)
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -41,7 +42,7 @@ public:
 
     const std::string& Directory() const { return m_Directory; }
 
-    PropertyIn<glm::mat4> Model{ this };
+    PropertyIn<glm::mat4> ModelIn{ this };
 
 private:
     std::vector<Mesh> m_Meshes;

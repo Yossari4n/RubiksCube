@@ -2,6 +2,15 @@
 
 #include "../Object.h"
 
+Transform::Transform() {
+    RegisterConnection(Parent);
+    RegisterConnection(TransformOut);
+    RegisterConnection(ModelOut);
+    RegisterConnection(PositionOut);
+    RegisterConnection(RotationOut);
+    RegisterConnection(ScaleOut);
+}
+
 void Transform::Initialize() {
     UpdateModel();
 }

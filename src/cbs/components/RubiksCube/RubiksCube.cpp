@@ -88,6 +88,8 @@ RubiksCube::RubiksCube()
         { glm::vec3(0.0f, -1.0f, 0.0f) },
         { 'D' } } {
 
+    RegisterConnection(TasksSignaturesOut);
+
     for (int matrix = 0; matrix < 3; matrix++) {
         m_Cube.emplace_back();
         for (int row = 0; row < 3; row++) {

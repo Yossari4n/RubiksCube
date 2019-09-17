@@ -7,6 +7,7 @@
 #include <stb/stb_image.h>
 #pragma warning(pop)
 
+#include <iostream>
 #include <string>
 
 class Cubemap : public Drawable {
