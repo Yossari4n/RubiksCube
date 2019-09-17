@@ -70,7 +70,7 @@ public:
         FRONT = 'Z'
     };
 
-    RubiksCube(class Object& owner);
+    RubiksCube();
 
     void Initialize() override;
     void Update() override;

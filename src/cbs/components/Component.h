@@ -8,13 +8,10 @@ class Object;
 class Transform;
 
 class Component {
-    // TODO doc about friendship and constructors
     friend class Object;
 
 public:
-    Component(class Object& owner);
-
-    Component() = delete;
+    Component() = default;
     Component(const Component&) = delete;
     Component& operator=(const Component&) = delete;
     Component(Component&&) = delete;
@@ -22,7 +19,7 @@ public:
     virtual ~Component() = default;
 
     std::uint8_t ID() const { return m_ID; }
-    Object& Object() const { return m_Object; }
+    Object& Object() const { return *m_Object; }
 
 protected:
     virtual void Initialize() {};
@@ -33,7 +30,7 @@ protected:
     void UnregisterUpdateCall() const;
 
 private:
-    class Object& m_Object;
+    class Object* m_Object{ nullptr };
     std::uint8_t m_ID{ 0 };
 };
 

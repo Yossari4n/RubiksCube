@@ -7,7 +7,7 @@
 
 class DirectionalLight : public Component, public ILightSource {
 public:
-    DirectionalLight(class Object& owner, glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+    DirectionalLight(glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
 
     void Initialize() override;
     void Destroy() override;

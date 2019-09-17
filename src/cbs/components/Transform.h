@@ -20,8 +20,6 @@ public:
         WORLD
     };
 
-    Transform(class Object& owner);
-
     void Initialize() override;
 
     const glm::mat4& Model() const;

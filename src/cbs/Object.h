@@ -56,7 +56,8 @@ public:
     template <class T, typename ...Args>
     T* CreateComponent(Args&&... params) {
         // Add new Component at the end of vecotr to be initialized in the next frame
-        m_Components.emplace_back(std::make_unique<T>(*this, params...));
+        m_Components.emplace_back(std::make_unique<T>(params...));
+        m_Components.back()->m_Object = this;
         m_Components.back()->m_ID = m_NextCompID;
 
         m_ToInitializeNextFrame = m_ToInitializeNextFrame + 1;

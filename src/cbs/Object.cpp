@@ -9,12 +9,12 @@ Object::Object(ObjectManager& owner, std::uint8_t id, std::string name)
     , m_Owner(owner)
     , m_MessageManager()
     , m_NextCompID(2)
-    , m_Root(*this)
     , m_CurrentIndex(0)
     , m_ToInitialize(0)
     , m_ToInitializeNextFrame(0)
     , m_ToUpdate(0)
     , m_ToDestroy(0) {
+    m_Root.m_Object = this;
     m_Root.m_ID = 1;
 }
 

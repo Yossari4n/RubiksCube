@@ -4,25 +4,22 @@
 #undef far
 #undef near
 
-Camera::Camera(class Object& owner, glm::mat4 projection)
-    : Component(owner)
-    , m_ViewMatrix(0.0f)
+Camera::Camera(glm::mat4 projection)
+    : m_ViewMatrix(0.0f)
     , m_Projection(projection)
     , m_Transform(nullptr) {
     
 }
 
-Camera::Camera(class Object& owner, float fovy, float aspect, float near, float far)
-    : Component(owner)
-    , m_ViewMatrix(0.0f)
+Camera::Camera(float fovy, float aspect, float near, float far)
+    : m_ViewMatrix(0.0f)
     , m_Projection(Perspective(fovy, aspect, near, far))
     , m_Transform(nullptr) {
     
 }
 
-Camera::Camera(class Object& owner, float left, float right, float bottom, float top, float near, float far)
-    : Component(owner)
-    , m_ViewMatrix(0.0f)
+Camera::Camera(float left, float right, float bottom, float top, float near, float far)
+    : m_ViewMatrix(0.0f)
     , m_Projection(Orthographic(left, right, bottom, top, near, far))
     , m_Transform(nullptr) {
     

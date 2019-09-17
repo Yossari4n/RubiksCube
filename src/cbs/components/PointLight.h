@@ -12,7 +12,7 @@
 
 class PointLight : public Component, public ILightSource {
 public:
-    PointLight(class Object& owner, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float constant, float linear, float quadratic);
+    PointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float constant, float linear, float quadratic);
     
     void Initialize() override;
     void Destroy() override;

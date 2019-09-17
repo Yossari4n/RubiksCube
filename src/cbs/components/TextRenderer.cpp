@@ -1,9 +1,7 @@
 #include "TextRenderer.h"
 
-TextRenderer::TextRenderer(class Object& owner, const std::string& font_path, float size)
-    : Component(owner)
-    , m_Text("")
-    , m_Horizontal(EAlign::NONE)
+TextRenderer::TextRenderer(const std::string& font_path, float size)
+    : m_Horizontal(EAlign::NONE)
     , m_Vertical(EAlign::NONE)
     , m_Offset(0.0f)
     , m_Color(0.0f, 0.0f, 0.0f, 1.0f) {

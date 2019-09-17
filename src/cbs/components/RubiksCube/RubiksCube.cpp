@@ -2,9 +2,8 @@
 #include "Tasks.h"
 
 
-RubiksCube::RubiksCube(class Object& owner)
-    : Component(owner)
-    , m_Front {
+RubiksCube::RubiksCube()
+    : m_Front {
         {
             { 0, 0, 0 },
             { 0, 0, 1 },

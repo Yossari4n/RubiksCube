@@ -2,9 +2,8 @@
 
 int PointLight::QUANTITY = 0;
 
-PointLight::PointLight(class Object& owner, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float constant, float linear, float quadratic)
-    : Component(owner)
-    , m_Ambient(ambient)
+PointLight::PointLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float constant, float linear, float quadratic)
+    : m_Ambient(ambient)
     , m_Diffuse(diffuse)
     , m_Specular(specular)
     , m_Constant(constant)
