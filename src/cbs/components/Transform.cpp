@@ -3,12 +3,12 @@
 #include "../Object.h"
 
 Transform::Transform() {
-    RegisterConnection(Parent);
-    RegisterConnection(TransformOut);
-    RegisterConnection(ModelOut);
-    RegisterConnection(PositionOut);
-    RegisterConnection(RotationOut);
-    RegisterConnection(ScaleOut);
+    RegisterConnector(Parent);
+    RegisterConnector(TransformOut);
+    RegisterConnector(ModelOut);
+    RegisterConnector(PositionOut);
+    RegisterConnector(RotationOut);
+    RegisterConnector(ScaleOut);
 }
 
 void Transform::Initialize() {

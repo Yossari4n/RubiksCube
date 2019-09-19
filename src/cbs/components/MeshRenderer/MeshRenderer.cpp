@@ -2,7 +2,7 @@
 
 MeshRenderer::MeshRenderer(const std::string& path, ShaderProgram::Type type)
     : Drawable(type) {
-    RegisterConnection(ModelIn);
+    RegisterConnector(ModelIn);
     LoadModel(path);
 }
 

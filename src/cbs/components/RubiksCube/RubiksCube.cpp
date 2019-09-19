@@ -88,7 +88,7 @@ RubiksCube::RubiksCube()
         { glm::vec3(0.0f, -1.0f, 0.0f) },
         { 'D' } } {
 
-    RegisterConnection(TasksSignaturesOut);
+    RegisterConnector(TasksSignaturesOut);
 
     for (int matrix = 0; matrix < 3; matrix++) {
         m_Cube.emplace_back();
@@ -170,40 +170,42 @@ void RubiksCube::Update() {
     // Collect next task 
     if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_F)) {
         RotateFace(EFace::FRONT, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_F) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_F)) {
         RotateFace(EFace::FRONT, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_B)) {
         RotateFace(EFace::BACK, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_B) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_B)) {
         RotateFace(EFace::BACK, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_L)) {
         RotateFace(EFace::LEFT, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_L) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_L)) {
         RotateFace(EFace::LEFT, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_R)) {
         RotateFace(EFace::RIGHT, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_R) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_R)) {
         RotateFace(EFace::RIGHT, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_U)) {
         RotateFace(EFace::UP, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_U) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_U)) {
         RotateFace(EFace::UP, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_D)) {
         RotateFace(EFace::DOWN, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_D) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_D)) {
         RotateFace(EFace::DOWN, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_X)) {
         RotateCube(EDirection::RIGHT, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_X) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_X)) {
         RotateCube(EDirection::RIGHT, ERotation::CLOCKWISE);
     } else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_Y)) {
         RotateCube(EDirection::UP, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_Y) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_Y)) {
         RotateCube(EDirection::UP, ERotation::CLOCKWISE);
     }  else if (g_Input.KeyHold(GLFW_KEY_LEFT_SHIFT) && g_Input.KeyPressed(GLFW_KEY_Z)) {
         RotateCube(EDirection::FRONT, ERotation::COUNTER_CLOCKWISE);
-    } else if (g_Input.KeyState(GLFW_KEY_Z) == Input::EKeyState::PRESSED) {
+    } else if (g_Input.KeyPressed(GLFW_KEY_Z)) {
         RotateCube(EDirection::FRONT, ERotation::CLOCKWISE);
+    } else if (g_Input.KeyPressed(GLFW_KEY_ENTER)) {
+        Randomize(25);
     }
 
     // Update deque of tasks

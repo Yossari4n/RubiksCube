@@ -11,7 +11,7 @@ void Component::UnregisterUpdateCall() const {
     m_Object->UnregisterUpdateCall(this);
 }
 
-void Component::RegisterConnection(ConnectionPipe& pipe) {
+void Component::RegisterConnector(ConnectionPipe& pipe) {
     assert(std::find(m_ConnectionPipes.begin(), m_ConnectionPipes.end(), &pipe) == m_ConnectionPipes.end());
 
     m_ConnectionPipes.push_back(&pipe);

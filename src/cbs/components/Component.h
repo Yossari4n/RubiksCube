@@ -30,7 +30,7 @@ protected:
     void RegisterUpdateCall() const;
     void UnregisterUpdateCall() const;
 
-    void RegisterConnection(ConnectionPipe& pipe);
+    void RegisterConnector(ConnectionPipe& pipe);
 
 private:
     class Object* m_Object{ nullptr };
