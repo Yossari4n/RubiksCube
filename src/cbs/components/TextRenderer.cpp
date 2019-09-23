@@ -6,12 +6,14 @@ TextRenderer::TextRenderer(const std::string& font_path, float size)
     , m_Offset(0.0f)
     , m_Color(0.0f, 0.0f, 0.0f, 1.0f) {
 
-    RegisterConnector(TextIn);
-    RegisterConnector(ColorIn);
-
     ImGuiIO& io = ImGui::GetIO();
     m_Font = io.Fonts->AddFontFromFileTTF(font_path.c_str(), size);
     io.Fonts->Build();
+}
+
+void TextRenderer::MakeConnectors(MessageManager& message_manager) {
+    message_manager.Make(this, TextIn);
+    message_manager.Make(this, ColorIn);
 }
 
 void TextRenderer::Initialize() {
@@ -53,4 +55,3 @@ void TextRenderer::Position(glm::vec2 offset, EAlign horizontal, EAlign vertical
     m_Vertical = vertical;
     m_Horizontal = horizontal;
 }
-

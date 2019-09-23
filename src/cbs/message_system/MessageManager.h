@@ -8,8 +8,6 @@
 class Component;
 
 #pragma region ForwardDeclarations
-class IConnectionPipe;
-
 
 class AbstractPropertyOut;
 template <class T>
@@ -35,6 +33,7 @@ class TriggerOut;
 class AbstractTriggerIn;
 template <class O, void(O::*F)()>
 class TriggerIn;
+
 #pragma endregion
 
 class MessageManager {
@@ -43,11 +42,23 @@ class MessageManager {
     using TriggerConnections_t = std::unordered_map<AbstractTriggerOut*, std::vector<AbstractTriggerIn*>>;
 
 public:
-    /**
-     * Type safe managment
-     * 
-     * Connects and disconnects pipe-out and pipe-in with additional compile-time type check.
-     */
+    template <class T, class ...Args>
+    void Make(Component* owner, PropertyOut<T>& to_make, Args&& ...params);
+
+    template <class T>
+    void Make(Component* owner, PropertyIn<T>& to_make);
+
+    template <class M>
+    void Make(Component* owner, MessageOut<M>& to_make);
+
+    template <class M, class O, void(O::*F)(M)>
+    void Make(O* owner, MessageIn<M, O, F>& to_make);
+
+    void Make(Component* owner, TriggerOut& to_make);
+
+    template <class O, void(O::*F)(void)>
+    void Make(O* owner, TriggerIn<O, F>& to_make);
+
     template <class T>
     void Connect(PropertyOut<T>& subject, PropertyIn<T>& observer);
 
@@ -81,6 +92,31 @@ private:
 #include "ConnectionInterfaces.h"
 #include "TriggerOut.h"
 
+template<class T, class ...Args>
+void MessageManager::Make(Component* owner, PropertyOut<T>& to_make, Args&& ...params) {
+    to_make = PropertyOut<T>(owner, std::forward<Args>(params)...);
+}
+
+template<class T>
+void MessageManager::Make(Component* owner, PropertyIn<T>& to_make) {
+    to_make = PropertyIn<T>(owner);
+}
+
+template<class M>
+void MessageManager::Make(Component* owner, MessageOut<M>& to_make) {
+    to_make = MessageOut<M>(owner, this);
+}
+
+template<class M, class O, void(O::*F)(M)>
+void MessageManager::Make(O* owner, MessageIn<M, O, F>& to_make) {
+    to_make = MessageIn<M, O, F>(owner);
+}
+
+template<class O, void(O::* F)(void)>
+void MessageManager::Make(O* owner, TriggerIn<O, F>& to_make) {
+    to_make = TriggerIn<O, F>(owner);
+}
+
 template <class T>
 void MessageManager::Connect(PropertyOut<T>& subject, PropertyIn<T>& observer) {
     if (observer.m_Source == nullptr) {
@@ -106,7 +142,6 @@ void MessageManager::Disconnect(PropertyOut<T>& subject, PropertyIn<T>& observer
 
 template <class M, class O, void(O::*F)(M)>
 void MessageManager::Connect(MessageOut<M>& sender, MessageIn<M, O, F>& receiver) {
-    sender.m_MessageManager = this;
     m_MessageConnections[&sender].push_back(&receiver);
 }
 
@@ -119,7 +154,6 @@ void MessageManager::Disconnect(MessageOut<M>& sender, MessageIn<M, O, F>& recei
 
 template <class O, void(O::* F)()>
 void MessageManager::Connect(TriggerOut& sender, TriggerIn<O, F>& receiver) {
-    sender.m_MessageManager = this;
     m_TriggerConnections[&sender].push_back(&receiver);
 }
 

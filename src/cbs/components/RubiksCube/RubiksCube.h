@@ -72,6 +72,7 @@ public:
 
     RubiksCube();
 
+    void MakeConnectors(MessageManager& message_manager) override;
     void Initialize() override;
     void Update() override;
     void Destroy() override;
@@ -80,7 +81,7 @@ public:
     void RotateCube(EDirection direction, ERotation rotation);
     void Randomize(unsigned int moves);
 
-    MessageOut<std::string> TasksSignaturesOut { this };
+    MessageOut<std::string> TasksSignaturesOut;
 
 private:
     void UpdateTextRenderer();

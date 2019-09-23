@@ -2,8 +2,11 @@
 
 MeshRenderer::MeshRenderer(const std::string& path, ShaderProgram::Type type)
     : Drawable(type) {
-    RegisterConnector(ModelIn);
     LoadModel(path);
+}
+
+void MeshRenderer::MakeConnectors(MessageManager& message_manager) {
+    message_manager.Make(this, ModelIn);
 }
 
 void MeshRenderer::Initialize() {

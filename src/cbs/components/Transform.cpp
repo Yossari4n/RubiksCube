@@ -2,13 +2,15 @@
 
 #include "../Object.h"
 
-Transform::Transform() {
-    RegisterConnector(Parent);
-    RegisterConnector(TransformOut);
-    RegisterConnector(ModelOut);
-    RegisterConnector(PositionOut);
-    RegisterConnector(RotationOut);
-    RegisterConnector(ScaleOut);
+
+void Transform::MakeConnectors(MessageManager& message_manager) {
+    message_manager.Make(this, Parent);
+
+    message_manager.Make(this, TransformOut);
+    message_manager.Make(this, ModelOut);
+    message_manager.Make(this, PositionOut, glm::vec3(0.0f));
+    message_manager.Make(this, RotationOut, glm::vec3(0.0f));
+    message_manager.Make(this, ScaleOut, glm::vec3(1.0f));
 }
 
 void Transform::Initialize() {

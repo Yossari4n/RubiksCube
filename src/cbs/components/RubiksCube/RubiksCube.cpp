@@ -88,8 +88,6 @@ RubiksCube::RubiksCube()
         { glm::vec3(0.0f, -1.0f, 0.0f) },
         { 'D' } } {
 
-    RegisterConnector(TasksSignaturesOut);
-
     for (int matrix = 0; matrix < 3; matrix++) {
         m_Cube.emplace_back();
         for (int row = 0; row < 3; row++) {
@@ -97,6 +95,10 @@ RubiksCube::RubiksCube()
             m_Cube[matrix][row].reserve(3);
         }
     }
+}
+
+void RubiksCube::MakeConnectors(MessageManager& message_manager) {
+    message_manager.Make(this, TasksSignaturesOut);
 }
 
 void RubiksCube::Initialize() {
@@ -204,8 +206,6 @@ void RubiksCube::Update() {
         RotateCube(EDirection::FRONT, ERotation::COUNTER_CLOCKWISE);
     } else if (g_Input.KeyPressed(GLFW_KEY_Z)) {
         RotateCube(EDirection::FRONT, ERotation::CLOCKWISE);
-    } else if (g_Input.KeyPressed(GLFW_KEY_ENTER)) {
-        Randomize(25);
     }
 
     // Update deque of tasks
@@ -314,3 +314,4 @@ void RubiksCube::UpdateTextRenderer() {
     }
     TasksSignaturesOut.Send(message);
 }
+ 

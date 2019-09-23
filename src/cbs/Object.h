@@ -63,9 +63,7 @@ public:
         auto& comp = m_Components.back();
         comp->m_Object = this;
         comp->m_ID = m_NextCompID;
-        for (auto it = comp->m_ConnectionPipes.begin(); it != comp->m_ConnectionPipes.end(); it++) {
-            (*it)->m_MessageManager = &m_MessageManager;
-        }
+        comp->MakeConnectors(m_MessageManager);
 
         m_ToInitializeNextFrame = m_ToInitializeNextFrame + 1;
         m_NextCompID = m_NextCompID + 1;

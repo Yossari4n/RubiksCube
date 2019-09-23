@@ -3,19 +3,38 @@
 
 #include "MessageManager.h"
 
-template <class M, class O, void(O::* F)(M)>
-class MessageIn : public AbstractMessageIn {
-public:
-    MessageIn(O* owner)
-        : AbstractMessageIn(owner)
-        , m_Component(owner) {}
+template <class M, class O, void(O::*F)(M)>
+class MessageIn final : public AbstractMessageIn {
+    friend class MessageManager;
 
-    void Receive(void* message) override {
-        (m_Component->*F)(*static_cast<M*>(message));
-    }
+public:
+    MessageIn() 
+        : m_Owner(nullptr) { }
+    ~MessageIn() = default;
+
+    Component* Owner() const override { return m_Owner; }
+
+    void Receive(void* message) override { (m_Owner->*F)(*static_cast<M*>(message)); }
 
 private:
-    O* m_Component;
+    MessageIn(O* owner)
+        : m_Owner(owner) {}
+
+    MessageIn& operator=(const MessageIn& other) {
+        if (this == &other) {
+            return *this;
+        }
+
+        m_Owner = other.m_Owner;
+
+        return *this;
+    }
+
+    MessageIn(const MessageIn&) = default;
+    MessageIn(MessageIn&&) = default;
+    MessageIn& operator=(MessageIn&&) = default;
+
+    O* m_Owner;
 };
 
 #endif

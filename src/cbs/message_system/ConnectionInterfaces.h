@@ -4,65 +4,36 @@
 #include "MessageManager.h"
 
 /**
- * ConnectionPipe
- * 
- * TODO doc
- **/
-class ConnectionPipe {
-    friend class Object;
-
-public:
-    ConnectionPipe(Component* owner)
-        : m_Owner(owner)
-        , m_MessageManager(nullptr) {}
-
-    ConnectionPipe() = delete;
-    ConnectionPipe(const ConnectionPipe&) = delete;
-    ConnectionPipe& operator=(const ConnectionPipe&) = delete;
-    ConnectionPipe(ConnectionPipe&&) = delete;
-    ConnectionPipe& operator=(ConnectionPipe&&) = delete;
-    virtual ~ConnectionPipe() = default;
-
-    Component* Owner() { return m_Owner; }
-
-protected:
-    Component* m_Owner;
-    MessageManager* m_MessageManager;
-};
-
-/**
  * AbstractProperty
  *
  * TODO doc
  **/
-class AbstractPropertyOut : public ConnectionPipe {
+class AbstractPropertyOut {
     friend class MessageManager;
 
 public:
-    AbstractPropertyOut(Component* owner)
-        : ConnectionPipe(owner) {}
-
-    AbstractPropertyOut() = delete;
+    AbstractPropertyOut() = default;
     AbstractPropertyOut(const AbstractPropertyOut&) = delete;
     AbstractPropertyOut& operator=(const AbstractPropertyOut&) = delete;
     AbstractPropertyOut(AbstractPropertyOut&&) = delete;
-    AbstractPropertyOut operator=(AbstractPropertyOut&&) = delete;
+    AbstractPropertyOut& operator=(AbstractPropertyOut&&) = delete;
     virtual ~AbstractPropertyOut() = default;
+
+    virtual Component* Owner() const = 0;
 };
 
-class AbstractPropertyIn : public ConnectionPipe {
+class AbstractPropertyIn {
     friend class MessageManager;
 
 public:
-    AbstractPropertyIn(Component* owner)
-        : ConnectionPipe(owner) {}
-
-    AbstractPropertyIn() = delete;
+    AbstractPropertyIn() = default;
     AbstractPropertyIn(const AbstractPropertyIn&) = delete;
     AbstractPropertyIn& operator=(const AbstractPropertyIn&) = delete;
     AbstractPropertyIn(AbstractPropertyIn&&) = delete;
     AbstractPropertyIn& operator=(AbstractPropertyIn&&) = delete;
     virtual ~AbstractPropertyIn() = default;
+
+    virtual Component* Owner() const = 0;
 
 protected:
     virtual void RemoveSource() = 0;
@@ -74,34 +45,32 @@ protected:
  *
  * TODO doc
  **/
-class AbstractMessageOut : public ConnectionPipe {
+class AbstractMessageOut {
     friend class MessageManager;
 
 public:
-    AbstractMessageOut(Component* owner)
-        : ConnectionPipe(owner) {}
-
-    AbstractMessageOut() = delete;
+    AbstractMessageOut() = default;
     AbstractMessageOut(const AbstractMessageOut&) = delete;
     AbstractMessageOut& operator=(const AbstractMessageOut&) = delete;
     AbstractMessageOut(AbstractMessageOut&&) = delete;
-    AbstractMessageOut operator=(AbstractMessageOut&&) = delete;
+    AbstractMessageOut& operator=(AbstractMessageOut&&) = delete;
     virtual ~AbstractMessageOut() = default;
+
+    virtual Component* Owner() const = 0;
 };
 
-class AbstractMessageIn : public ConnectionPipe {
+class AbstractMessageIn {
     friend class MessageManager;
 
 public:
-    AbstractMessageIn(Component* owner)
-        : ConnectionPipe(owner) {}
-
-    AbstractMessageIn() = delete;
+    AbstractMessageIn() = default;
     AbstractMessageIn(const AbstractMessageIn&) = delete;
     AbstractMessageIn& operator=(const AbstractMessageIn&) = delete;
     AbstractMessageIn(AbstractMessageIn&&) = delete;
     AbstractMessageIn& operator=(AbstractMessageIn&&) = delete;
     virtual ~AbstractMessageIn() = default;
+
+    virtual Component* Owner() const = 0;
 
 protected:
     virtual void Receive(void* message) = 0;
@@ -113,34 +82,33 @@ protected:
  *
  * TODO doc
  **/
-class AbstractTriggerOut : public ConnectionPipe {
+class AbstractTriggerOut {
     friend class MessageManager;
 
 public:
-    AbstractTriggerOut(Component* owner)
-        : ConnectionPipe(owner) {}
-
-    AbstractTriggerOut() = delete;
+    AbstractTriggerOut() = default;
     AbstractTriggerOut(const AbstractTriggerOut&) = delete;
     AbstractTriggerOut& operator=(const AbstractTriggerOut&) = delete;
     AbstractTriggerOut(AbstractTriggerOut&&) = delete;
     AbstractTriggerOut& operator=(AbstractTriggerOut&&) = delete;
     virtual ~AbstractTriggerOut() = default;
+
+    virtual Component* Owner() const = 0;
+    virtual void Trigger() = 0;
 };
 
-class AbstractTriggerIn : public ConnectionPipe {
+class AbstractTriggerIn {
     friend class MessageManager;
 
 public:
-    AbstractTriggerIn(Component* owner)
-        : ConnectionPipe(owner) {}
-
-    AbstractTriggerIn() = delete;
+    AbstractTriggerIn() = default;
     AbstractTriggerIn(const AbstractTriggerIn&) = delete;
     AbstractTriggerIn& operator=(const AbstractTriggerIn&) = delete;
     AbstractTriggerIn(AbstractTriggerIn&&) = delete;
     AbstractTriggerIn& operator=(AbstractTriggerIn&&) = delete;
     virtual ~AbstractTriggerIn() = default;
+
+    virtual Component* Owner() const = 0;
 
 protected:
     virtual void Receive() = 0;

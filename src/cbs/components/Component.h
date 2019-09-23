@@ -7,6 +7,7 @@
 
 class Object;
 class ConnectionPipe;
+class MessageManager;
 
 class Component {
     friend class Object;
@@ -26,17 +27,14 @@ protected:
     virtual void Initialize() {};
     virtual void Update() {};
     virtual void Destroy() {};
+    virtual void MakeConnectors(MessageManager& message_manager) { (void)message_manager; };
 
     void RegisterUpdateCall() const;
     void UnregisterUpdateCall() const;
 
-    void RegisterConnector(ConnectionPipe& pipe);
-
 private:
     class Object* m_Object{ nullptr };
     std::uint8_t m_ID{ 0 };
-
-    std::vector<ConnectionPipe*> m_ConnectionPipes;
 };
 
 #endif

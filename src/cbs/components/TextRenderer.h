@@ -13,6 +13,7 @@ class TextRenderer : public Component, public IWidget {
 public:
     TextRenderer(const std::string& font_path, float size);
 
+    void MakeConnectors(MessageManager& message_manager) override;
     void Initialize() override;
     void Destroy() override;
 
@@ -28,8 +29,8 @@ public:
     void Color(glm::vec4 color) { m_Color = color; }
 
 public:
-    MessageIn<std::string, TextRenderer, &TextRenderer::Text> TextIn{ this };
-    MessageIn<glm::vec4, TextRenderer, &TextRenderer::Color> ColorIn{ this };
+    MessageIn<std::string, TextRenderer, &TextRenderer::Text> TextIn;
+    MessageIn<glm::vec4, TextRenderer, &TextRenderer::Color> ColorIn;
 
 private:
     std::string m_Text;

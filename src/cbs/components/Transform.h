@@ -15,8 +15,8 @@
 
 class Transform : public Component {
 public:
-    Transform();
 
+    void MakeConnectors(MessageManager& message_manager) override;
     void Initialize() override;
 
     const glm::mat4& Model() const;
@@ -38,14 +38,14 @@ public:
     glm::vec3 Up() { return RotationOut.Value() * glm::vec3(0.0f, 1.0f, 0.0f); }
     glm::vec3 Right() { return RotationOut.Value() * glm::vec3(0.0f, 0.0f, 1.0f); }
 
-    PropertyIn<Transform> Parent{ this };
+    PropertyIn<Transform> Parent;
 
-    PropertyOut<Transform*> TransformOut{ this, this };
+    PropertyOut<Transform*> TransformOut;
 
-    PropertyOut<glm::mat4> ModelOut{ this, 1.0f };
-    PropertyOut<glm::vec3> PositionOut{ this, 0.0f };
-    PropertyOut<glm::quat> RotationOut{ this, glm::vec3(0.0f) };
-    PropertyOut<glm::vec3> ScaleOut{ this, 1.0f };
+    PropertyOut<glm::mat4> ModelOut;
+    PropertyOut<glm::vec3> PositionOut;
+    PropertyOut<glm::quat> RotationOut;
+    PropertyOut<glm::vec3> ScaleOut;
 
 private:
     void UpdateModel();

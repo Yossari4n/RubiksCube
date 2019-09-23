@@ -31,6 +31,7 @@ class MeshRenderer : public Component, public Drawable {
 public:
     MeshRenderer(const std::string& path, ShaderProgram::Type type);
 
+    void MakeConnectors(MessageManager& message_manager) override;
     void Initialize() override;
     void Destroy() override;
 
@@ -42,7 +43,7 @@ public:
 
     const std::string& Directory() const { return m_Directory; }
 
-    PropertyIn<glm::mat4> ModelIn{ this };
+    PropertyIn<glm::mat4> ModelIn;
 
 private:
     std::vector<Mesh> m_Meshes;
