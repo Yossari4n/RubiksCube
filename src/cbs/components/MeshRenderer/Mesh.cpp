@@ -40,9 +40,7 @@ void Mesh::Draw(const ShaderProgram &shader) const {
     for (GLuint i = 0; i < m_Textures.size(); i++) {
         glActiveTexture(GL_TEXTURE0 + static_cast<GLenum>(i));
         
-        std::string name = m_Textures[i].Type;
-        
-        glUniform1i(glGetUniformLocation(shader.ID(), (name).c_str()), i);
+        shader.Uniform("material." + m_Textures[i].Type, static_cast<int>(i));
         glBindTexture(GL_TEXTURE_2D, m_Textures[i].ID);
     }
     
