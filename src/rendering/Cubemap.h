@@ -4,7 +4,7 @@
 #include "../rendering/Drawable.h"
 
 #pragma warning(push, 0)
-#include <stb/stb_image.h>
+#include <stb_image.h>
 #pragma warning(pop)
 
 #include <iostream>

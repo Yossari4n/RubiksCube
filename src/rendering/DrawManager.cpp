@@ -1,5 +1,7 @@
 #include "DrawManager.h"
 
+#include <imgui.h>
+
 #include "Drawable.h"
 #include "IWidget.h"
 #include "ILightSource.h"

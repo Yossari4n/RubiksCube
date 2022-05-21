@@ -15,8 +15,5 @@ Release/
 *.lib
 *.ini
 
-# Dependencies
-dependencies/
-
-# Exceptions
-!dependencies/imgui/imconfig.h 
+#
+build/
