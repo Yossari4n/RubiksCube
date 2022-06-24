@@ -15,10 +15,11 @@ alternatively camera can be set to look directly at cube's Front, Right or Up fa
 
 To change cube's orientation simply press X, Y oraz Z to rotate around corresponding axis.
 
-## Dependencies
-* GLFW
-* GLAD
-* GLM
-* Assimp
-* STB
-* imgui
+## HOW TO BUILD
+    git clone https://github.com/Yossari4n/SolarSystem.git
+    cd RubiksCube
+    mkdir build && cd build
+    conan install ..
+    cmake .. -G
+
+To properly load resources and shaders source code make sure you have your executable path set up correctly - preferably pointing to the root of a project. Or copy 'resources' and 'src/shaders' directories to your build target directory.
