@@ -15,7 +15,7 @@ alternatively camera can be set to look directly at cube's Front, Right or Up fa
 
 To change cube's orientation simply press X, Y oraz Z to rotate around corresponding axis.
 
-## HOW TO BUILD
+## How to build
     git clone https://github.com/Yossari4n/SolarSystem.git
     cd RubiksCube
     mkdir build && cd build
